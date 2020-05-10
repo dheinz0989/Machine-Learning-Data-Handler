@@ -1,4 +1,4 @@
-# Utilities_Import
+# Machine Learning Data Handler
 This module contains [Python](https://www.python.org/) objects which are intended to faciliate Machine Learning projects by providing methods to quickly handle data. 
 The idea is to have a three different classes for handling common Machine Learning related steps with regards to processing data. 
 A major step of current Machine Learning models is to handle raw data, explore features, generate new features and pre-process them 
@@ -31,21 +31,16 @@ It furthermore uses some more specialized packages for Machine Learning and Geo 
 # Installation
 You can clone this repository by running:
 	
-	git clone https://github.com/dheinz0989/Utilities_Import
+	git clone https://github.com/dheinz0989/Machine-Learning-Data-Handler
 
 # Example usage
-an example usage can be found in the [test](https://github.com/dheinz0989/Utilities_Import/tree/master/test). It imports most of the modules features and includes them in a test script. 
-You can run it via:
+An example usage can be found in the [test](https://github.com/dheinz0989/Machine-Learning-Data-Handler/blob/master/test/Quick_usage_demo.ipynb). It imports most of the modules features and includes them in a test script. 
 
-```
-python example.py
-```
 # Documentation
-More details with regards to the function and for which use case they are intended to be used can be found in the [docs](https://github.com/dheinz0989/Utilities_Import/blob/master/docs/build/html/Utilities_Import.html). 
+More details with regards to the function and for which use case they are intended to be used can be found in the [docs](https://github.com/dheinz0989/Machine-Learning-Data-Handler/blob/master/docs/build/html/ML_Data_Handler.html). 
 
 # To Do
-This repository has several things which are not implemented yet. Amongs others, the following implementation are planned:
-1. Logger: add option for color
-2. Logger: add options for not autmatically writing log files
-3. ClassAttrHandler: bug in filtering class attributes
-4. Decorators: add function for argument type checks for class methods
+This repository has a lot of things which are not implemented yet. Amongs others, the following implementation are planned:
+    - add further various method
+    - enhance documentation
+    - testing 
