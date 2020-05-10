@@ -1,0 +1,582 @@
+
+<!DOCTYPE html>
+
+<html>
+  <head>
+    <meta charset="utf-8" />
+    <title>explorer &#8212; Machine Learning Data Handler 1.2 documentation</title>
+    <link rel="stylesheet" href="../_static/nature.css" type="text/css" />
+    <link rel="stylesheet" href="../_static/pygments.css" type="text/css" />
+    <link rel="stylesheet" type="text/css" href="../_static/graphviz.css" />
+    <script id="documentation_options" data-url_root="../" src="../_static/documentation_options.js"></script>
+    <script src="../_static/jquery.js"></script>
+    <script src="../_static/underscore.js"></script>
+    <script src="../_static/doctools.js"></script>
+    <script src="../_static/language_data.js"></script>
+    <link rel="index" title="Index" href="../genindex.html" />
+    <link rel="search" title="Search" href="../search.html" /> 
+  </head><body>
+    <div class="related" role="navigation" aria-label="related navigation">
+      <h3>Navigation</h3>
+      <ul>
+        <li class="right" style="margin-right: 10px">
+          <a href="../genindex.html" title="General Index"
+             accesskey="I">index</a></li>
+        <li class="right" >
+          <a href="../py-modindex.html" title="Python Module Index"
+             >modules</a> |</li>
+        <li class="nav-item nav-item-0"><a href="../ML_Data_Handler.html">Machine Learning Data Handler 1.2 documentation</a> &#187;</li>
+          <li class="nav-item nav-item-1"><a href="index.html" accesskey="U">Module code</a> &#187;</li> 
+      </ul>
+    </div>  
+
+    <div class="document">
+      <div class="documentwrapper">
+        <div class="bodywrapper">
+          <div class="body" role="main">
+            
+  <h1>Source code for explorer</h1><div class="highlight"><pre>
+<span></span><span class="sd">&quot;&quot;&quot;</span>
+<span class="sd">This module provides a class to generate a data explorer object. It can handle different kinds of inputs and</span>
+<span class="sd">generate quick overview, statistics and plots. It includes some subclasses to generate views and statistics for</span>
+<span class="sd">different types of features. These include:</span>
+
+<span class="sd">    - Numerical</span>
+<span class="sd">    - Categorical</span>
+<span class="sd">    - Mixed Types</span>
+<span class="sd">    - GIS (Geo Data)</span>
+<span class="sd">    - Numerical by Time</span>
+<span class="sd">&quot;&quot;&quot;</span>
+<span class="kn">from</span> <span class="nn">__future__</span> <span class="kn">import</span> <span class="n">annotations</span>
+<span class="kn">from</span> <span class="nn">typing</span> <span class="kn">import</span> <span class="n">Sequence</span><span class="p">,</span> <span class="n">Union</span><span class="p">,</span> <span class="n">Mapping</span>
+<span class="kn">from</span> <span class="nn">collections</span> <span class="kn">import</span> <span class="n">namedtuple</span>
+<span class="kn">from</span> <span class="nn">math</span> <span class="kn">import</span> <span class="n">ceil</span><span class="p">,</span> <span class="n">sqrt</span>
+
+<span class="kn">import</span> <span class="nn">seaborn</span> <span class="k">as</span> <span class="nn">sns</span>
+<span class="kn">import</span> <span class="nn">pandas</span> <span class="k">as</span> <span class="nn">pd</span>
+
+<span class="c1"># temporary hack to enable relative imports when script is not run within package</span>
+<span class="c1"># see https://stackoverflow.com/questions/14132789/relative-imports-for-the-billionth-time?rq=1</span>
+<span class="c1"># or https://stackoverflow.com/questions/11536764/how-to-fix-attempted-relative-import-in-non-package-even-with-init-py?rq=1</span>
+<span class="k">try</span><span class="p">:</span>
+    <span class="kn">from</span> <span class="nn">baseattrs</span> <span class="kn">import</span> <span class="n">BasicDataAttributes</span><span class="p">,</span> <span class="n">BaseStats</span>
+    <span class="kn">from</span> <span class="nn">gis</span> <span class="kn">import</span> <span class="n">GisAnalyzer</span><span class="p">,</span> <span class="n">GisAnalyzerWithClusterLabel</span>
+    <span class="kn">from</span> <span class="nn">date_and_time</span> <span class="kn">import</span> <span class="n">DateByAnalyzer</span>
+    <span class="kn">from</span> <span class="nn">utilities</span> <span class="kn">import</span> <span class="n">Logger</span>
+    <span class="kn">from</span> <span class="nn">dataframeselector</span> <span class="kn">import</span> <span class="n">TypeSelector</span><span class="p">,</span> <span class="n">NameSelector</span>
+<span class="k">except</span> <span class="ne">ImportError</span><span class="p">:</span>
+    <span class="kn">from</span> <span class="nn">.baseattrs</span> <span class="kn">import</span> <span class="n">BasicDataAttributes</span><span class="p">,</span> <span class="n">BaseStats</span>
+    <span class="kn">from</span> <span class="nn">.gis</span> <span class="kn">import</span> <span class="n">GisAnalyzer</span><span class="p">,</span> <span class="n">GisAnalyzerWithClusterLabel</span>
+    <span class="kn">from</span> <span class="nn">.date_and_time</span> <span class="kn">import</span> <span class="n">DateByAnalyzer</span>
+    <span class="kn">from</span> <span class="nn">.utilities</span> <span class="kn">import</span> <span class="n">Logger</span>
+    <span class="kn">from</span> <span class="nn">.dataframeselector</span> <span class="kn">import</span> <span class="n">TypeSelector</span><span class="p">,</span> <span class="n">NameSelector</span>
+
+<span class="n">log</span> <span class="o">=</span> <span class="n">Logger</span><span class="o">.</span><span class="n">initialize_log</span><span class="p">()</span>
+
+
+<div class="viewcode-block" id="NumericalAnalyzer"><a class="viewcode-back" href="../ML_Data_Handler.html#explorer.NumericalAnalyzer">[docs]</a><span class="k">class</span> <span class="nc">NumericalAnalyzer</span><span class="p">(</span><span class="n">BaseStats</span><span class="p">):</span>
+    <span class="sd">&quot;&quot;&quot;</span>
+<span class="sd">    Provides basic visualization for numerical features</span>
+<span class="sd">    &quot;&quot;&quot;</span>
+
+<div class="viewcode-block" id="NumericalAnalyzer.__init__"><a class="viewcode-back" href="../ML_Data_Handler.html#explorer.NumericalAnalyzer.__init__">[docs]</a>    <span class="k">def</span> <span class="fm">__init__</span><span class="p">(</span><span class="bp">self</span><span class="p">,</span> <span class="n">data</span><span class="p">:</span> <span class="n">Union</span><span class="p">[</span><span class="nb">str</span><span class="p">,</span> <span class="n">pd</span><span class="o">.</span><span class="n">DataFrame</span><span class="p">]):</span>
+        <span class="sd">&quot;&quot;&quot;</span>
+<span class="sd">        Initializes a NumericalAnalyzer object. Takes data file name or a pandas DataFrame as input</span>
+
+<span class="sd">        :param data: link to a file or a pandas DataFrame:</span>
+<span class="sd">        :type data: Union[str, pd.DataFrame]</span>
+<span class="sd">        &quot;&quot;&quot;</span>
+        <span class="nb">super</span><span class="p">()</span><span class="o">.</span><span class="fm">__init__</span><span class="p">(</span><span class="n">data</span><span class="p">)</span></div>
+
+<div class="viewcode-block" id="NumericalAnalyzer.pair_plot"><a class="viewcode-back" href="../ML_Data_Handler.html#explorer.NumericalAnalyzer.pair_plot">[docs]</a>    <span class="k">def</span> <span class="nf">pair_plot</span><span class="p">(</span><span class="bp">self</span><span class="p">,</span> <span class="o">**</span><span class="n">options</span><span class="p">:</span> <span class="n">Mapping</span><span class="p">[</span><span class="nb">str</span><span class="p">,</span> <span class="p">]):</span>
+        <span class="sd">&quot;&quot;&quot;</span>
+<span class="sd">        Generates a pair plot of all data</span>
+
+<span class="sd">        :param options: options settings the plotter function</span>
+<span class="sd">        :type options: Mapping</span>
+<span class="sd">        :return:</span>
+<span class="sd">        &quot;&quot;&quot;</span>
+        <span class="c1"># TODO include options in function</span>
+        <span class="n">sns</span><span class="o">.</span><span class="n">pairplot</span><span class="p">(</span><span class="bp">self</span><span class="o">.</span><span class="n">data</span><span class="p">,</span> <span class="o">**</span><span class="n">options</span><span class="p">)</span></div>
+
+<div class="viewcode-block" id="NumericalAnalyzer.corr"><a class="viewcode-back" href="../ML_Data_Handler.html#explorer.NumericalAnalyzer.corr">[docs]</a>    <span class="k">def</span> <span class="nf">corr</span><span class="p">(</span><span class="bp">self</span><span class="p">,</span> <span class="o">**</span><span class="n">options</span><span class="p">):</span>
+        <span class="sd">&quot;&quot;&quot;</span>
+<span class="sd">        Generates a correlation heat map of all correlation between the data&#39;s features</span>
+
+<span class="sd">        :param options: options settings the plotter function</span>
+<span class="sd">        :type options: Mapping</span>
+<span class="sd">        &quot;&quot;&quot;</span>
+        <span class="c1"># TODO include options in function</span>
+        <span class="n">sns</span><span class="o">.</span><span class="n">heatmap</span><span class="p">(</span><span class="bp">self</span><span class="o">.</span><span class="n">data</span><span class="o">.</span><span class="n">corr</span><span class="p">())</span></div></div>
+
+
+<div class="viewcode-block" id="CategoricalAnalyzer"><a class="viewcode-back" href="../ML_Data_Handler.html#explorer.CategoricalAnalyzer">[docs]</a><span class="k">class</span> <span class="nc">CategoricalAnalyzer</span><span class="p">(</span><span class="n">BaseStats</span><span class="p">):</span>
+    <span class="sd">&quot;&quot;&quot;</span>
+<span class="sd">    Provides basic statistics and visualization for categorical features</span>
+<span class="sd">    &quot;&quot;&quot;</span>
+
+<div class="viewcode-block" id="CategoricalAnalyzer.__init__"><a class="viewcode-back" href="../ML_Data_Handler.html#explorer.CategoricalAnalyzer.__init__">[docs]</a>    <span class="k">def</span> <span class="fm">__init__</span><span class="p">(</span><span class="bp">self</span><span class="p">,</span> <span class="n">data</span><span class="p">:</span> <span class="n">Union</span><span class="p">[</span><span class="nb">str</span><span class="p">,</span> <span class="n">pd</span><span class="o">.</span><span class="n">DataFrame</span><span class="p">]):</span>
+        <span class="sd">&quot;&quot;&quot;</span>
+<span class="sd">        Initializes a CategoricalAnalyzer object. Takes data file name or a pandas DataFrame as input</span>
+
+<span class="sd">        :param data: link to a file or a pandas DataFrame</span>
+<span class="sd">        :type data: Union[str, pd.DataFrame]</span>
+<span class="sd">        &quot;&quot;&quot;</span>
+        <span class="nb">super</span><span class="p">()</span><span class="o">.</span><span class="fm">__init__</span><span class="p">(</span><span class="n">data</span><span class="p">)</span></div>
+
+<div class="viewcode-block" id="CategoricalAnalyzer.frequencies"><a class="viewcode-back" href="../ML_Data_Handler.html#explorer.CategoricalAnalyzer.frequencies">[docs]</a>    <span class="k">def</span> <span class="nf">frequencies</span><span class="p">(</span><span class="bp">self</span><span class="p">)</span> <span class="o">-&gt;</span> <span class="n">Mapping</span><span class="p">[</span><span class="nb">str</span><span class="p">,</span> <span class="n">pd</span><span class="o">.</span><span class="n">DataFrame</span><span class="p">]:</span>
+        <span class="sd">&quot;&quot;&quot;</span>
+<span class="sd">        For each column, calculates the different frequencies and saved them in a file</span>
+
+<span class="sd">        :return: a dictionary with each column name as key and the frequencies as value</span>
+<span class="sd">        &quot;&quot;&quot;</span>
+        <span class="n">log</span><span class="o">.</span><span class="n">info</span><span class="p">(</span><span class="s2">&quot;Examining frequency of values...&quot;</span><span class="p">)</span>
+        <span class="n">out</span> <span class="o">=</span> <span class="p">{}</span>
+        <span class="k">for</span> <span class="n">column</span> <span class="ow">in</span> <span class="nb">list</span><span class="p">(</span><span class="bp">self</span><span class="o">.</span><span class="n">data</span><span class="o">.</span><span class="n">columns</span><span class="p">):</span>
+            <span class="n">out</span><span class="p">[</span><span class="n">column</span><span class="p">]</span> <span class="o">=</span> <span class="bp">self</span><span class="o">.</span><span class="n">data</span><span class="p">[</span><span class="n">column</span><span class="p">]</span><span class="o">.</span><span class="n">value_counts</span><span class="p">()</span>
+            <span class="n">log</span><span class="o">.</span><span class="n">info</span><span class="p">(</span><span class="sa">f</span><span class="s2">&quot;</span><span class="si">{</span><span class="n">column</span><span class="si">}</span><span class="s2">:</span><span class="si">{</span><span class="n">out</span><span class="p">[</span><span class="n">column</span><span class="p">]</span><span class="si">}</span><span class="s2">&quot;</span><span class="p">)</span>
+        <span class="k">return</span> <span class="n">out</span></div>
+
+<div class="viewcode-block" id="CategoricalAnalyzer.cat_bar_plot"><a class="viewcode-back" href="../ML_Data_Handler.html#explorer.CategoricalAnalyzer.cat_bar_plot">[docs]</a>    <span class="k">def</span> <span class="nf">cat_bar_plot</span><span class="p">(</span><span class="bp">self</span><span class="p">,</span> <span class="o">**</span><span class="n">options</span><span class="p">)</span> <span class="o">-&gt;</span> <span class="kc">None</span><span class="p">:</span>
+        <span class="sd">&quot;&quot;&quot;</span>
+<span class="sd">        Generates a bar plot for all frequency values</span>
+
+<span class="sd">        :param options: options settings the plotter function</span>
+<span class="sd">        :type options: Mapping</span>
+<span class="sd">        &quot;&quot;&quot;</span>
+        <span class="n">sns</span><span class="o">.</span><span class="n">barplot</span><span class="p">(</span><span class="bp">self</span><span class="o">.</span><span class="n">data</span><span class="p">,</span> <span class="o">**</span><span class="n">options</span><span class="p">)</span></div></div>
+
+
+<div class="viewcode-block" id="MixedDataAnalyser"><a class="viewcode-back" href="../ML_Data_Handler.html#explorer.MixedDataAnalyser">[docs]</a><span class="k">class</span> <span class="nc">MixedDataAnalyser</span><span class="p">(</span><span class="n">NumericalAnalyzer</span><span class="p">,</span> <span class="n">CategoricalAnalyzer</span><span class="p">):</span>
+    <span class="sd">&quot;&quot;&quot;</span>
+<span class="sd">    Initializes an object to handle numerical and categorical features. At the current state, the code only consists of a prototype</span>
+
+<span class="sd">    &quot;&quot;&quot;</span>
+
+<div class="viewcode-block" id="MixedDataAnalyser.__init__"><a class="viewcode-back" href="../ML_Data_Handler.html#explorer.MixedDataAnalyser.__init__">[docs]</a>    <span class="k">def</span> <span class="fm">__init__</span><span class="p">(</span><span class="bp">self</span><span class="p">,</span> <span class="n">data</span><span class="p">,</span> <span class="n">nums</span><span class="p">,</span> <span class="n">group</span><span class="p">):</span>
+        <span class="nb">super</span><span class="p">()</span><span class="o">.</span><span class="fm">__init__</span><span class="p">(</span><span class="n">data</span><span class="p">)</span>
+        <span class="bp">self</span><span class="o">.</span><span class="n">nums</span> <span class="o">=</span> <span class="n">nums</span>
+        <span class="bp">self</span><span class="o">.</span><span class="n">group</span> <span class="o">=</span> <span class="n">group</span></div></div>
+
+
+<div class="viewcode-block" id="DataExplorer"><a class="viewcode-back" href="../ML_Data_Handler.html#explorer.DataExplorer">[docs]</a><span class="k">class</span> <span class="nc">DataExplorer</span><span class="p">(</span><span class="n">BasicDataAttributes</span><span class="p">):</span>
+    <span class="sd">&quot;&quot;&quot;</span>
+<span class="sd">    Initializes a Data Explorer object. This object can be used to quickly generate insights of different features.</span>
+
+<span class="sd">    &quot;&quot;&quot;</span>
+
+<div class="viewcode-block" id="DataExplorer.__init__"><a class="viewcode-back" href="../ML_Data_Handler.html#explorer.DataExplorer.__init__">[docs]</a>    <span class="k">def</span> <span class="fm">__init__</span><span class="p">(</span>
+        <span class="bp">self</span><span class="p">,</span> <span class="n">data_source</span><span class="p">:</span> <span class="n">Union</span><span class="p">[</span><span class="nb">str</span><span class="p">,</span> <span class="n">pd</span><span class="o">.</span><span class="n">DataFrame</span><span class="p">],</span> <span class="n">target</span><span class="p">:</span> <span class="nb">str</span> <span class="o">=</span> <span class="s2">&quot;&quot;</span><span class="p">,</span>
+    <span class="p">):</span>
+        <span class="sd">&quot;&quot;&quot;</span>
+<span class="sd">        Initializes a Data Explorer Object. Takes a pandas DataFrame or a pointer to a data file and allows to quickly analyze it</span>
+
+<span class="sd">        :param data_source: link to a file or a pandas DataFrame</span>
+<span class="sd">        :type data_source: Union[str, pd.DataFrame]</span>
+<span class="sd">        :param target: target column which is the interest of ML modeling</span>
+<span class="sd">        :type target: str</span>
+<span class="sd">        &quot;&quot;&quot;</span>
+        <span class="nb">super</span><span class="p">()</span><span class="o">.</span><span class="fm">__init__</span><span class="p">(</span><span class="n">data_source</span><span class="p">)</span>
+        <span class="bp">self</span><span class="o">.</span><span class="n">target_name</span> <span class="o">=</span> <span class="n">target</span>
+        <span class="bp">self</span><span class="o">.</span><span class="n">_gis_features</span> <span class="o">=</span> <span class="p">[]</span>
+        <span class="bp">self</span><span class="o">.</span><span class="n">_gis_data</span> <span class="o">=</span> <span class="kc">None</span>
+        <span class="bp">self</span><span class="o">.</span><span class="n">_gis_data_with_labels</span> <span class="o">=</span> <span class="kc">None</span>
+        <span class="bp">self</span><span class="o">.</span><span class="n">_data_grouped</span> <span class="o">=</span> <span class="kc">None</span>
+        <span class="bp">self</span><span class="o">.</span><span class="n">_date_by_data</span> <span class="o">=</span> <span class="kc">None</span>
+        <span class="bp">self</span><span class="o">.</span><span class="n">__dtypes</span> <span class="o">=</span> <span class="p">[</span>
+            <span class="bp">self</span><span class="o">.</span><span class="n">dtype_date</span><span class="p">,</span>
+            <span class="bp">self</span><span class="o">.</span><span class="n">dtype_str</span><span class="p">,</span>
+            <span class="bp">self</span><span class="o">.</span><span class="n">dtype_bool</span><span class="p">,</span>
+            <span class="bp">self</span><span class="o">.</span><span class="n">dtype_cat</span><span class="p">,</span>
+            <span class="bp">self</span><span class="o">.</span><span class="n">dtype_num</span><span class="p">,</span>
+        <span class="p">]</span></div>
+
+    <span class="nd">@property</span>
+    <span class="k">def</span> <span class="nf">Numerical_Data</span><span class="p">(</span><span class="bp">self</span><span class="p">)</span> <span class="o">-&gt;</span> <span class="n">NumericalAnalyzer</span><span class="p">:</span>
+        <span class="sd">&quot;&quot;&quot;</span>
+<span class="sd">        Selects all numerical values and uses those as input values to create a Numerical_Data processor object.</span>
+
+<span class="sd">        :return: a numerical data analyzer</span>
+<span class="sd">        &quot;&quot;&quot;</span>
+        <span class="k">if</span> <span class="bp">self</span><span class="o">.</span><span class="n">len_numerical_features</span><span class="p">:</span>
+            <span class="n">val</span> <span class="o">=</span> <span class="n">NameSelector</span><span class="p">(</span><span class="bp">self</span><span class="o">.</span><span class="n">numerical_features</span><span class="p">)</span><span class="o">.</span><span class="n">fit_transform</span><span class="p">(</span><span class="bp">self</span><span class="o">.</span><span class="n">input</span><span class="p">)</span>
+            <span class="n">log</span><span class="o">.</span><span class="n">info</span><span class="p">(</span>
+                <span class="sa">f</span><span class="s2">&quot;Setting numerical DataFrame of size </span><span class="si">{</span><span class="bp">self</span><span class="o">.</span><span class="n">len_numerical_features</span><span class="si">}</span><span class="s2"> with the following columns: </span><span class="si">{</span><span class="bp">self</span><span class="o">.</span><span class="n">numerical_features</span><span class="si">}</span><span class="s2">&quot;</span>
+            <span class="p">)</span>
+            <span class="k">return</span> <span class="n">NumericalAnalyzer</span><span class="p">(</span><span class="n">val</span><span class="p">)</span>
+
+    <span class="nd">@property</span>
+    <span class="k">def</span> <span class="nf">Data_Mixed_Types</span><span class="p">(</span><span class="bp">self</span><span class="p">)</span> <span class="o">-&gt;</span> <span class="n">Data_Mixed_Types</span><span class="p">:</span>
+        <span class="sd">&quot;&quot;&quot;</span>
+<span class="sd">        A property which returns a data set of different types. This can be used to analyze relationships between different features of different types.</span>
+
+<span class="sd">        :return:</span>
+<span class="sd">        &quot;&quot;&quot;</span>
+        <span class="k">return</span> <span class="bp">self</span><span class="o">.</span><span class="n">_data_grouped</span>
+
+    <span class="nd">@Data_Mixed_Types</span><span class="o">.</span><span class="n">setter</span>
+    <span class="k">def</span> <span class="nf">Data_Mixed_Types</span><span class="p">(</span><span class="bp">self</span><span class="p">,</span> <span class="n">dtype</span><span class="p">:</span> <span class="n">Union</span><span class="p">[</span><span class="n">Sequence</span><span class="p">,</span> <span class="nb">str</span><span class="p">]):</span>
+        <span class="sd">&quot;&quot;&quot;</span>
+<span class="sd">        Setter property for the data mixed types. It initializes a Data Mixed Tye Object. There are several ways to set it:</span>
+
+<span class="sd">            1) as a tuple: in this case, for both arguments are made a check if the provided argument is a data type. If yes, all columns of this data type</span>
+<span class="sd">            are provided. If not, all columns found in the respective arguments are kept. Example to mix receive a Mixed Data Type for all boolean columns</span>
+<span class="sd">            on the one side and the columns &quot;income&quot; and &quot;revenue&quot; on the other side:</span>
+
+<span class="sd">            &gt; # Assume an ``explorer`` object named &quot;explorer&quot;</span>
+<span class="sd">            &gt;  explorer.Data_Mixed_Types = explorer.dtype_bool, [&quot;income&quot;, &quot;revenue&quot;]</span>
+
+<span class="sd">            Or to get all boolean and numeric types:</span>
+
+<span class="sd">            &gt; # Assume an ``explorer`` object named &quot;explorer&quot;</span>
+<span class="sd">            &gt;  explorer.Data_Mixed_Types = explorer.dtype_bool, explorer.dtype_num</span>
+
+<span class="sd">            2) as a string: in this case, it is assumed, that the first column type is numerical, i.e. it is the default value. The second column can be a string that</span>
+<span class="sd">            indicates either all columns of a given data type if the parameter is a valid data type or a single column. For example, to gain all numerical</span>
+<span class="sd">            features by the boolean column &quot;Male&quot;:</span>
+
+<span class="sd">            &gt; # Assume an ``explorer`` object named &quot;explorer&quot;</span>
+<span class="sd">            &gt;  explorer.Data_Mixed_Types = &quot;Male&quot;</span>
+
+<span class="sd">            Or</span>
+
+<span class="sd">            &gt; # Assume an ``explorer`` object named &quot;explorer&quot;</span>
+<span class="sd">            &gt;  explorer.Data_Mixed_Types = bool</span>
+
+<span class="sd">            3) as a list: in this case, it is assumed, that the first column type is numerical, i.e. it is the default value. The list indicates a list of features</span>
+<span class="sd">            to be kept as second feature dimension. Example to mix receive a Mixed Data Type for all numerical columns on the one side and the columns &quot;gender&quot; and &quot;married&quot;</span>
+<span class="sd">            on the other side:</span>
+
+<span class="sd">            &gt; # Assume an ``explorer`` object named &quot;explorer&quot;</span>
+<span class="sd">            &gt;  explorer.Data_Mixed_Types = [&quot;gender&quot;, &quot;married&quot;]</span>
+
+<span class="sd">        :param dtype: As described in the description, different ways exist to initialize call this object</span>
+<span class="sd">        :type dtype: Union[Sequence, str]</span>
+<span class="sd">        :return: a Data Mixed Type object</span>
+<span class="sd">        &quot;&quot;&quot;</span>
+        <span class="c1"># first case, the provided argument is a tuple. the two entries are taken as input for the respective data type/ data column names</span>
+        <span class="k">if</span> <span class="nb">isinstance</span><span class="p">(</span><span class="n">dtype</span><span class="p">,</span> <span class="nb">tuple</span><span class="p">):</span>
+            <span class="n">log</span><span class="o">.</span><span class="n">info</span><span class="p">(</span>
+                <span class="sa">f</span><span class="s1">&#39;Received the following two inputs &quot;</span><span class="si">{</span><span class="n">dtype</span><span class="p">[</span><span class="mi">0</span><span class="p">]</span><span class="si">}</span><span class="s1">&quot; and &quot;</span><span class="si">{</span><span class="n">dtype</span><span class="p">[</span><span class="mi">1</span><span class="p">]</span><span class="si">}</span><span class="s1">&quot;. Deriving the data frame to be generated out of it. &#39;</span>
+            <span class="p">)</span>
+            <span class="n">subset_1</span><span class="p">,</span> <span class="n">subset_2</span> <span class="o">=</span> <span class="n">dtype</span><span class="p">[</span><span class="mi">0</span><span class="p">],</span> <span class="n">dtype</span><span class="p">[</span><span class="mi">1</span><span class="p">]</span>
+            <span class="n">data_1</span> <span class="o">=</span> <span class="p">(</span>
+                <span class="n">TypeSelector</span><span class="p">(</span><span class="n">subset_1</span><span class="p">)</span>
+                <span class="k">if</span> <span class="n">subset_1</span> <span class="ow">in</span> <span class="bp">self</span><span class="o">.</span><span class="n">__dtypes</span>
+                <span class="k">else</span> <span class="n">NameSelector</span><span class="p">(</span><span class="n">subset_1</span><span class="p">)</span>
+            <span class="p">)</span>
+            <span class="n">df_1</span> <span class="o">=</span> <span class="n">data_1</span><span class="o">.</span><span class="n">fit_transform</span><span class="p">(</span><span class="bp">self</span><span class="o">.</span><span class="n">input</span><span class="p">)</span>
+            <span class="n">data_2</span> <span class="o">=</span> <span class="p">(</span>
+                <span class="n">TypeSelector</span><span class="p">(</span><span class="n">subset_2</span><span class="p">)</span>
+                <span class="k">if</span> <span class="n">subset_2</span> <span class="ow">in</span> <span class="bp">self</span><span class="o">.</span><span class="n">__dtypes</span>
+                <span class="k">else</span> <span class="n">NameSelector</span><span class="p">(</span><span class="n">subset_2</span><span class="p">)</span>
+            <span class="p">)</span>
+            <span class="n">df_2</span> <span class="o">=</span> <span class="n">data_2</span><span class="o">.</span><span class="n">fit_transform</span><span class="p">(</span><span class="bp">self</span><span class="o">.</span><span class="n">input</span><span class="p">)</span>
+            <span class="n">result</span> <span class="o">=</span> <span class="n">pd</span><span class="o">.</span><span class="n">concat</span><span class="p">([</span><span class="n">df_1</span><span class="p">,</span> <span class="n">df_2</span><span class="p">],</span> <span class="n">axis</span><span class="o">=</span><span class="mi">1</span><span class="p">)</span>
+            <span class="bp">self</span><span class="o">.</span><span class="n">_data_grouped</span> <span class="o">=</span> <span class="n">MixedDataAnalyser</span><span class="p">(</span>
+                <span class="n">result</span><span class="p">,</span> <span class="nb">list</span><span class="p">(</span><span class="n">df_1</span><span class="o">.</span><span class="n">columns</span><span class="p">),</span> <span class="nb">list</span><span class="p">(</span><span class="n">df_2</span><span class="o">.</span><span class="n">columns</span><span class="p">)</span>
+            <span class="p">)</span>
+
+        <span class="c1"># second case: the provided argument is a string. The derived object is the column name indicated by the string. The second dimension is numerical features</span>
+        <span class="k">elif</span> <span class="nb">isinstance</span><span class="p">(</span><span class="n">dtype</span><span class="p">,</span> <span class="nb">str</span><span class="p">):</span>
+            <span class="n">log</span><span class="o">.</span><span class="n">info</span><span class="p">(</span>
+                <span class="sa">f</span><span class="s2">&quot;Received a single input. The first data type dimension is automatically set to numerical. &quot;</span>
+                <span class="sa">f</span><span class="s1">&#39;The second is derived from the input &quot;</span><span class="si">{</span><span class="n">dtype</span><span class="si">}</span><span class="s1">&quot;&#39;</span>
+            <span class="p">)</span>
+            <span class="n">num</span> <span class="o">=</span> <span class="n">TypeSelector</span><span class="p">(</span><span class="bp">self</span><span class="o">.</span><span class="n">dtype_num</span><span class="p">)</span>
+            <span class="n">group</span> <span class="o">=</span> <span class="p">(</span>
+                <span class="n">TypeSelector</span><span class="p">(</span><span class="n">dtype</span><span class="p">)</span> <span class="k">if</span> <span class="n">dtype</span> <span class="ow">in</span> <span class="bp">self</span><span class="o">.</span><span class="n">__dtypes</span> <span class="k">else</span> <span class="n">NameSelector</span><span class="p">(</span><span class="n">dtype</span><span class="p">)</span>
+            <span class="p">)</span>
+            <span class="n">data_num</span> <span class="o">=</span> <span class="n">num</span><span class="o">.</span><span class="n">fit_transform</span><span class="p">(</span><span class="bp">self</span><span class="o">.</span><span class="n">input</span><span class="p">)</span>
+            <span class="n">data_grouped</span> <span class="o">=</span> <span class="n">group</span><span class="o">.</span><span class="n">fit_transform</span><span class="p">(</span><span class="bp">self</span><span class="o">.</span><span class="n">input</span><span class="p">)</span>
+            <span class="n">result</span> <span class="o">=</span> <span class="n">pd</span><span class="o">.</span><span class="n">concat</span><span class="p">([</span><span class="n">data_num</span><span class="p">,</span> <span class="n">data_grouped</span><span class="p">],</span> <span class="n">axis</span><span class="o">=</span><span class="mi">1</span><span class="p">)</span>
+            <span class="bp">self</span><span class="o">.</span><span class="n">_data_grouped</span> <span class="o">=</span> <span class="n">MixedDataAnalyser</span><span class="p">(</span>
+                <span class="n">result</span><span class="p">,</span> <span class="bp">self</span><span class="o">.</span><span class="n">numerical_features</span><span class="p">,</span> <span class="nb">list</span><span class="p">(</span><span class="n">data_grouped</span><span class="o">.</span><span class="n">columns</span><span class="p">)</span>
+            <span class="p">)</span>
+
+        <span class="c1"># third case: the provided argument is a list: the entries in the list are the feature which are kept. The second dimension is numerical features.</span>
+        <span class="k">elif</span> <span class="nb">isinstance</span><span class="p">(</span><span class="n">dtype</span><span class="p">,</span> <span class="nb">list</span><span class="p">):</span>
+            <span class="n">log</span><span class="o">.</span><span class="n">info</span><span class="p">(</span>
+                <span class="sa">f</span><span class="s2">&quot;Received a single input containing a list of features. The first data type dimension is automatically set to numerical. &quot;</span>
+                <span class="sa">f</span><span class="s1">&#39;The second is derived from the input &quot;</span><span class="si">{</span><span class="n">dtype</span><span class="si">}</span><span class="s1">&quot;&#39;</span>
+            <span class="p">)</span>
+            <span class="n">num</span> <span class="o">=</span> <span class="n">TypeSelector</span><span class="p">(</span><span class="bp">self</span><span class="o">.</span><span class="n">dtype_num</span><span class="p">)</span>
+            <span class="n">group</span> <span class="o">=</span> <span class="n">NameSelector</span><span class="p">(</span><span class="n">dtype</span><span class="p">)</span>
+            <span class="n">data_num</span> <span class="o">=</span> <span class="n">num</span><span class="o">.</span><span class="n">fit_transform</span><span class="p">(</span><span class="bp">self</span><span class="o">.</span><span class="n">input</span><span class="p">)</span>
+            <span class="n">data_grouped</span> <span class="o">=</span> <span class="n">group</span><span class="o">.</span><span class="n">fit_transform</span><span class="p">(</span><span class="bp">self</span><span class="o">.</span><span class="n">input</span><span class="p">)</span>
+            <span class="n">result</span> <span class="o">=</span> <span class="n">pd</span><span class="o">.</span><span class="n">concat</span><span class="p">([</span><span class="n">data_num</span><span class="p">,</span> <span class="n">data_grouped</span><span class="p">],</span> <span class="n">axis</span><span class="o">=</span><span class="mi">1</span><span class="p">)</span>
+            <span class="bp">self</span><span class="o">.</span><span class="n">_data_grouped</span> <span class="o">=</span> <span class="n">MixedDataAnalyser</span><span class="p">(</span>
+                <span class="n">result</span><span class="p">,</span> <span class="bp">self</span><span class="o">.</span><span class="n">numerical_features</span><span class="p">,</span> <span class="nb">list</span><span class="p">(</span><span class="n">data_grouped</span><span class="o">.</span><span class="n">columns</span><span class="p">)</span>
+            <span class="p">)</span>
+            <span class="c1"># grouper = NameSelector(dtype)</span>
+
+        <span class="n">log</span><span class="o">.</span><span class="n">info</span><span class="p">(</span>
+            <span class="sa">f</span><span class="s2">&quot;Setting Grouped DataFrame of size </span><span class="si">{</span><span class="nb">len</span><span class="p">(</span><span class="bp">self</span><span class="o">.</span><span class="n">_data_grouped</span><span class="o">.</span><span class="n">data</span><span class="p">)</span><span class="si">}</span><span class="s2"> where the first feature dimension contains columns&quot;</span>
+            <span class="sa">f</span><span class="s2">&quot;: </span><span class="si">{</span><span class="nb">list</span><span class="p">(</span><span class="bp">self</span><span class="o">.</span><span class="n">_data_grouped</span><span class="o">.</span><span class="n">nums</span><span class="p">)</span><span class="si">}</span><span class="s2"> and the second dimension </span><span class="si">{</span><span class="nb">list</span><span class="p">(</span><span class="bp">self</span><span class="o">.</span><span class="n">_data_grouped</span><span class="o">.</span><span class="n">group</span><span class="p">)</span><span class="si">}</span><span class="s2">&quot;</span>
+        <span class="p">)</span>
+
+    <span class="nd">@property</span>
+    <span class="k">def</span> <span class="nf">Categorical_Data</span><span class="p">(</span><span class="bp">self</span><span class="p">)</span> <span class="o">-&gt;</span> <span class="n">CategoricalAnalyzer</span><span class="p">:</span>
+        <span class="sd">&quot;&quot;&quot;</span>
+<span class="sd">        A property which initializes a Categorical Analyzer for categorical values.</span>
+<span class="sd">        Takes all categorical features and uses them in a Categorical Analyzer object.</span>
+
+<span class="sd">        :return: A Categorical Data Analyzer</span>
+<span class="sd">        :rtype: CategoricalAnalyzer</span>
+<span class="sd">        &quot;&quot;&quot;</span>
+        <span class="k">if</span> <span class="bp">self</span><span class="o">.</span><span class="n">len_categorical_features</span><span class="p">:</span>
+            <span class="n">val</span> <span class="o">=</span> <span class="n">NameSelector</span><span class="p">(</span><span class="bp">self</span><span class="o">.</span><span class="n">categorical_features</span><span class="p">)</span><span class="o">.</span><span class="n">fit_transform</span><span class="p">(</span><span class="bp">self</span><span class="o">.</span><span class="n">input</span><span class="p">)</span>
+            <span class="n">log</span><span class="o">.</span><span class="n">info</span><span class="p">(</span>
+                <span class="sa">f</span><span class="s2">&quot;Created categorical DataFrame of size </span><span class="si">{</span><span class="bp">self</span><span class="o">.</span><span class="n">len_categorical_features</span><span class="si">}</span><span class="s2"> with the following columns: </span><span class="si">{</span><span class="bp">self</span><span class="o">.</span><span class="n">categorical_features</span><span class="si">}</span><span class="s2">&quot;</span>
+            <span class="p">)</span>
+            <span class="k">return</span> <span class="n">CategoricalAnalyzer</span><span class="p">(</span><span class="n">val</span><span class="p">)</span>
+
+    <span class="nd">@property</span>
+    <span class="k">def</span> <span class="nf">Boolean_Data</span><span class="p">(</span><span class="bp">self</span><span class="p">)</span> <span class="o">-&gt;</span> <span class="n">CategoricalAnalyzer</span><span class="p">:</span>
+        <span class="sd">&quot;&quot;&quot;</span>
+<span class="sd">        A property which initializes a Categorical Analyzer for boolean values.</span>
+<span class="sd">        Takes all boolean columns and uses them in a Categorical Analyzer object.</span>
+
+<span class="sd">        :return: A Categorical Analyzer Object containing boolean values</span>
+<span class="sd">        :rtype: CategoricalAnalyzer</span>
+<span class="sd">        &quot;&quot;&quot;</span>
+        <span class="k">if</span> <span class="bp">self</span><span class="o">.</span><span class="n">len_bool_features</span><span class="p">:</span>
+            <span class="n">val</span> <span class="o">=</span> <span class="n">NameSelector</span><span class="p">(</span><span class="bp">self</span><span class="o">.</span><span class="n">bool_features</span><span class="p">)</span><span class="o">.</span><span class="n">fit_transform</span><span class="p">(</span><span class="bp">self</span><span class="o">.</span><span class="n">input</span><span class="p">)</span>
+            <span class="n">log</span><span class="o">.</span><span class="n">info</span><span class="p">(</span>
+                <span class="sa">f</span><span class="s2">&quot;Created boolean DataFrame of size </span><span class="si">{</span><span class="bp">self</span><span class="o">.</span><span class="n">len_bool_features</span><span class="si">}</span><span class="s2"> with the following columns: </span><span class="si">{</span><span class="bp">self</span><span class="o">.</span><span class="n">bool_features</span><span class="si">}</span><span class="s2">&quot;</span>
+            <span class="p">)</span>
+            <span class="k">return</span> <span class="n">CategoricalAnalyzer</span><span class="p">(</span><span class="n">val</span><span class="p">)</span>
+
+    <span class="nd">@property</span>
+    <span class="k">def</span> <span class="nf">String_Data</span><span class="p">(</span><span class="bp">self</span><span class="p">):</span>
+        <span class="sd">&quot;&quot;&quot;</span>
+<span class="sd">        A property which initializes a String Data Analyzer object. Takes all string columns and uses them in a Categorical Analyzer object.</span>
+
+<span class="sd">        :return: a Categorical Analyzer with all string features</span>
+<span class="sd">        :rtype: CategoricalAnalyzer</span>
+<span class="sd">        &quot;&quot;&quot;</span>
+        <span class="k">if</span> <span class="bp">self</span><span class="o">.</span><span class="n">len_string_features</span><span class="p">:</span>
+            <span class="n">val</span> <span class="o">=</span> <span class="n">NameSelector</span><span class="p">(</span><span class="bp">self</span><span class="o">.</span><span class="n">string_features</span><span class="p">)</span><span class="o">.</span><span class="n">fit_transform</span><span class="p">(</span><span class="bp">self</span><span class="o">.</span><span class="n">input</span><span class="p">)</span>
+            <span class="n">log</span><span class="o">.</span><span class="n">info</span><span class="p">(</span>
+                <span class="sa">f</span><span class="s2">&quot;Created string DataFrame of size </span><span class="si">{</span><span class="bp">self</span><span class="o">.</span><span class="n">len_string_features</span><span class="si">}</span><span class="s2"> with the following columns: </span><span class="si">{</span><span class="bp">self</span><span class="o">.</span><span class="n">string_features</span><span class="si">}</span><span class="s2">&quot;</span>
+            <span class="p">)</span>
+            <span class="k">return</span> <span class="n">CategoricalAnalyzer</span><span class="p">(</span><span class="n">val</span><span class="p">)</span>
+
+    <span class="nd">@property</span>
+    <span class="k">def</span> <span class="nf">Date_By_Data</span><span class="p">(</span><span class="bp">self</span><span class="p">)</span> <span class="o">-&gt;</span> <span class="n">Date_By_Data</span><span class="p">:</span>
+        <span class="sd">&quot;&quot;&quot;</span>
+<span class="sd">        A property which returns a Data By Date object. This can be used to analyze columns by time.</span>
+
+<span class="sd">        :return:</span>
+<span class="sd">        &quot;&quot;&quot;</span>
+        <span class="k">return</span> <span class="bp">self</span><span class="o">.</span><span class="n">_date_by_data</span>
+
+    <span class="nd">@Date_By_Data</span><span class="o">.</span><span class="n">setter</span>
+    <span class="k">def</span> <span class="nf">Date_By_Data</span><span class="p">(</span><span class="bp">self</span><span class="p">,</span> <span class="n">dtype</span><span class="p">:</span> <span class="n">Union</span><span class="p">[</span><span class="nb">float</span><span class="p">,</span> <span class="nb">int</span><span class="p">,</span> <span class="nb">str</span><span class="p">,</span> <span class="n">Union</span><span class="p">])</span> <span class="o">-&gt;</span> <span class="kc">None</span><span class="p">:</span>
+        <span class="sd">&quot;&quot;&quot;</span>
+<span class="sd">        A setter for the Data by date. It takes a column type and checks if the date_features are not empty.</span>
+<span class="sd">        It then creates a Data by Date object for the provided data type.</span>
+
+<span class="sd">        The provided argument can either be a data type defined in the class or a str/list of columns which are found in the DataFrame</span>
+
+<span class="sd">        :param dtype: the data for which data shall be analyzed along the date column</span>
+<span class="sd">        :type dtype: one of the classes defined data types</span>
+<span class="sd">        :return: a date_by_Analyzer object</span>
+<span class="sd">        &quot;&quot;&quot;</span>
+        <span class="k">if</span> <span class="bp">self</span><span class="o">.</span><span class="n">len_date_features</span><span class="p">:</span>
+            <span class="n">date_data</span> <span class="o">=</span> <span class="n">NameSelector</span><span class="p">(</span><span class="bp">self</span><span class="o">.</span><span class="n">date_features</span><span class="p">)</span><span class="o">.</span><span class="n">fit_transform</span><span class="p">(</span><span class="bp">self</span><span class="o">.</span><span class="n">input</span><span class="p">)</span>
+            <span class="n">x_transformer</span> <span class="o">=</span> <span class="p">(</span>
+                <span class="n">TypeSelector</span><span class="p">(</span><span class="n">dtype</span><span class="p">)</span> <span class="k">if</span> <span class="n">dtype</span> <span class="ow">in</span> <span class="bp">self</span><span class="o">.</span><span class="n">__dtypes</span> <span class="k">else</span> <span class="n">NameSelector</span><span class="p">(</span><span class="n">dtype</span><span class="p">)</span>
+            <span class="p">)</span>
+            <span class="n">x_data</span> <span class="o">=</span> <span class="n">x_transformer</span><span class="o">.</span><span class="n">fit_transform</span><span class="p">(</span><span class="bp">self</span><span class="o">.</span><span class="n">input</span><span class="p">)</span>
+            <span class="n">result</span> <span class="o">=</span> <span class="n">pd</span><span class="o">.</span><span class="n">concat</span><span class="p">([</span><span class="n">date_data</span><span class="p">,</span> <span class="n">x_data</span><span class="p">],</span> <span class="n">axis</span><span class="o">=</span><span class="mi">1</span><span class="p">)</span>
+            <span class="n">log</span><span class="o">.</span><span class="n">info</span><span class="p">(</span>
+                <span class="sa">f</span><span class="s2">&quot;Created Date DataFrame of size </span><span class="si">{</span><span class="bp">self</span><span class="o">.</span><span class="n">len_date_features</span><span class="si">}</span><span class="s2"> with the following columns: </span><span class="si">{</span><span class="bp">self</span><span class="o">.</span><span class="n">date_features</span><span class="si">}</span><span class="s2">&quot;</span>
+            <span class="p">)</span>
+            <span class="bp">self</span><span class="o">.</span><span class="n">_date_by_data</span> <span class="o">=</span> <span class="n">DateByAnalyzer</span><span class="p">(</span>
+                <span class="n">result</span><span class="p">,</span> <span class="nb">list</span><span class="p">(</span><span class="n">x_data</span><span class="o">.</span><span class="n">columns</span><span class="p">),</span> <span class="bp">self</span><span class="o">.</span><span class="n">date_features</span>
+            <span class="p">)</span>
+
+    <span class="nd">@property</span>
+    <span class="k">def</span> <span class="nf">GIS_Data</span><span class="p">(</span><span class="bp">self</span><span class="p">)</span> <span class="o">-&gt;</span> <span class="n">GisAnalyzer</span><span class="p">:</span>
+        <span class="sd">&quot;&quot;&quot;</span>
+<span class="sd">        A property which initializes a GIS Analyzer by taking the first and second entry of the gis feature list.</span>
+
+<span class="sd">        :return:</span>
+<span class="sd">        &quot;&quot;&quot;</span>
+        <span class="k">if</span> <span class="bp">self</span><span class="o">.</span><span class="n">len_gis_features</span> <span class="o">&gt;=</span> <span class="mi">2</span><span class="p">:</span>
+            <span class="n">data</span> <span class="o">=</span> <span class="n">NameSelector</span><span class="p">(</span><span class="bp">self</span><span class="o">.</span><span class="n">_gis_features</span><span class="p">)</span><span class="o">.</span><span class="n">fit_transform</span><span class="p">(</span><span class="bp">self</span><span class="o">.</span><span class="n">input</span><span class="p">)</span>
+            <span class="n">log</span><span class="o">.</span><span class="n">info</span><span class="p">(</span>
+                <span class="sa">f</span><span class="s2">&quot;Setting the GIS DataFrame of size </span><span class="si">{</span><span class="nb">len</span><span class="p">(</span><span class="n">data</span><span class="p">)</span><span class="si">}</span><span class="s2"> with </span><span class="si">{</span><span class="bp">self</span><span class="o">.</span><span class="n">_gis_features</span><span class="p">[</span><span class="mi">0</span><span class="p">]</span><span class="si">}</span><span class="s2"> as the latitude column and </span><span class="si">{</span><span class="bp">self</span><span class="o">.</span><span class="n">_gis_features</span><span class="p">[</span><span class="mi">1</span><span class="p">]</span><span class="si">}</span><span class="s2"> as the longitude column.&quot;</span>
+                <span class="sa">f</span><span class="s2">&quot;Note that you can reset them if necessary&quot;</span>
+            <span class="p">)</span>
+            <span class="k">return</span> <span class="n">GisAnalyzer</span><span class="p">(</span><span class="n">data</span><span class="p">,</span> <span class="bp">self</span><span class="o">.</span><span class="n">_gis_features</span><span class="p">[</span><span class="mi">0</span><span class="p">],</span> <span class="bp">self</span><span class="o">.</span><span class="n">_gis_features</span><span class="p">[</span><span class="mi">1</span><span class="p">])</span>
+        <span class="k">else</span><span class="p">:</span>
+            <span class="n">log</span><span class="o">.</span><span class="n">error</span><span class="p">(</span>
+                <span class="s2">&quot;No features have been defined as GIS data. You first need to set them using gis_features&quot;</span>
+            <span class="p">)</span>
+
+    <span class="nd">@property</span>
+    <span class="k">def</span> <span class="nf">Gis_DataWithLabel</span><span class="p">(</span><span class="bp">self</span><span class="p">)</span> <span class="o">-&gt;</span> <span class="n">Gis_DataWithLabel</span><span class="p">:</span>
+        <span class="sd">&quot;&quot;&quot;</span>
+<span class="sd">        A property which returns all gis features with a corresponding label. This is intended to check for clustering algorithms results</span>
+
+<span class="sd">        :return: a GisDatawithLabel object to analyze geo data and corresponding labels</span>
+<span class="sd">        &quot;&quot;&quot;</span>
+        <span class="k">return</span> <span class="bp">self</span><span class="o">.</span><span class="n">_gis_data_with_labels</span>
+
+    <span class="nd">@Gis_DataWithLabel</span><span class="o">.</span><span class="n">setter</span>
+    <span class="k">def</span> <span class="nf">Gis_DataWithLabel</span><span class="p">(</span><span class="bp">self</span><span class="p">,</span> <span class="n">labels</span><span class="p">:</span> <span class="n">Union</span><span class="p">[</span><span class="nb">str</span><span class="p">,</span> <span class="n">Sequence</span><span class="p">])</span> <span class="o">-&gt;</span> <span class="kc">None</span><span class="p">:</span>
+        <span class="sd">&quot;&quot;&quot;</span>
+<span class="sd">        The setter for the GIS with label feature property.</span>
+
+<span class="sd">        The label argument is either a data type, for which all features are selected or a str/list of labels of features, which are kept</span>
+
+<span class="sd">        :param labels: indicates the labels for the GisDataWithLabel object</span>
+<span class="sd">        :type labels:  Union[str, Sequence]</span>
+<span class="sd">        :return:</span>
+<span class="sd">        &quot;&quot;&quot;</span>
+        <span class="n">data</span> <span class="o">=</span> <span class="n">NameSelector</span><span class="p">(</span><span class="bp">self</span><span class="o">.</span><span class="n">_gis_features</span><span class="p">)</span><span class="o">.</span><span class="n">fit_transform</span><span class="p">(</span><span class="bp">self</span><span class="o">.</span><span class="n">input</span><span class="p">)</span>
+        <span class="n">label_transformer</span> <span class="o">=</span> <span class="p">(</span>
+            <span class="n">TypeSelector</span><span class="p">(</span><span class="n">labels</span><span class="p">)</span> <span class="k">if</span> <span class="n">labels</span> <span class="ow">in</span> <span class="bp">self</span><span class="o">.</span><span class="n">__dtypes</span> <span class="k">else</span> <span class="n">NameSelector</span><span class="p">(</span><span class="n">labels</span><span class="p">)</span>
+        <span class="p">)</span>
+        <span class="n">label_data</span> <span class="o">=</span> <span class="n">label_transformer</span><span class="o">.</span><span class="n">fit_transform</span><span class="p">(</span><span class="bp">self</span><span class="o">.</span><span class="n">input</span><span class="p">)</span>
+        <span class="n">result</span> <span class="o">=</span> <span class="n">pd</span><span class="o">.</span><span class="n">concat</span><span class="p">([</span><span class="n">data</span><span class="p">,</span> <span class="n">label_data</span><span class="p">],</span> <span class="n">axis</span><span class="o">=</span><span class="mi">1</span><span class="p">)</span>
+        <span class="bp">self</span><span class="o">.</span><span class="n">_data_grouped</span> <span class="o">=</span> <span class="n">GisAnalyzerWithClusterLabel</span><span class="p">(</span>
+            <span class="n">result</span><span class="p">,</span> <span class="bp">self</span><span class="o">.</span><span class="n">_gis_features</span><span class="p">[</span><span class="mi">0</span><span class="p">],</span> <span class="bp">self</span><span class="o">.</span><span class="n">_gis_features</span><span class="p">[</span><span class="mi">1</span><span class="p">],</span> <span class="n">labels</span>
+        <span class="p">)</span>
+
+    <span class="nd">@property</span>
+    <span class="k">def</span> <span class="nf">GIS_features</span><span class="p">(</span><span class="bp">self</span><span class="p">)</span> <span class="o">-&gt;</span> <span class="n">Sequence</span><span class="p">[</span><span class="nb">str</span><span class="p">]:</span>
+        <span class="sd">&quot;&quot;&quot;</span>
+<span class="sd">        A property which returns all gis features of the DataFrame</span>
+
+<span class="sd">        :return: a list of GIS features</span>
+<span class="sd">        &quot;&quot;&quot;</span>
+        <span class="k">return</span> <span class="bp">self</span><span class="o">.</span><span class="n">_gis_features</span>
+
+    <span class="nd">@GIS_features</span><span class="o">.</span><span class="n">setter</span>
+    <span class="k">def</span> <span class="nf">GIS_features</span><span class="p">(</span><span class="bp">self</span><span class="p">,</span> <span class="n">values</span><span class="p">:</span> <span class="n">Union</span><span class="p">[</span><span class="n">Sequence</span><span class="p">,</span> <span class="nb">str</span><span class="p">])</span> <span class="o">-&gt;</span> <span class="kc">None</span><span class="p">:</span>
+        <span class="sd">&quot;&quot;&quot;</span>
+<span class="sd">        The setter for the GIS feature property.</span>
+
+<span class="sd">        :param values: either a single string indicating the geo data column or a list of columns with geo data. Recommended way is to provide a list with</span>
+<span class="sd">        lat and lon columns</span>
+<span class="sd">        :type values: Union[Sequence, str]</span>
+<span class="sd">        :return:</span>
+<span class="sd">        &quot;&quot;&quot;</span>
+        <span class="bp">self</span><span class="o">.</span><span class="n">_gis_features</span> <span class="o">=</span> <span class="n">values</span>
+
+    <span class="nd">@property</span>
+    <span class="k">def</span> <span class="nf">len_gis_features</span><span class="p">(</span><span class="bp">self</span><span class="p">):</span>
+        <span class="sd">&quot;&quot;&quot;</span>
+<span class="sd">        Returns the length of all GIS features.</span>
+
+<span class="sd">        :return: the length of all GIS features</span>
+<span class="sd">        :rtype: int</span>
+<span class="sd">        &quot;&quot;&quot;</span>
+        <span class="k">return</span> <span class="nb">len</span><span class="p">(</span><span class="bp">self</span><span class="o">.</span><span class="n">_gis_features</span><span class="p">)</span>
+
+    <span class="nd">@property</span>
+    <span class="k">def</span> <span class="nf">len_string_features</span><span class="p">(</span><span class="bp">self</span><span class="p">)</span> <span class="o">-&gt;</span> <span class="nb">int</span><span class="p">:</span>
+        <span class="sd">&quot;&quot;&quot;</span>
+<span class="sd">        Returns the length of all string features</span>
+
+<span class="sd">        :return: the length of all string features</span>
+<span class="sd">        :rtype: int</span>
+<span class="sd">        &quot;&quot;&quot;</span>
+        <span class="k">return</span> <span class="nb">len</span><span class="p">(</span><span class="bp">self</span><span class="o">.</span><span class="n">string_features</span><span class="p">)</span>
+
+    <span class="nd">@property</span>
+    <span class="k">def</span> <span class="nf">len_categorical_features</span><span class="p">(</span><span class="bp">self</span><span class="p">):</span>
+        <span class="sd">&quot;&quot;&quot;</span>
+<span class="sd">        Returns the length of all categorical features</span>
+
+<span class="sd">        :return: the length of all categorical features</span>
+<span class="sd">        :rtype: int</span>
+<span class="sd">        &quot;&quot;&quot;</span>
+        <span class="k">return</span> <span class="nb">len</span><span class="p">(</span><span class="bp">self</span><span class="o">.</span><span class="n">categorical_features</span><span class="p">)</span>
+
+    <span class="nd">@property</span>
+    <span class="k">def</span> <span class="nf">len_numerical_features</span><span class="p">(</span><span class="bp">self</span><span class="p">):</span>
+        <span class="sd">&quot;&quot;&quot;</span>
+<span class="sd">        Returns the length of all numerical features</span>
+
+<span class="sd">        :return: the length of all numerical features</span>
+<span class="sd">        :rtype: int</span>
+<span class="sd">        &quot;&quot;&quot;</span>
+        <span class="k">return</span> <span class="nb">len</span><span class="p">(</span><span class="bp">self</span><span class="o">.</span><span class="n">numerical_features</span><span class="p">)</span>
+
+    <span class="nd">@property</span>
+    <span class="k">def</span> <span class="nf">len_bool_features</span><span class="p">(</span><span class="bp">self</span><span class="p">):</span>
+        <span class="sd">&quot;&quot;&quot;</span>
+<span class="sd">        Returns the length of all boolean features</span>
+
+<span class="sd">        :return: the length of all boolean features</span>
+<span class="sd">        :rtype: int</span>
+<span class="sd">        &quot;&quot;&quot;</span>
+        <span class="k">return</span> <span class="nb">len</span><span class="p">(</span><span class="bp">self</span><span class="o">.</span><span class="n">bool_features</span><span class="p">)</span>
+
+    <span class="nd">@property</span>
+    <span class="k">def</span> <span class="nf">len_date_features</span><span class="p">(</span><span class="bp">self</span><span class="p">):</span>
+        <span class="sd">&quot;&quot;&quot;</span>
+<span class="sd">        Returns the length of all date features</span>
+
+<span class="sd">        :return: the length of all date features</span>
+<span class="sd">        :rtype: int</span>
+<span class="sd">        &quot;&quot;&quot;</span>
+        <span class="k">return</span> <span class="nb">len</span><span class="p">(</span><span class="bp">self</span><span class="o">.</span><span class="n">date_features</span><span class="p">)</span>
+
+<div class="viewcode-block" id="DataExplorer.plot_grid"><a class="viewcode-back" href="../ML_Data_Handler.html#explorer.DataExplorer.plot_grid">[docs]</a>    <span class="nd">@staticmethod</span>
+    <span class="k">def</span> <span class="nf">plot_grid</span><span class="p">(</span><span class="n">number</span><span class="p">:</span> <span class="nb">int</span><span class="p">)</span> <span class="o">-&gt;</span> <span class="n">namedtuple</span><span class="p">:</span>
+        <span class="sd">&quot;&quot;&quot;</span>
+<span class="sd">        A function used to determine the number of grids when doing multiple graphics.</span>
+
+<span class="sd">        :param number: number of graphics to be performed</span>
+<span class="sd">        :type number: int</span>
+<span class="sd">        :return: a namedtuple indicating the number of rows and number of columns</span>
+<span class="sd">        &quot;&quot;&quot;</span>
+        <span class="n">rows</span> <span class="o">=</span> <span class="n">ceil</span><span class="p">(</span><span class="n">sqrt</span><span class="p">(</span><span class="n">number</span><span class="p">))</span>
+        <span class="n">columns</span> <span class="o">=</span> <span class="n">ceil</span><span class="p">(</span><span class="n">number</span> <span class="o">/</span> <span class="n">rows</span><span class="p">)</span>
+        <span class="n">plots</span> <span class="o">=</span> <span class="n">namedtuple</span><span class="p">(</span><span class="s2">&quot;plot&quot;</span><span class="p">,</span> <span class="p">[</span><span class="s2">&quot;n_rows&quot;</span><span class="p">,</span> <span class="s2">&quot;n_columns&quot;</span><span class="p">])</span>
+        <span class="k">return</span> <span class="n">plots</span><span class="p">(</span><span class="n">rows</span><span class="p">,</span> <span class="n">columns</span><span class="p">)</span></div></div>
+</pre></div>
+
+          </div>
+        </div>
+      </div>
+      <div class="sphinxsidebar" role="navigation" aria-label="main navigation">
+        <div class="sphinxsidebarwrapper">
+<div id="searchbox" style="display: none" role="search">
+  <h3 id="searchlabel">Quick search</h3>
+    <div class="searchformwrapper">
+    <form class="search" action="../search.html" method="get">
+      <input type="text" name="q" aria-labelledby="searchlabel" />
+      <input type="submit" value="Go" />
+    </form>
+    </div>
+</div>
+<script>$('#searchbox').show(0);</script>
+        </div>
+      </div>
+      <div class="clearer"></div>
+    </div>
+    <div class="related" role="navigation" aria-label="related navigation">
+      <h3>Navigation</h3>
+      <ul>
+        <li class="right" style="margin-right: 10px">
+          <a href="../genindex.html" title="General Index"
+             >index</a></li>
+        <li class="right" >
+          <a href="../py-modindex.html" title="Python Module Index"
+             >modules</a> |</li>
+        <li class="nav-item nav-item-0"><a href="../ML_Data_Handler.html">Machine Learning Data Handler 1.2 documentation</a> &#187;</li>
+          <li class="nav-item nav-item-1"><a href="index.html" >Module code</a> &#187;</li> 
+      </ul>
+    </div>
+    <div class="footer" role="contentinfo">
+        &#169; Copyright 2020, Dominik Heinz.
+      Created using <a href="http://sphinx-doc.org/">Sphinx</a> 3.0.3.
+    </div>
+  </body>
+</html>

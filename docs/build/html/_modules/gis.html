@@ -1,0 +1,658 @@
+
+<!DOCTYPE html>
+
+<html>
+  <head>
+    <meta charset="utf-8" />
+    <title>gis &#8212; Machine Learning Data Handler 1.2 documentation</title>
+    <link rel="stylesheet" href="../_static/nature.css" type="text/css" />
+    <link rel="stylesheet" href="../_static/pygments.css" type="text/css" />
+    <link rel="stylesheet" type="text/css" href="../_static/graphviz.css" />
+    <script id="documentation_options" data-url_root="../" src="../_static/documentation_options.js"></script>
+    <script src="../_static/jquery.js"></script>
+    <script src="../_static/underscore.js"></script>
+    <script src="../_static/doctools.js"></script>
+    <script src="../_static/language_data.js"></script>
+    <link rel="index" title="Index" href="../genindex.html" />
+    <link rel="search" title="Search" href="../search.html" /> 
+  </head><body>
+    <div class="related" role="navigation" aria-label="related navigation">
+      <h3>Navigation</h3>
+      <ul>
+        <li class="right" style="margin-right: 10px">
+          <a href="../genindex.html" title="General Index"
+             accesskey="I">index</a></li>
+        <li class="right" >
+          <a href="../py-modindex.html" title="Python Module Index"
+             >modules</a> |</li>
+        <li class="nav-item nav-item-0"><a href="../ML_Data_Handler.html">Machine Learning Data Handler 1.2 documentation</a> &#187;</li>
+          <li class="nav-item nav-item-1"><a href="index.html" accesskey="U">Module code</a> &#187;</li> 
+      </ul>
+    </div>  
+
+    <div class="document">
+      <div class="documentwrapper">
+        <div class="bodywrapper">
+          <div class="body" role="main">
+            
+  <h1>Source code for gis</h1><div class="highlight"><pre>
+<span></span><span class="sd">&quot;&quot;&quot;</span>
+<span class="sd">This module contains source code to analyze geographical information (gis) data.</span>
+<span class="sd">It includes two classes where on inherits from the other. The class purposes are especially suited for</span>
+<span class="sd">visualization of the data</span>
+
+<span class="sd">Furthermore, ut contains methods to generate features out of Geographical Information System (GIS).</span>
+<span class="sd">Note that all of those classes are using the BaseEstimator and TransformerMixin classes from the scikit-learn bases classes.</span>
+<span class="sd">In order to use the ``fit_transform`` implemented by the scikit-learn, every single Feature Transformer needs to have a  ``fit`` and ``transform`` method.</span>
+<span class="sd">The ``fit`` methods returns the object itself and is therefore not documented</span>
+<span class="sd">&quot;&quot;&quot;</span>
+<span class="kn">from</span> <span class="nn">__future__</span> <span class="kn">import</span> <span class="n">annotations</span>
+<span class="kn">from</span> <span class="nn">typing</span> <span class="kn">import</span> <span class="n">Union</span><span class="p">,</span> <span class="n">Sequence</span><span class="p">,</span> <span class="n">List</span><span class="p">,</span> <span class="n">Mapping</span>
+
+<span class="kn">import</span> <span class="nn">seaborn</span> <span class="k">as</span> <span class="nn">sns</span>
+<span class="kn">from</span> <span class="nn">sklearn.base</span> <span class="kn">import</span> <span class="n">BaseEstimator</span><span class="p">,</span> <span class="n">TransformerMixin</span>
+<span class="kn">from</span> <span class="nn">sklearn.cluster</span> <span class="kn">import</span> <span class="n">KMeans</span><span class="p">,</span> <span class="n">Birch</span><span class="p">,</span> <span class="n">AgglomerativeClustering</span><span class="p">,</span> <span class="n">DBSCAN</span>
+<span class="kn">import</span> <span class="nn">numpy</span> <span class="k">as</span> <span class="nn">np</span>
+<span class="kn">from</span> <span class="nn">pandas</span> <span class="kn">import</span> <span class="n">DataFrame</span>
+
+<span class="c1"># temporary hack to enable relative imports when script is not run within package</span>
+<span class="c1"># see https://stackoverflow.com/questions/14132789/relative-imports-for-the-billionth-time?rq=1</span>
+<span class="c1"># or https://stackoverflow.com/questions/11536764/how-to-fix-attempted-relative-import-in-non-package-even-with-init-py?rq=1</span>
+<span class="k">try</span><span class="p">:</span>
+    <span class="kn">from</span> <span class="nn">utilities</span> <span class="kn">import</span> <span class="n">Logger</span>
+    <span class="kn">from</span> <span class="nn">baseattrs</span> <span class="kn">import</span> <span class="n">BaseStats</span>
+<span class="k">except</span> <span class="ne">ImportError</span><span class="p">:</span>
+    <span class="kn">from</span> <span class="nn">.utilities</span> <span class="kn">import</span> <span class="n">Logger</span>
+    <span class="kn">from</span> <span class="nn">.baseattrs</span> <span class="kn">import</span> <span class="n">BaseStats</span>
+
+<span class="n">log</span> <span class="o">=</span> <span class="n">Logger</span><span class="o">.</span><span class="n">initialize_log</span><span class="p">()</span>
+
+<span class="k">try</span><span class="p">:</span>
+    <span class="kn">from</span> <span class="nn">hdbscan</span> <span class="kn">import</span> <span class="n">HDBSCAN</span>
+<span class="k">except</span> <span class="ne">ImportError</span><span class="p">:</span>
+    <span class="n">log</span><span class="o">.</span><span class="n">warning</span><span class="p">(</span>
+        <span class="s2">&quot;HDBSCAN is not part of the scikit-learn package. To use it you need to install HDBSCAN via pip install HDBSCAN&quot;</span>
+    <span class="p">)</span>
+<span class="k">try</span><span class="p">:</span>
+    <span class="kn">import</span> <span class="nn">folium</span>
+    <span class="kn">from</span> <span class="nn">folium.plugins</span> <span class="kn">import</span> <span class="n">HeatMap</span><span class="p">,</span> <span class="n">HeatMapWithTime</span><span class="p">,</span> <span class="n">MarkerCluster</span>
+<span class="k">except</span> <span class="ne">ImportError</span><span class="p">:</span>
+    <span class="n">log</span><span class="o">.</span><span class="n">warning</span><span class="p">(</span>
+        <span class="sa">f</span><span class="s2">&quot;Failed to import folium package. Please check if it installed inside the Python environment. Cannot use plotting geo data on real world maps.&quot;</span>
+    <span class="p">)</span>
+
+<span class="n">__all__</span> <span class="o">=</span> <span class="p">[</span><span class="s2">&quot;GisAnalyzer&quot;</span><span class="p">,</span>
+           <span class="s2">&quot;GisAnalyzerWithClusterLabel&quot;</span><span class="p">,</span>
+           <span class="s2">&quot;GisBasicTransformer&quot;</span><span class="p">,</span>
+           <span class="s2">&quot;GisDistance&quot;</span><span class="p">,</span>
+           <span class="s2">&quot;GisCluster&quot;</span><span class="p">,</span>
+           <span class="p">]</span>
+
+
+<div class="viewcode-block" id="GisAnalyzer"><a class="viewcode-back" href="../ML_Data_Handler.html#gis.GisAnalyzer">[docs]</a><span class="k">class</span> <span class="nc">GisAnalyzer</span><span class="p">(</span><span class="n">BaseStats</span><span class="p">):</span>
+    <span class="sd">&quot;&quot;&quot;</span>
+<span class="sd">    A class used to visualise geographical data based on latitude and longitude columns</span>
+<span class="sd">    &quot;&quot;&quot;</span>
+
+<div class="viewcode-block" id="GisAnalyzer.__init__"><a class="viewcode-back" href="../ML_Data_Handler.html#gis.GisAnalyzer.__init__">[docs]</a>    <span class="k">def</span> <span class="fm">__init__</span><span class="p">(</span><span class="bp">self</span><span class="p">,</span> <span class="n">data</span><span class="p">:</span> <span class="n">Union</span><span class="p">[</span><span class="nb">str</span><span class="p">,</span> <span class="n">Sequence</span><span class="p">[</span><span class="nb">str</span><span class="p">]],</span> <span class="n">lat</span><span class="p">:</span> <span class="nb">str</span> <span class="o">=</span> <span class="s2">&quot;&quot;</span><span class="p">,</span> <span class="n">lon</span><span class="p">:</span> <span class="nb">str</span> <span class="o">=</span> <span class="s2">&quot;&quot;</span><span class="p">):</span>
+        <span class="sd">&quot;&quot;&quot;</span>
+<span class="sd">        Initializes a GIS Analyzer object. It expects a DataFrame as input. Furthermore, it has the ``lat`` and ``lon`` columns which are</span>
+<span class="sd">        used for defining the latitude and longitude. They do not have to be set upon object creation but can be reset using the corresponding</span>
+<span class="sd">        ``set_lat`` and ``set_lon`` methods.</span>
+<span class="sd">        It also has three mapping objects indicating the map style, a color list and a grad list.</span>
+
+<span class="sd">        :param data: the data holding the geographical latitude and longitude columns</span>
+<span class="sd">        :type data: pd.DataFrame</span>
+<span class="sd">        :param lat: the latitude feature column name</span>
+<span class="sd">        :type lat: str</span>
+<span class="sd">        :param lon: the longitude feature column name</span>
+<span class="sd">        :type lon: str</span>
+<span class="sd">        &quot;&quot;&quot;</span>
+        <span class="nb">super</span><span class="p">()</span><span class="o">.</span><span class="fm">__init__</span><span class="p">(</span><span class="n">data</span><span class="p">)</span>
+        <span class="bp">self</span><span class="o">.</span><span class="n">lat</span> <span class="o">=</span> <span class="n">lat</span>
+        <span class="bp">self</span><span class="o">.</span><span class="n">lon</span> <span class="o">=</span> <span class="n">lon</span>
+        <span class="bp">self</span><span class="o">.</span><span class="n">_style_list</span> <span class="o">=</span> <span class="p">[</span>
+            <span class="s2">&quot;OpenStreetMap&quot;</span><span class="p">,</span>
+            <span class="s2">&quot;Mapbox Bright&quot;</span><span class="p">,</span>
+            <span class="s2">&quot;Mapbox Control Room&quot;</span><span class="p">,</span>
+            <span class="s2">&quot;Stamen Terrain&quot;</span><span class="p">,</span>
+            <span class="s2">&quot;Stamen Toner&quot;</span><span class="p">,</span>
+            <span class="s2">&quot;Stamen Watercolor&quot;</span><span class="p">,</span>
+            <span class="s2">&quot;CartoDB positron&quot;</span><span class="p">,</span>
+            <span class="s2">&quot;CartoDB dark_matter&quot;</span><span class="p">,</span>
+        <span class="p">]</span>
+        <span class="bp">self</span><span class="o">.</span><span class="n">_color_list</span> <span class="o">=</span> <span class="p">[</span>
+            <span class="s2">&quot;red&quot;</span><span class="p">,</span>
+            <span class="s2">&quot;blue&quot;</span><span class="p">,</span>
+            <span class="s2">&quot;green&quot;</span><span class="p">,</span>
+            <span class="s2">&quot;purple&quot;</span><span class="p">,</span>
+            <span class="s2">&quot;orange&quot;</span><span class="p">,</span>
+            <span class="s2">&quot;darkred&quot;</span><span class="p">,</span>
+            <span class="s2">&quot;lightred&quot;</span><span class="p">,</span>
+            <span class="s2">&quot;beige&quot;</span><span class="p">,</span>
+            <span class="s2">&quot;darkblue&quot;</span><span class="p">,</span>
+            <span class="s2">&quot;darkgreen&quot;</span><span class="p">,</span>
+            <span class="s2">&quot;cadetblue&quot;</span><span class="p">,</span>
+            <span class="s2">&quot;darkpurple&quot;</span><span class="p">,</span>
+            <span class="s2">&quot;pink&quot;</span><span class="p">,</span>
+            <span class="s2">&quot;lightblue&quot;</span><span class="p">,</span>
+            <span class="s2">&quot;lightgreen&quot;</span><span class="p">,</span>
+            <span class="s2">&quot;gray&quot;</span><span class="p">,</span>
+            <span class="s2">&quot;black&quot;</span><span class="p">,</span>
+            <span class="s2">&quot;lightgray&quot;</span><span class="p">,</span>
+        <span class="p">]</span>
+        <span class="bp">self</span><span class="o">.</span><span class="n">_grad_list</span> <span class="o">=</span> <span class="p">{</span><span class="mf">0.2</span><span class="p">:</span> <span class="s2">&quot;blue&quot;</span><span class="p">,</span> <span class="mf">0.4</span><span class="p">:</span> <span class="s2">&quot;lime&quot;</span><span class="p">,</span> <span class="mf">0.6</span><span class="p">:</span> <span class="s2">&quot;orange&quot;</span><span class="p">,</span> <span class="mi">1</span><span class="p">:</span> <span class="s2">&quot;red&quot;</span><span class="p">}</span>
+        <span class="bp">self</span><span class="o">.</span><span class="n">map</span> <span class="o">=</span> <span class="kc">None</span></div>
+
+    <span class="c1"># TODO implement class methods to get lat,lon from other types than pandas</span>
+
+<div class="viewcode-block" id="GisAnalyzer.set_lat"><a class="viewcode-back" href="../ML_Data_Handler.html#gis.GisAnalyzer.set_lat">[docs]</a>    <span class="k">def</span> <span class="nf">set_lat</span><span class="p">(</span><span class="bp">self</span><span class="p">,</span> <span class="n">lat</span><span class="p">:</span> <span class="nb">str</span><span class="p">)</span> <span class="o">-&gt;</span> <span class="n">GisAnalyzer</span><span class="p">:</span>
+        <span class="sd">&quot;&quot;&quot;</span>
+<span class="sd">        Resets the name of the latitude column</span>
+
+<span class="sd">        :param lat: the label oft the latitude columns</span>
+<span class="sd">        :type lat: str</span>
+<span class="sd">        :return: the object with its ``lat`` attribute reset</span>
+<span class="sd">        &quot;&quot;&quot;</span>
+        <span class="bp">self</span><span class="o">.</span><span class="n">lat</span> <span class="o">=</span> <span class="n">lat</span>
+        <span class="k">return</span> <span class="bp">self</span></div>
+
+<div class="viewcode-block" id="GisAnalyzer.set_lon"><a class="viewcode-back" href="../ML_Data_Handler.html#gis.GisAnalyzer.set_lon">[docs]</a>    <span class="k">def</span> <span class="nf">set_lon</span><span class="p">(</span><span class="bp">self</span><span class="p">,</span> <span class="n">lon</span><span class="p">:</span> <span class="nb">str</span><span class="p">)</span> <span class="o">-&gt;</span> <span class="n">GisAnalyzer</span><span class="p">:</span>
+        <span class="sd">&quot;&quot;&quot;</span>
+<span class="sd">        Resets the name of the longitude column</span>
+
+<span class="sd">        :param lon: the label oft the longitude columns</span>
+<span class="sd">        :type lon: str</span>
+<span class="sd">        :return: the object with its ``lon`` attribute reset</span>
+<span class="sd">        &quot;&quot;&quot;</span>
+        <span class="bp">self</span><span class="o">.</span><span class="n">lon</span> <span class="o">=</span> <span class="n">lon</span>
+        <span class="k">return</span> <span class="bp">self</span></div>
+
+    <span class="nd">@property</span>
+    <span class="k">def</span> <span class="nf">initial_lat</span><span class="p">(</span><span class="bp">self</span><span class="p">)</span> <span class="o">-&gt;</span> <span class="nb">float</span><span class="p">:</span>
+        <span class="sd">&quot;&quot;&quot;</span>
+<span class="sd">        A property yielding the first latitude entry.</span>
+
+<span class="sd">        :return: the first entry of the latitude column</span>
+<span class="sd">        &quot;&quot;&quot;</span>
+        <span class="k">return</span> <span class="bp">self</span><span class="o">.</span><span class="n">data</span><span class="o">.</span><span class="n">loc</span><span class="p">[</span><span class="mi">0</span><span class="p">,</span> <span class="bp">self</span><span class="o">.</span><span class="n">lat</span><span class="p">]</span>
+
+    <span class="nd">@property</span>
+    <span class="k">def</span> <span class="nf">initial_lon</span><span class="p">(</span><span class="bp">self</span><span class="p">)</span> <span class="o">-&gt;</span> <span class="nb">float</span><span class="p">:</span>
+        <span class="sd">&quot;&quot;&quot;</span>
+<span class="sd">        A property yielding the first longitude entry</span>
+
+<span class="sd">        :return: the first entry of the longitude column</span>
+<span class="sd">        &quot;&quot;&quot;</span>
+        <span class="k">return</span> <span class="bp">self</span><span class="o">.</span><span class="n">data</span><span class="o">.</span><span class="n">loc</span><span class="p">[</span><span class="mi">0</span><span class="p">,</span> <span class="bp">self</span><span class="o">.</span><span class="n">lat</span><span class="p">]</span>
+
+    <span class="nd">@property</span>
+    <span class="k">def</span> <span class="nf">coordinates</span><span class="p">(</span><span class="bp">self</span><span class="p">)</span> <span class="o">-&gt;</span> <span class="n">List</span><span class="p">[</span><span class="nb">str</span><span class="p">]:</span>
+        <span class="sd">&quot;&quot;&quot;</span>
+<span class="sd">        A property putting the latitude and longitude to a list. Used as an alias to avoid writing [lat,lon] any time the GIS is plotted</span>
+
+<span class="sd">        :return: a list of the latitude and longitude</span>
+<span class="sd">        &quot;&quot;&quot;</span>
+        <span class="k">return</span> <span class="p">[</span><span class="bp">self</span><span class="o">.</span><span class="n">lat</span><span class="p">,</span> <span class="bp">self</span><span class="o">.</span><span class="n">lon</span><span class="p">]</span>
+
+<div class="viewcode-block" id="GisAnalyzer._generate_base_map"><a class="viewcode-back" href="../ML_Data_Handler.html#gis.GisAnalyzer._generate_base_map">[docs]</a>    <span class="k">def</span> <span class="nf">_generate_base_map</span><span class="p">(</span><span class="bp">self</span><span class="p">,</span> <span class="n">style</span><span class="p">:</span> <span class="nb">int</span><span class="p">,</span> <span class="n">zoom_start</span><span class="p">:</span> <span class="nb">int</span><span class="p">)</span> <span class="o">-&gt;</span> <span class="n">GisAnalyzer</span><span class="p">:</span>
+        <span class="sd">&quot;&quot;&quot;</span>
+<span class="sd">        Private method that generates a basic BaseMap and stores it in OBJECT.map</span>
+<span class="sd">        &quot;&quot;&quot;</span>
+        <span class="bp">self</span><span class="o">.</span><span class="n">map</span> <span class="o">=</span> <span class="n">folium</span><span class="o">.</span><span class="n">Map</span><span class="p">(</span>
+            <span class="n">location</span><span class="o">=</span><span class="p">[</span><span class="bp">self</span><span class="o">.</span><span class="n">initial_lat</span><span class="p">,</span> <span class="bp">self</span><span class="o">.</span><span class="n">initial_lon</span><span class="p">],</span>
+            <span class="n">control_scale</span><span class="o">=</span><span class="kc">True</span><span class="p">,</span>
+            <span class="n">zoom_start</span><span class="o">=</span><span class="n">zoom_start</span><span class="p">,</span>
+            <span class="n">tiles</span><span class="o">=</span><span class="bp">self</span><span class="o">.</span><span class="n">_style_list</span><span class="p">[</span><span class="n">style</span><span class="p">],</span>
+        <span class="p">)</span>
+        <span class="k">return</span> <span class="bp">self</span></div>
+
+<div class="viewcode-block" id="GisAnalyzer.generate_heat_map"><a class="viewcode-back" href="../ML_Data_Handler.html#gis.GisAnalyzer.generate_heat_map">[docs]</a>    <span class="k">def</span> <span class="nf">generate_heat_map</span><span class="p">(</span><span class="bp">self</span><span class="p">,</span> <span class="n">style</span><span class="p">:</span> <span class="nb">int</span> <span class="o">=</span> <span class="mi">6</span><span class="p">,</span> <span class="n">zoom_start</span><span class="p">:</span> <span class="nb">int</span> <span class="o">=</span> <span class="mi">12</span><span class="p">):</span>
+        <span class="sd">&quot;&quot;&quot;</span>
+<span class="sd">        Creates a HeatMap with the coordinates found in the latitude and longitude columns.</span>
+
+<span class="sd">        :param style: indicates which style of the map to be used</span>
+<span class="sd">        :type style: int</span>
+<span class="sd">        :param zoom_start: set the initial zoom of the map</span>
+<span class="sd">        :type zoom_start: int</span>
+<span class="sd">        :return:</span>
+<span class="sd">        &quot;&quot;&quot;</span>
+        <span class="bp">self</span><span class="o">.</span><span class="n">_generate_base_map</span><span class="p">(</span><span class="n">style</span><span class="p">,</span> <span class="n">zoom_start</span><span class="p">)</span>
+        <span class="n">log</span><span class="o">.</span><span class="n">info</span><span class="p">(</span><span class="s2">&quot;Creating a HeatMap and saving it in the .map attribute.&quot;</span><span class="p">)</span>
+        <span class="n">HeatMap</span><span class="p">(</span>
+            <span class="n">data</span><span class="o">=</span><span class="bp">self</span><span class="o">.</span><span class="n">data</span><span class="p">[</span><span class="bp">self</span><span class="o">.</span><span class="n">coordinates</span><span class="p">]</span>
+            <span class="o">.</span><span class="n">groupby</span><span class="p">(</span><span class="bp">self</span><span class="o">.</span><span class="n">coordinates</span><span class="p">)</span>
+            <span class="o">.</span><span class="n">sum</span><span class="p">()</span>
+            <span class="o">.</span><span class="n">reset_index</span><span class="p">()</span>
+            <span class="o">.</span><span class="n">values</span><span class="o">.</span><span class="n">tolist</span><span class="p">(),</span>
+            <span class="n">radius</span><span class="o">=</span><span class="mi">8</span><span class="p">,</span>
+            <span class="n">max_zoom</span><span class="o">=</span><span class="mi">13</span><span class="p">,</span>
+        <span class="p">)</span><span class="o">.</span><span class="n">add_to</span><span class="p">(</span><span class="bp">self</span><span class="o">.</span><span class="n">map</span><span class="p">)</span>
+        <span class="k">return</span> <span class="bp">self</span><span class="o">.</span><span class="n">map</span></div>
+
+<div class="viewcode-block" id="GisAnalyzer.generate_heat_map_with_time"><a class="viewcode-back" href="../ML_Data_Handler.html#gis.GisAnalyzer.generate_heat_map_with_time">[docs]</a>    <span class="k">def</span> <span class="nf">generate_heat_map_with_time</span><span class="p">(</span>
+        <span class="bp">self</span><span class="p">,</span>
+        <span class="n">style</span><span class="p">:</span> <span class="nb">int</span> <span class="o">=</span> <span class="mi">6</span><span class="p">,</span>
+        <span class="n">zoom_start</span><span class="p">:</span> <span class="nb">int</span> <span class="o">=</span> <span class="mi">12</span><span class="p">,</span>
+        <span class="n">time_var</span><span class="p">:</span> <span class="nb">str</span> <span class="o">=</span> <span class="s2">&quot;hours&quot;</span><span class="p">,</span>
+        <span class="n">time_max_val</span><span class="p">:</span> <span class="nb">int</span> <span class="o">=</span> <span class="mi">24</span><span class="p">,</span>
+    <span class="p">):</span>
+        <span class="sd">&quot;&quot;&quot;</span>
+<span class="sd">        Generates a interactive HeatMap which enables a geographic visualization by time.</span>
+
+<span class="sd">        :param style: indicates which style of the map to be used</span>
+<span class="sd">        :type style: int</span>
+<span class="sd">        :param zoom_start: set the initial zoom of the map</span>
+<span class="sd">        :type zoom_start: int</span>
+<span class="sd">        :param time_var: the label of the time column by which the data is analyzed by</span>
+<span class="sd">        :type time_var: str</span>
+<span class="sd">        :param time_max_val: the maximal time value to be shown</span>
+<span class="sd">        :type time_max_val: int</span>
+<span class="sd">        :return:</span>
+<span class="sd">        &quot;&quot;&quot;</span>
+        <span class="n">junk_coord</span> <span class="o">=</span> <span class="p">(</span>
+            <span class="o">-</span><span class="mi">360</span>
+        <span class="p">)</span>  <span class="c1"># Junk values are inserted here such that the time variable matches the time filter</span>
+        <span class="bp">self</span><span class="o">.</span><span class="n">_generate_base_map</span><span class="p">(</span><span class="n">style</span><span class="p">,</span> <span class="n">zoom_start</span><span class="p">)</span>
+        <span class="n">df_tmp</span> <span class="o">=</span> <span class="bp">self</span><span class="o">.</span><span class="n">data</span><span class="p">[[</span><span class="bp">self</span><span class="o">.</span><span class="n">lat</span><span class="p">,</span> <span class="bp">self</span><span class="o">.</span><span class="n">lon</span><span class="p">,</span> <span class="n">time_var</span><span class="p">]]</span>
+        <span class="n">time_list</span> <span class="o">=</span> <span class="p">[</span>
+            <span class="p">[[</span><span class="n">junk_coord</span><span class="p">,</span> <span class="n">junk_coord</span><span class="p">]]</span>
+        <span class="p">]</span> <span class="o">*</span> <span class="n">time_max_val</span>  <span class="c1"># Initial list with junk values to be replaced</span>
+        <span class="k">for</span> <span class="n">t</span> <span class="ow">in</span> <span class="n">df_tmp</span><span class="p">[</span><span class="n">time_var</span><span class="p">]</span><span class="o">.</span><span class="n">sort_values</span><span class="p">()</span><span class="o">.</span><span class="n">unique</span><span class="p">():</span>
+            <span class="k">if</span> <span class="n">t</span> <span class="o">&gt;</span> <span class="mi">0</span><span class="p">:</span>
+                <span class="n">time_list</span><span class="p">[</span><span class="n">t</span> <span class="o">-</span> <span class="mi">1</span><span class="p">]</span> <span class="o">=</span> <span class="p">(</span>
+                    <span class="n">df_tmp</span><span class="o">.</span><span class="n">loc</span><span class="p">[</span><span class="n">df_tmp</span><span class="p">[</span><span class="n">time_var</span><span class="p">]</span> <span class="o">==</span> <span class="n">t</span><span class="p">,</span> <span class="bp">self</span><span class="o">.</span><span class="n">coordinates</span><span class="p">]</span>
+                    <span class="o">.</span><span class="n">groupby</span><span class="p">(</span><span class="bp">self</span><span class="o">.</span><span class="n">coordinates</span><span class="p">)</span>
+                    <span class="o">.</span><span class="n">sum</span><span class="p">()</span>
+                    <span class="o">.</span><span class="n">reset_index</span><span class="p">()</span>
+                    <span class="o">.</span><span class="n">values</span><span class="o">.</span><span class="n">tolist</span><span class="p">()</span>
+                <span class="p">)</span>
+            <span class="k">else</span><span class="p">:</span>
+                <span class="n">time_list</span><span class="p">[</span><span class="n">time_max_val</span><span class="p">]</span> <span class="o">=</span> <span class="p">(</span>
+                    <span class="n">df_tmp</span><span class="o">.</span><span class="n">loc</span><span class="p">[</span><span class="n">df_tmp</span><span class="p">[</span><span class="n">time_var</span><span class="p">]</span> <span class="o">==</span> <span class="n">t</span><span class="p">,</span> <span class="bp">self</span><span class="o">.</span><span class="n">coordinates</span><span class="p">]</span>
+                    <span class="o">.</span><span class="n">groupby</span><span class="p">(</span><span class="bp">self</span><span class="o">.</span><span class="n">coordinates</span><span class="p">)</span>
+                    <span class="o">.</span><span class="n">sum</span><span class="p">()</span>
+                    <span class="o">.</span><span class="n">reset_index</span><span class="p">()</span>
+                    <span class="o">.</span><span class="n">values</span><span class="o">.</span><span class="n">tolist</span><span class="p">()</span>
+                <span class="p">)</span>
+        <span class="n">HeatMapWithTime</span><span class="p">(</span>
+            <span class="n">time_list</span><span class="p">,</span>
+            <span class="n">radius</span><span class="o">=</span><span class="mi">5</span><span class="p">,</span>
+            <span class="n">gradient</span><span class="o">=</span><span class="bp">self</span><span class="o">.</span><span class="n">_grad_list</span><span class="p">,</span>
+            <span class="n">min_opacity</span><span class="o">=</span><span class="mf">0.5</span><span class="p">,</span>
+            <span class="n">max_opacity</span><span class="o">=</span><span class="mf">0.8</span><span class="p">,</span>
+            <span class="n">use_local_extrema</span><span class="o">=</span><span class="kc">True</span><span class="p">,</span>
+        <span class="p">)</span><span class="o">.</span><span class="n">add_to</span><span class="p">(</span><span class="bp">self</span><span class="o">.</span><span class="n">map</span><span class="p">)</span></div>
+
+<div class="viewcode-block" id="GisAnalyzer.generate_map_cluster"><a class="viewcode-back" href="../ML_Data_Handler.html#gis.GisAnalyzer.generate_map_cluster">[docs]</a>    <span class="k">def</span> <span class="nf">generate_map_cluster</span><span class="p">(</span>
+        <span class="bp">self</span><span class="p">,</span> <span class="n">style</span><span class="o">=</span><span class="mi">6</span><span class="p">,</span> <span class="n">zoom_start</span><span class="o">=</span><span class="mi">12</span><span class="p">,</span> <span class="n">include_heat_map</span><span class="p">:</span> <span class="nb">bool</span> <span class="o">=</span> <span class="kc">True</span>
+    <span class="p">):</span>
+        <span class="sd">&quot;&quot;&quot;</span>
+<span class="sd">        Generates a map which includes cluster depending on the GIS distances between the different points. The Cluster itself depends on the zooming level</span>
+
+<span class="sd">        :param style: indicates which style of the map to be used</span>
+<span class="sd">        :type style: int</span>
+<span class="sd">        :param zoom_start: set the initial zoom of the map</span>
+<span class="sd">        :type zoom_start: int</span>
+<span class="sd">        :param include_heat_map: a flag which indicates if an additional HeatMap shall be added to the Map</span>
+<span class="sd">        :type include_heat_map: bool</span>
+<span class="sd">        :return:</span>
+<span class="sd">        &quot;&quot;&quot;</span>
+        <span class="bp">self</span><span class="o">.</span><span class="n">generate_heat_map</span><span class="p">(</span>
+            <span class="n">style</span><span class="o">=</span><span class="n">style</span><span class="p">,</span> <span class="n">zoom_start</span><span class="o">=</span><span class="n">zoom_start</span>
+        <span class="p">)</span> <span class="k">if</span> <span class="n">include_heat_map</span> <span class="k">else</span> <span class="bp">self</span><span class="o">.</span><span class="n">_generate_base_map</span><span class="p">(</span><span class="n">style</span><span class="p">,</span> <span class="n">zoom_start</span><span class="p">)</span>
+        <span class="bp">self</span><span class="o">.</span><span class="n">map</span><span class="o">.</span><span class="n">add_child</span><span class="p">(</span>
+            <span class="n">MarkerCluster</span><span class="p">(</span><span class="n">locations</span><span class="o">=</span><span class="nb">list</span><span class="p">(</span><span class="nb">zip</span><span class="p">(</span><span class="bp">self</span><span class="o">.</span><span class="n">data</span><span class="p">[</span><span class="bp">self</span><span class="o">.</span><span class="n">lat</span><span class="p">],</span> <span class="bp">self</span><span class="o">.</span><span class="n">data</span><span class="p">[</span><span class="bp">self</span><span class="o">.</span><span class="n">lon</span><span class="p">])))</span>
+        <span class="p">)</span></div>
+
+<div class="viewcode-block" id="GisAnalyzer.simple_plot"><a class="viewcode-back" href="../ML_Data_Handler.html#gis.GisAnalyzer.simple_plot">[docs]</a>    <span class="k">def</span> <span class="nf">simple_plot</span><span class="p">(</span><span class="bp">self</span><span class="p">,</span> <span class="o">**</span><span class="n">options</span><span class="p">:</span> <span class="n">Mapping</span><span class="p">[</span><span class="nb">str</span><span class="p">,</span> <span class="p">]):</span>
+        <span class="sd">&quot;&quot;&quot;</span>
+<span class="sd">        Generates a simple scatter plot of the coordinates. The scatter is an abstraction of the data by not include the actual map.</span>
+<span class="sd">        It can be used to quickly have a look on a basic map.</span>
+
+<span class="sd">        :param options: the seaborn scatter plot options</span>
+<span class="sd">        :return:</span>
+<span class="sd">        &quot;&quot;&quot;</span>
+        <span class="n">sns</span><span class="o">.</span><span class="n">scatterplot</span><span class="p">(</span><span class="bp">self</span><span class="o">.</span><span class="n">data</span><span class="p">[</span><span class="bp">self</span><span class="o">.</span><span class="n">lat</span><span class="p">],</span> <span class="bp">self</span><span class="o">.</span><span class="n">data</span><span class="p">[</span><span class="bp">self</span><span class="o">.</span><span class="n">lon</span><span class="p">],</span> <span class="o">**</span><span class="n">options</span><span class="p">)</span></div></div>
+
+
+<div class="viewcode-block" id="GisAnalyzerWithClusterLabel"><a class="viewcode-back" href="../ML_Data_Handler.html#gis.GisAnalyzerWithClusterLabel">[docs]</a><span class="k">class</span> <span class="nc">GisAnalyzerWithClusterLabel</span><span class="p">(</span><span class="n">GisAnalyzer</span><span class="p">):</span>
+    <span class="sd">&quot;&quot;&quot;</span>
+<span class="sd">    A class derived from the GisAnalyzer used to visualise geographical data based on latitude and longitude columns and take into account cluster labels</span>
+<span class="sd">    &quot;&quot;&quot;</span>
+
+<div class="viewcode-block" id="GisAnalyzerWithClusterLabel.__init__"><a class="viewcode-back" href="../ML_Data_Handler.html#gis.GisAnalyzerWithClusterLabel.__init__">[docs]</a>    <span class="k">def</span> <span class="fm">__init__</span><span class="p">(</span>
+        <span class="bp">self</span><span class="p">,</span>
+        <span class="n">data</span><span class="p">:</span> <span class="n">Union</span><span class="p">[</span><span class="nb">str</span><span class="p">,</span> <span class="n">DataFrame</span><span class="p">],</span>
+        <span class="n">lat</span><span class="p">:</span> <span class="nb">str</span> <span class="o">=</span> <span class="s2">&quot;&quot;</span><span class="p">,</span>
+        <span class="n">lon</span><span class="p">:</span> <span class="nb">str</span> <span class="o">=</span> <span class="s2">&quot;&quot;</span><span class="p">,</span>
+        <span class="n">cluster_label</span><span class="p">:</span> <span class="n">Union</span><span class="p">[</span><span class="nb">str</span><span class="p">,</span> <span class="n">Sequence</span><span class="p">]</span> <span class="o">=</span> <span class="kc">None</span><span class="p">,</span>
+    <span class="p">):</span>
+        <span class="sd">&quot;&quot;&quot;</span>
+<span class="sd">        Initializes a GIS Analyzer object. It expects a DataFrame as input. Furthermore, it has the ``lat`` and ``lon`` columns which are</span>
+<span class="sd">        used for defining the latitude and longitude. They do not have to be set upon object creation but can be reset using the corresponding</span>
+<span class="sd">        ``set_lat`` and ``set_lon`` methods. Additionally, a set of labels can be indicated as well. The purpose hereby lies especially in visualizing</span>
+<span class="sd">        geographic clusters.</span>
+<span class="sd">        It also has three mapping objects indicating the map style, a color list and a grad list.</span>
+
+<span class="sd">        :param data: the data holding the geographical latitude and longitude columns</span>
+<span class="sd">        :type data: pd.DataFrame</span>
+<span class="sd">        :param lat: the latitude feature column name</span>
+<span class="sd">        :type lat: str</span>
+<span class="sd">        :param lon: the longitude feature column name</span>
+<span class="sd">        :type lon: str</span>
+<span class="sd">        :param cluster_label: single or multiple column labels indicating the clustering label</span>
+<span class="sd">        :type cluster_label: list</span>
+<span class="sd">        &quot;&quot;&quot;</span>
+        <span class="nb">super</span><span class="p">()</span><span class="o">.</span><span class="fm">__init__</span><span class="p">(</span><span class="n">data</span><span class="p">,</span> <span class="n">lat</span><span class="p">,</span> <span class="n">lon</span><span class="p">)</span>
+        <span class="k">if</span> <span class="n">cluster_label</span> <span class="ow">is</span> <span class="kc">None</span><span class="p">:</span>
+            <span class="n">cluster_label</span> <span class="o">=</span> <span class="p">[]</span>
+        <span class="bp">self</span><span class="o">.</span><span class="n">cluster_label</span> <span class="o">=</span> <span class="p">(</span>
+            <span class="n">cluster_label</span> <span class="k">if</span> <span class="nb">isinstance</span><span class="p">(</span><span class="n">cluster_label</span><span class="p">,</span> <span class="nb">list</span><span class="p">)</span> <span class="k">else</span> <span class="p">[</span><span class="n">cluster_label</span><span class="p">]</span>
+        <span class="p">)</span></div>
+
+<div class="viewcode-block" id="GisAnalyzerWithClusterLabel.simple_plot_by_cluster_labels"><a class="viewcode-back" href="../ML_Data_Handler.html#gis.GisAnalyzerWithClusterLabel.simple_plot_by_cluster_labels">[docs]</a>    <span class="k">def</span> <span class="nf">simple_plot_by_cluster_labels</span><span class="p">(</span><span class="bp">self</span><span class="p">,</span> <span class="o">**</span><span class="n">options</span><span class="p">:</span> <span class="n">Mapping</span><span class="p">[</span><span class="nb">str</span><span class="p">,</span> <span class="p">]):</span>
+        <span class="sd">&quot;&quot;&quot;</span>
+<span class="sd">        Plots the geographical data by all the different cluster labels.</span>
+
+<span class="sd">        :param options: options used by the ``simple_plot``</span>
+<span class="sd">        :type options: dict</span>
+<span class="sd">        :return:</span>
+<span class="sd">        &quot;&quot;&quot;</span>
+        <span class="c1"># TODO add options into the plot</span>
+        <span class="k">if</span> <span class="bp">self</span><span class="o">.</span><span class="n">cluster_label</span><span class="p">:</span>
+            <span class="k">for</span> <span class="n">label</span> <span class="ow">in</span> <span class="bp">self</span><span class="o">.</span><span class="n">cluster_label</span><span class="p">:</span>
+                <span class="bp">self</span><span class="o">.</span><span class="n">simple_plot</span><span class="p">(</span><span class="o">**</span><span class="p">{</span><span class="s2">&quot;hue&quot;</span><span class="p">:</span> <span class="n">label</span><span class="p">})</span></div></div>
+
+
+<span class="k">class</span> <span class="nc">_BaseClass</span><span class="p">:</span>
+    <span class="sd">&quot;&quot;&quot;</span>
+<span class="sd">    Defines basic attributes that each GIS analyzing class has.</span>
+<span class="sd">    &quot;&quot;&quot;</span>
+
+    <span class="k">def</span> <span class="fm">__init__</span><span class="p">(</span><span class="bp">self</span><span class="p">,</span> <span class="n">lat</span><span class="p">:</span> <span class="nb">str</span><span class="p">,</span> <span class="n">lon</span><span class="p">:</span> <span class="nb">str</span><span class="p">):</span>
+        <span class="sd">&quot;&quot;&quot;</span>
+<span class="sd">        Defines the basis feature of each GIS analyzing class. These include:</span>
+
+<span class="sd">            - Latitude: a geo point&#39;s latitude</span>
+<span class="sd">            - Longitude: a geo point&#39;s longitude</span>
+<span class="sd">            - Coordinates: in the understanding of this class, the coordinates attribute simply puts the latitude and longitude attributes in a list</span>
+
+<span class="sd">        :param lat: the column name of the latitude column</span>
+<span class="sd">        :type lat: str</span>
+<span class="sd">        :param lon: the column name of the longitude column</span>
+<span class="sd">        :type lon: str</span>
+<span class="sd">        &quot;&quot;&quot;</span>
+        <span class="bp">self</span><span class="o">.</span><span class="n">lat</span> <span class="o">=</span> <span class="n">lat</span>
+        <span class="bp">self</span><span class="o">.</span><span class="n">lon</span> <span class="o">=</span> <span class="n">lon</span>
+        <span class="bp">self</span><span class="o">.</span><span class="n">coordinates</span> <span class="o">=</span> <span class="p">[</span><span class="n">lat</span><span class="p">,</span> <span class="n">lon</span><span class="p">]</span>
+
+
+<div class="viewcode-block" id="GisBasicTransformer"><a class="viewcode-back" href="../ML_Data_Handler.html#gis.GisBasicTransformer">[docs]</a><span class="k">class</span> <span class="nc">GisBasicTransformer</span><span class="p">(</span><span class="n">_BaseClass</span><span class="p">,</span> <span class="n">BaseEstimator</span><span class="p">,</span> <span class="n">TransformerMixin</span><span class="p">):</span>
+    <span class="sd">&quot;&quot;&quot;</span>
+<span class="sd">    Derives primitive feature transformation for GIS</span>
+<span class="sd">    The primitive transformations are:</span>
+
+<span class="sd">        - ``round``: round the GIS to a specific digit length. This can be considered as a feature as it groups together</span>
+<span class="sd">        points with similar values. It reduces information but reduces the dimension of the feature</span>
+<span class="sd">        - ``radians``: a simple transformation to get the radians of the GIS.</span>
+
+<span class="sd">    # TODO include x,y,z features.</span>
+<span class="sd">    &quot;&quot;&quot;</span>
+
+<div class="viewcode-block" id="GisBasicTransformer.__init__"><a class="viewcode-back" href="../ML_Data_Handler.html#gis.GisBasicTransformer.__init__">[docs]</a>    <span class="k">def</span> <span class="fm">__init__</span><span class="p">(</span><span class="bp">self</span><span class="p">,</span> <span class="n">lat</span><span class="p">:</span> <span class="nb">str</span><span class="p">,</span> <span class="n">lon</span><span class="p">:</span> <span class="nb">str</span><span class="p">,</span> <span class="n">round_factor</span><span class="p">:</span> <span class="nb">int</span> <span class="o">=</span> <span class="mi">0</span><span class="p">,</span> <span class="n">radian</span><span class="p">:</span> <span class="nb">bool</span> <span class="o">=</span> <span class="kc">True</span><span class="p">):</span>
+        <span class="sd">&quot;&quot;&quot;</span>
+<span class="sd">        Initializes a primitive feature creator object</span>
+
+<span class="sd">        :param lat: the column name of the latitude column</span>
+<span class="sd">        :type lat: str</span>
+<span class="sd">        :param lon: the column name of the longitude column</span>
+<span class="sd">        :type lon: str</span>
+<span class="sd">        :param round_factor: if set and &gt;0, it indicate the number of digits to round the geo data.</span>
+<span class="sd">        :type round_factor: int</span>
+<span class="sd">        :param radian: a flag indicating if the radians shall be derived</span>
+<span class="sd">        :type radian: bool</span>
+<span class="sd">        &quot;&quot;&quot;</span>
+        <span class="nb">super</span><span class="p">(</span><span class="n">GisBasicTransformer</span><span class="p">)</span><span class="o">.</span><span class="fm">__init__</span><span class="p">(</span><span class="n">lat</span><span class="p">,</span> <span class="n">lon</span><span class="p">)</span>
+        <span class="bp">self</span><span class="o">.</span><span class="n">round</span> <span class="o">=</span> <span class="n">round_factor</span>
+        <span class="bp">self</span><span class="o">.</span><span class="n">radian</span> <span class="o">=</span> <span class="n">radian</span>
+        <span class="bp">self</span><span class="o">.</span><span class="n">feature_names</span> <span class="o">=</span> <span class="p">[]</span></div>
+
+<div class="viewcode-block" id="GisBasicTransformer.fit"><a class="viewcode-back" href="../ML_Data_Handler.html#gis.GisBasicTransformer.fit">[docs]</a>    <span class="k">def</span> <span class="nf">fit</span><span class="p">(</span><span class="bp">self</span><span class="p">,</span> <span class="n">X</span><span class="p">,</span> <span class="n">y</span><span class="o">=</span><span class="kc">None</span><span class="p">,</span> <span class="o">**</span><span class="n">kwargs</span><span class="p">):</span>
+        <span class="k">return</span> <span class="bp">self</span></div>
+
+<div class="viewcode-block" id="GisBasicTransformer.transform"><a class="viewcode-back" href="../ML_Data_Handler.html#gis.GisBasicTransformer.transform">[docs]</a>    <span class="k">def</span> <span class="nf">transform</span><span class="p">(</span><span class="bp">self</span><span class="p">,</span> <span class="n">X</span><span class="p">:</span> <span class="n">DataFrame</span><span class="p">)</span> <span class="o">-&gt;</span> <span class="n">DataFrame</span><span class="p">:</span>
+        <span class="sd">&quot;&quot;&quot;</span>
+<span class="sd">        Transforms the DataFrame. Checks the both arguments and applies the respective function if the condition hols (round &gt;0; radian = True)</span>
+
+<span class="sd">        :param X: the original DataFrame</span>
+<span class="sd">        :return:</span>
+<span class="sd">        &quot;&quot;&quot;</span>
+        <span class="k">for</span> <span class="n">coord</span> <span class="ow">in</span> <span class="bp">self</span><span class="o">.</span><span class="n">coordinates</span><span class="p">:</span>
+            <span class="k">if</span> <span class="bp">self</span><span class="o">.</span><span class="n">round</span><span class="p">:</span>
+                <span class="n">X</span><span class="p">[</span><span class="n">coord</span> <span class="o">+</span> <span class="s2">&quot;_round&quot;</span><span class="p">]</span> <span class="o">=</span> <span class="n">X</span><span class="p">[</span><span class="n">coord</span><span class="p">]</span><span class="o">.</span><span class="n">round</span><span class="p">(</span><span class="bp">self</span><span class="o">.</span><span class="n">round</span><span class="p">)</span>
+            <span class="k">if</span> <span class="bp">self</span><span class="o">.</span><span class="n">radian</span><span class="p">:</span>
+                <span class="n">X</span><span class="p">[</span><span class="n">coord</span> <span class="o">+</span> <span class="s2">&quot;_radian&quot;</span><span class="p">]</span> <span class="o">=</span> <span class="n">X</span><span class="p">[</span><span class="n">coord</span><span class="p">]</span><span class="o">.</span><span class="n">apply</span><span class="p">(</span><span class="k">lambda</span> <span class="n">x</span><span class="p">:</span> <span class="n">np</span><span class="o">.</span><span class="n">radians</span><span class="p">(</span><span class="n">x</span><span class="p">))</span>
+        <span class="bp">self</span><span class="o">.</span><span class="n">feature_names</span> <span class="o">=</span> <span class="n">X</span><span class="o">.</span><span class="n">columns</span><span class="o">.</span><span class="n">tolist</span><span class="p">()</span>
+        <span class="k">return</span> <span class="n">X</span></div></div>
+
+
+<div class="viewcode-block" id="GisDistance"><a class="viewcode-back" href="../ML_Data_Handler.html#gis.GisDistance">[docs]</a><span class="k">class</span> <span class="nc">GisDistance</span><span class="p">(</span><span class="n">_BaseClass</span><span class="p">,</span> <span class="n">BaseEstimator</span><span class="p">,</span> <span class="n">TransformerMixin</span><span class="p">):</span>
+    <span class="sd">&quot;&quot;&quot;</span>
+<span class="sd">    Calculates the haversine distance between two geo points</span>
+<span class="sd">    &quot;&quot;&quot;</span>
+
+<div class="viewcode-block" id="GisDistance.__init__"><a class="viewcode-back" href="../ML_Data_Handler.html#gis.GisDistance.__init__">[docs]</a>    <span class="k">def</span> <span class="fm">__init__</span><span class="p">(</span>
+        <span class="bp">self</span><span class="p">,</span> <span class="n">lat_1</span><span class="p">:</span> <span class="nb">str</span><span class="p">,</span> <span class="n">lon_1</span><span class="p">:</span> <span class="nb">str</span><span class="p">,</span> <span class="n">lat_2</span><span class="p">:</span> <span class="nb">str</span><span class="p">,</span> <span class="n">lon_2</span><span class="p">:</span> <span class="nb">str</span><span class="p">,</span> <span class="n">label</span><span class="p">:</span> <span class="nb">str</span> <span class="o">=</span> <span class="s2">&quot;distance&quot;</span>
+    <span class="p">):</span>
+        <span class="sd">&quot;&quot;&quot;</span>
+<span class="sd">        Initializes an object which calculates the Haversine distance between two points</span>
+
+<span class="sd">        :param lat_1: the column name of the first point&#39;s latitude column</span>
+<span class="sd">        :type lat_1: str</span>
+<span class="sd">        :param lon_1: the column name of the first point&#39;s longitude column</span>
+<span class="sd">        :type lon_1: str</span>
+<span class="sd">        :param lat_2: the column name of the second point&#39;s latitude column</span>
+<span class="sd">        :type lat_2: str</span>
+<span class="sd">        :param lon_2: the column name of the second point&#39;s longitude column</span>
+<span class="sd">        :type lon_2: str</span>
+<span class="sd">        :param label: the column label of the newly created column capturing the distance</span>
+<span class="sd">        :type label: str</span>
+<span class="sd">        &quot;&quot;&quot;</span>
+        <span class="nb">super</span><span class="p">()</span><span class="o">.</span><span class="fm">__init__</span><span class="p">(</span><span class="n">lat_1</span><span class="p">,</span> <span class="n">lon_1</span><span class="p">)</span>
+        <span class="bp">self</span><span class="o">.</span><span class="n">lat_2</span> <span class="o">=</span> <span class="n">lat_2</span>
+        <span class="bp">self</span><span class="o">.</span><span class="n">lon_2</span> <span class="o">=</span> <span class="n">lon_2</span>
+        <span class="bp">self</span><span class="o">.</span><span class="n">label</span> <span class="o">=</span> <span class="n">label</span>
+        <span class="bp">self</span><span class="o">.</span><span class="n">feature_names</span> <span class="o">=</span> <span class="p">[]</span></div>
+
+<div class="viewcode-block" id="GisDistance.fit"><a class="viewcode-back" href="../ML_Data_Handler.html#gis.GisDistance.fit">[docs]</a>    <span class="k">def</span> <span class="nf">fit</span><span class="p">(</span><span class="bp">self</span><span class="p">,</span> <span class="n">X</span><span class="p">,</span> <span class="n">y</span><span class="o">=</span><span class="kc">None</span><span class="p">,</span> <span class="o">**</span><span class="n">kwargs</span><span class="p">):</span>
+        <span class="k">return</span> <span class="bp">self</span></div>
+
+<div class="viewcode-block" id="GisDistance.haversine_distance"><a class="viewcode-back" href="../ML_Data_Handler.html#gis.GisDistance.haversine_distance">[docs]</a>    <span class="k">def</span> <span class="nf">haversine_distance</span><span class="p">(</span><span class="bp">self</span><span class="p">,</span> <span class="n">row</span><span class="p">):</span>
+        <span class="sd">&quot;&quot;&quot;</span>
+<span class="sd">        The formulae for the haversine distance. It takes a DataFrame&#39;s row as an input arguments, derives the four GIS points and applies the Formula to it.</span>
+
+<span class="sd">        :param row: a DataFrame row</span>
+<span class="sd">        :type row: pd.DataFrame</span>
+<span class="sd">        :return: the haversine distance for the row</span>
+<span class="sd">        &quot;&quot;&quot;</span>
+        <span class="n">lat_1</span><span class="p">,</span> <span class="n">lon_1</span> <span class="o">=</span> <span class="n">row</span><span class="p">[</span><span class="bp">self</span><span class="o">.</span><span class="n">lat</span><span class="p">],</span> <span class="n">row</span><span class="p">[</span><span class="bp">self</span><span class="o">.</span><span class="n">lon</span><span class="p">]</span>
+        <span class="n">lat_2</span><span class="p">,</span> <span class="n">lon_2</span> <span class="o">=</span> <span class="n">row</span><span class="p">[</span><span class="bp">self</span><span class="o">.</span><span class="n">lat_2</span><span class="p">],</span> <span class="n">row</span><span class="p">[</span><span class="bp">self</span><span class="o">.</span><span class="n">lon_2</span><span class="p">]</span>
+        <span class="n">radius</span> <span class="o">=</span> <span class="mi">6371</span>  <span class="c1"># km#</span>
+        <span class="n">d_lat</span> <span class="o">=</span> <span class="n">np</span><span class="o">.</span><span class="n">radians</span><span class="p">(</span><span class="n">lat_2</span> <span class="o">-</span> <span class="n">lat_1</span><span class="p">)</span>
+        <span class="n">d_lon</span> <span class="o">=</span> <span class="n">np</span><span class="o">.</span><span class="n">radians</span><span class="p">(</span><span class="n">lon_2</span> <span class="o">-</span> <span class="n">lon_1</span><span class="p">)</span>
+        <span class="n">a</span> <span class="o">=</span> <span class="n">np</span><span class="o">.</span><span class="n">sin</span><span class="p">(</span><span class="n">d_lat</span> <span class="o">/</span> <span class="mi">2</span><span class="p">)</span> <span class="o">*</span> <span class="n">np</span><span class="o">.</span><span class="n">sin</span><span class="p">(</span><span class="n">d_lat</span> <span class="o">/</span> <span class="mi">2</span><span class="p">)</span> <span class="o">+</span> <span class="n">np</span><span class="o">.</span><span class="n">cos</span><span class="p">(</span><span class="n">np</span><span class="o">.</span><span class="n">radians</span><span class="p">(</span><span class="n">lat_1</span><span class="p">))</span> <span class="o">*</span> <span class="n">np</span><span class="o">.</span><span class="n">cos</span><span class="p">(</span>
+            <span class="n">np</span><span class="o">.</span><span class="n">radians</span><span class="p">(</span><span class="n">lat_2</span><span class="p">)</span>
+        <span class="p">)</span> <span class="o">*</span> <span class="n">np</span><span class="o">.</span><span class="n">sin</span><span class="p">(</span><span class="n">d_lon</span> <span class="o">/</span> <span class="mi">2</span><span class="p">)</span> <span class="o">*</span> <span class="n">np</span><span class="o">.</span><span class="n">sin</span><span class="p">(</span><span class="n">d_lon</span> <span class="o">/</span> <span class="mi">2</span><span class="p">)</span>
+        <span class="n">c</span> <span class="o">=</span> <span class="mi">2</span> <span class="o">*</span> <span class="n">np</span><span class="o">.</span><span class="n">arctan2</span><span class="p">(</span><span class="n">np</span><span class="o">.</span><span class="n">sqrt</span><span class="p">(</span><span class="n">a</span><span class="p">),</span> <span class="n">np</span><span class="o">.</span><span class="n">sqrt</span><span class="p">(</span><span class="mi">1</span> <span class="o">-</span> <span class="n">a</span><span class="p">))</span>
+        <span class="n">distance</span> <span class="o">=</span> <span class="n">radius</span> <span class="o">*</span> <span class="n">c</span>
+        <span class="k">return</span> <span class="n">distance</span></div>
+
+<div class="viewcode-block" id="GisDistance.transform"><a class="viewcode-back" href="../ML_Data_Handler.html#gis.GisDistance.transform">[docs]</a>    <span class="k">def</span> <span class="nf">transform</span><span class="p">(</span><span class="bp">self</span><span class="p">,</span> <span class="n">X</span><span class="p">:</span> <span class="n">DataFrame</span><span class="p">)</span> <span class="o">-&gt;</span> <span class="n">DataFrame</span><span class="p">:</span>
+        <span class="sd">&quot;&quot;&quot;</span>
+<span class="sd">        Applies the haversine_distance formula to all rows and saves the value in a newly generated column</span>
+
+<span class="sd">        :param X: the original DataFrame</span>
+<span class="sd">        :return:</span>
+<span class="sd">        &quot;&quot;&quot;</span>
+        <span class="n">X</span><span class="p">[</span><span class="bp">self</span><span class="o">.</span><span class="n">label</span><span class="p">]</span> <span class="o">=</span> <span class="n">X</span><span class="o">.</span><span class="n">apply</span><span class="p">(</span><span class="bp">self</span><span class="o">.</span><span class="n">haversine_distance</span><span class="p">,</span> <span class="n">axis</span><span class="o">=</span><span class="mi">1</span><span class="p">)</span>
+        <span class="bp">self</span><span class="o">.</span><span class="n">feature_names</span> <span class="o">=</span> <span class="n">X</span><span class="o">.</span><span class="n">columns</span><span class="o">.</span><span class="n">tolist</span><span class="p">()</span>
+        <span class="k">return</span> <span class="n">X</span></div></div>
+
+
+<div class="viewcode-block" id="GisCluster"><a class="viewcode-back" href="../ML_Data_Handler.html#gis.GisCluster">[docs]</a><span class="k">class</span> <span class="nc">GisCluster</span><span class="p">(</span><span class="n">_BaseClass</span><span class="p">,</span> <span class="n">BaseEstimator</span><span class="p">,</span> <span class="n">TransformerMixin</span><span class="p">):</span>
+    <span class="sd">&quot;&quot;&quot;</span>
+<span class="sd">    Applies Machine Learning based clustering on the GIS data.</span>
+<span class="sd">    &quot;&quot;&quot;</span>
+
+<div class="viewcode-block" id="GisCluster.__init__"><a class="viewcode-back" href="../ML_Data_Handler.html#gis.GisCluster.__init__">[docs]</a>    <span class="k">def</span> <span class="fm">__init__</span><span class="p">(</span>
+        <span class="bp">self</span><span class="p">,</span>
+        <span class="n">lat</span><span class="p">:</span> <span class="nb">str</span><span class="p">,</span>
+        <span class="n">lon</span><span class="p">:</span> <span class="nb">str</span><span class="p">,</span>
+        <span class="n">kmeans</span><span class="p">:</span> <span class="nb">bool</span> <span class="o">=</span> <span class="kc">True</span><span class="p">,</span>
+        <span class="n">kmeans_params</span><span class="p">:</span> <span class="n">Mapping</span><span class="p">[</span><span class="nb">str</span><span class="p">,</span> <span class="p">]</span> <span class="o">=</span> <span class="kc">None</span><span class="p">,</span>
+        <span class="n">dbscan</span><span class="p">:</span> <span class="nb">bool</span> <span class="o">=</span> <span class="kc">True</span><span class="p">,</span>
+        <span class="n">dbscan_params</span><span class="p">:</span> <span class="n">Mapping</span><span class="p">[</span><span class="nb">str</span><span class="p">,</span> <span class="p">]</span> <span class="o">=</span> <span class="kc">None</span><span class="p">,</span>
+        <span class="n">birch</span><span class="p">:</span> <span class="nb">bool</span> <span class="o">=</span> <span class="kc">True</span><span class="p">,</span>
+        <span class="n">birch_params</span><span class="p">:</span> <span class="n">Mapping</span><span class="p">[</span><span class="nb">str</span><span class="p">,</span> <span class="p">]</span> <span class="o">=</span> <span class="kc">None</span><span class="p">,</span>
+        <span class="n">hdbscan</span><span class="p">:</span> <span class="nb">bool</span> <span class="o">=</span> <span class="kc">True</span><span class="p">,</span>
+        <span class="n">hdbscan_params</span><span class="p">:</span> <span class="n">Mapping</span><span class="p">[</span><span class="nb">str</span><span class="p">,</span> <span class="p">]</span> <span class="o">=</span> <span class="kc">None</span><span class="p">,</span>
+        <span class="n">agglomerative</span><span class="p">:</span> <span class="nb">bool</span> <span class="o">=</span> <span class="kc">True</span><span class="p">,</span>
+        <span class="n">agglomerative_params</span><span class="p">:</span> <span class="n">Mapping</span><span class="p">[</span><span class="nb">str</span><span class="p">,</span> <span class="p">]</span> <span class="o">=</span> <span class="kc">None</span><span class="p">,</span>
+    <span class="p">):</span>
+        <span class="sd">&quot;&quot;&quot;</span>
+<span class="sd">        Creates an object that applies a possibly multitude of different clustering algorithms on the data</span>
+
+<span class="sd">        :param lat: the column name of the latitude column</span>
+<span class="sd">        :type lat: str</span>
+<span class="sd">        :param lon: the column name of the longitude column</span>
+<span class="sd">        :type lon: str</span>
+<span class="sd">        :param kmeans: a flag indicating if the k-means clustering algorithm is applied</span>
+<span class="sd">        :type kmeans: bool</span>
+<span class="sd">        :param kmeans_params: indicates k-means clustering hyper parameters</span>
+<span class="sd">        :type kmeans_params: dict</span>
+<span class="sd">        :param dbscan:  a flag indicating if the DBSCAN clustering algorithm is applied</span>
+<span class="sd">        :type dbscan: bool</span>
+<span class="sd">        :param dbscan_params: indicates DBSCAN clustering hyper parameters</span>
+<span class="sd">        :type dbscan_params: dict</span>
+<span class="sd">        :param birch: a flag indicating if the BIRCH clustering algorithm is applied</span>
+<span class="sd">        :type birch:  bool</span>
+<span class="sd">        :param birch_params: indicates BIRCH clustering hyper parameters</span>
+<span class="sd">        :type birch_params: dict</span>
+<span class="sd">        :param hdbscan: a flag indicating if the HDBSCAN clustering algorithm is applied</span>
+<span class="sd">        :type hdbscan:  bool</span>
+<span class="sd">        :param hdbscan_params: indicates HDBSCAN clustering hyper parameters</span>
+<span class="sd">        :type hdbscan_params: dict</span>
+<span class="sd">        :param agglomerative: a flag indicating if the Agglomerative clustering algorithm is applied</span>
+<span class="sd">        :type agglomerative:  bool</span>
+<span class="sd">        :param agglomerative_params: indicates Agglomerative clustering hyper parameters</span>
+<span class="sd">        :type agglomerative_params: dict</span>
+<span class="sd">        &quot;&quot;&quot;</span>
+
+        <span class="nb">super</span><span class="p">()</span><span class="o">.</span><span class="fm">__init__</span><span class="p">(</span><span class="n">lat</span><span class="p">,</span> <span class="n">lon</span><span class="p">)</span>
+
+        <span class="c1"># algorithm attributes</span>
+        <span class="bp">self</span><span class="o">.</span><span class="n">kmeans</span> <span class="o">=</span> <span class="n">kmeans</span>
+        <span class="bp">self</span><span class="o">.</span><span class="n">dbscan</span> <span class="o">=</span> <span class="n">dbscan</span>
+        <span class="bp">self</span><span class="o">.</span><span class="n">birch</span> <span class="o">=</span> <span class="n">birch</span>
+        <span class="bp">self</span><span class="o">.</span><span class="n">hdbscan</span> <span class="o">=</span> <span class="n">hdbscan</span>
+        <span class="bp">self</span><span class="o">.</span><span class="n">agglomerative</span> <span class="o">=</span> <span class="n">agglomerative</span>
+        <span class="bp">self</span><span class="o">.</span><span class="n">feature_names</span> <span class="o">=</span> <span class="p">[]</span>
+
+        <span class="c1"># algorithm params initialization</span>
+        <span class="k">if</span> <span class="n">kmeans_params</span> <span class="ow">is</span> <span class="kc">None</span><span class="p">:</span>
+            <span class="n">kmeans_params</span> <span class="o">=</span> <span class="p">{}</span>
+        <span class="bp">self</span><span class="o">.</span><span class="n">kmeans_params</span> <span class="o">=</span> <span class="n">kmeans_params</span>
+
+        <span class="k">if</span> <span class="n">dbscan_params</span> <span class="ow">is</span> <span class="kc">None</span><span class="p">:</span>
+            <span class="n">dbscan_params</span> <span class="o">=</span> <span class="p">{}</span>
+        <span class="bp">self</span><span class="o">.</span><span class="n">dbscan_params</span> <span class="o">=</span> <span class="n">dbscan_params</span>
+
+        <span class="k">if</span> <span class="n">birch_params</span> <span class="ow">is</span> <span class="kc">None</span><span class="p">:</span>
+            <span class="n">birch_params</span> <span class="o">=</span> <span class="p">{}</span>
+        <span class="bp">self</span><span class="o">.</span><span class="n">birch_params</span> <span class="o">=</span> <span class="n">birch_params</span>
+
+        <span class="k">if</span> <span class="n">hdbscan_params</span> <span class="ow">is</span> <span class="kc">None</span><span class="p">:</span>
+            <span class="n">hdbscan_params</span> <span class="o">=</span> <span class="p">{}</span>
+        <span class="bp">self</span><span class="o">.</span><span class="n">hdbscan_params</span> <span class="o">=</span> <span class="n">hdbscan_params</span>
+
+        <span class="k">if</span> <span class="n">agglomerative_params</span> <span class="ow">is</span> <span class="kc">None</span><span class="p">:</span>
+            <span class="n">agglomerative_params</span> <span class="o">=</span> <span class="p">{}</span>
+        <span class="bp">self</span><span class="o">.</span><span class="n">agglomerative_params</span> <span class="o">=</span> <span class="n">agglomerative_params</span></div>
+
+<div class="viewcode-block" id="GisCluster.fit"><a class="viewcode-back" href="../ML_Data_Handler.html#gis.GisCluster.fit">[docs]</a>    <span class="k">def</span> <span class="nf">fit</span><span class="p">(</span><span class="bp">self</span><span class="p">,</span> <span class="n">X</span><span class="p">,</span> <span class="n">y</span><span class="o">=</span><span class="kc">None</span><span class="p">,</span> <span class="o">**</span><span class="n">kwargs</span><span class="p">):</span>
+        <span class="k">return</span> <span class="bp">self</span></div>
+
+<div class="viewcode-block" id="GisCluster.transform"><a class="viewcode-back" href="../ML_Data_Handler.html#gis.GisCluster.transform">[docs]</a>    <span class="k">def</span> <span class="nf">transform</span><span class="p">(</span><span class="bp">self</span><span class="p">,</span> <span class="n">X</span><span class="p">:</span> <span class="n">DataFrame</span><span class="p">)</span> <span class="o">-&gt;</span> <span class="n">DataFrame</span><span class="p">:</span>
+        <span class="sd">&quot;&quot;&quot;</span>
+<span class="sd">        Applies the clustering based on which algorithm with respective parameters have been specified.</span>
+<span class="sd">        For each clustering algorithm set to True, the clustering is performed using the respective algorithm&#39;s hyper parameters</span>
+
+<span class="sd">        :param X: The initial DataFrame</span>
+<span class="sd">        :return:</span>
+<span class="sd">        &quot;&quot;&quot;</span>
+        <span class="k">if</span> <span class="bp">self</span><span class="o">.</span><span class="n">kmeans</span><span class="p">:</span>
+            <span class="n">cluster</span> <span class="o">=</span> <span class="n">KMeans</span><span class="p">(</span><span class="o">**</span><span class="bp">self</span><span class="o">.</span><span class="n">kmeans_params</span><span class="p">)</span>
+            <span class="n">X</span><span class="p">[</span><span class="s2">&quot;clstr_kmeans&quot;</span><span class="p">]</span> <span class="o">=</span> <span class="n">cluster</span><span class="o">.</span><span class="n">fit_predict</span><span class="p">(</span><span class="n">X</span><span class="p">[</span><span class="bp">self</span><span class="o">.</span><span class="n">coordinates</span><span class="p">])</span>
+        <span class="k">if</span> <span class="bp">self</span><span class="o">.</span><span class="n">dbscan</span><span class="p">:</span>
+            <span class="n">cluster</span> <span class="o">=</span> <span class="n">DBSCAN</span><span class="p">(</span><span class="o">**</span><span class="bp">self</span><span class="o">.</span><span class="n">dbscan_params</span><span class="p">)</span>
+            <span class="n">X</span><span class="p">[</span><span class="s2">&quot;clstr_dbscan&quot;</span><span class="p">]</span> <span class="o">=</span> <span class="n">cluster</span><span class="o">.</span><span class="n">fit_predict</span><span class="p">(</span><span class="n">X</span><span class="p">[</span><span class="bp">self</span><span class="o">.</span><span class="n">coordinates</span><span class="p">])</span>
+        <span class="k">if</span> <span class="bp">self</span><span class="o">.</span><span class="n">hdbscan</span><span class="p">:</span>
+            <span class="k">try</span><span class="p">:</span>
+                <span class="n">cluster</span> <span class="o">=</span> <span class="n">HDBSCAN</span><span class="p">(</span><span class="o">**</span><span class="bp">self</span><span class="o">.</span><span class="n">hdbscan_params</span><span class="p">)</span>
+                <span class="n">X</span><span class="p">[</span><span class="s2">&quot;clstr_hdbscan&quot;</span><span class="p">]</span> <span class="o">=</span> <span class="n">cluster</span><span class="o">.</span><span class="n">fit_predict</span><span class="p">(</span><span class="n">X</span><span class="p">[</span><span class="bp">self</span><span class="o">.</span><span class="n">coordinates</span><span class="p">])</span>
+            <span class="k">except</span> <span class="ne">NameError</span><span class="p">:</span>
+                <span class="n">log</span><span class="o">.</span><span class="n">error</span><span class="p">(</span><span class="s2">&quot;HDBSCAN was not found in the module and cannot be used&quot;</span><span class="p">)</span>
+                <span class="k">pass</span>
+        <span class="k">if</span> <span class="bp">self</span><span class="o">.</span><span class="n">birch</span><span class="p">:</span>
+            <span class="n">cluster</span> <span class="o">=</span> <span class="n">Birch</span><span class="p">(</span><span class="o">**</span><span class="bp">self</span><span class="o">.</span><span class="n">birch_params</span><span class="p">)</span>
+            <span class="n">X</span><span class="p">[</span><span class="s2">&quot;clstr_birch&quot;</span><span class="p">]</span> <span class="o">=</span> <span class="n">cluster</span><span class="o">.</span><span class="n">fit_predict</span><span class="p">(</span><span class="n">X</span><span class="p">[</span><span class="bp">self</span><span class="o">.</span><span class="n">coordinates</span><span class="p">])</span>
+        <span class="k">if</span> <span class="bp">self</span><span class="o">.</span><span class="n">agglomerative</span><span class="p">:</span>
+            <span class="n">cluster</span> <span class="o">=</span> <span class="n">AgglomerativeClustering</span><span class="p">(</span><span class="o">**</span><span class="bp">self</span><span class="o">.</span><span class="n">agglomerative_params</span><span class="p">)</span>
+            <span class="n">X</span><span class="p">[</span><span class="s2">&quot;clstr_aggl&quot;</span><span class="p">]</span> <span class="o">=</span> <span class="n">cluster</span><span class="o">.</span><span class="n">fit_predict</span><span class="p">(</span><span class="n">X</span><span class="p">[</span><span class="bp">self</span><span class="o">.</span><span class="n">coordinates</span><span class="p">])</span>
+        <span class="bp">self</span><span class="o">.</span><span class="n">feature_names</span> <span class="o">=</span> <span class="n">X</span><span class="o">.</span><span class="n">columns</span><span class="o">.</span><span class="n">tolist</span><span class="p">()</span>
+        <span class="k">return</span> <span class="n">X</span></div></div>
+
+
+<span class="c1"># TODO Revers geo coding</span>
+<span class="c1"># TODO x,yz  features</span>
+</pre></div>
+
+          </div>
+        </div>
+      </div>
+      <div class="sphinxsidebar" role="navigation" aria-label="main navigation">
+        <div class="sphinxsidebarwrapper">
+<div id="searchbox" style="display: none" role="search">
+  <h3 id="searchlabel">Quick search</h3>
+    <div class="searchformwrapper">
+    <form class="search" action="../search.html" method="get">
+      <input type="text" name="q" aria-labelledby="searchlabel" />
+      <input type="submit" value="Go" />
+    </form>
+    </div>
+</div>
+<script>$('#searchbox').show(0);</script>
+        </div>
+      </div>
+      <div class="clearer"></div>
+    </div>
+    <div class="related" role="navigation" aria-label="related navigation">
+      <h3>Navigation</h3>
+      <ul>
+        <li class="right" style="margin-right: 10px">
+          <a href="../genindex.html" title="General Index"
+             >index</a></li>
+        <li class="right" >
+          <a href="../py-modindex.html" title="Python Module Index"
+             >modules</a> |</li>
+        <li class="nav-item nav-item-0"><a href="../ML_Data_Handler.html">Machine Learning Data Handler 1.2 documentation</a> &#187;</li>
+          <li class="nav-item nav-item-1"><a href="index.html" >Module code</a> &#187;</li> 
+      </ul>
+    </div>
+    <div class="footer" role="contentinfo">
+        &#169; Copyright 2020, Dominik Heinz.
+      Created using <a href="http://sphinx-doc.org/">Sphinx</a> 3.0.3.
+    </div>
+  </body>
+</html>

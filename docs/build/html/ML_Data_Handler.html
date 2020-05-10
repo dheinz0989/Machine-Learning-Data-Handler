@@ -1,0 +1,2325 @@
+
+<!DOCTYPE html>
+
+<html>
+  <head>
+    <meta charset="utf-8" />
+    <title>Welcome to Machine Learning Data Handler’s documentation! &#8212; Machine Learning Data Handler 1.2 documentation</title>
+    <link rel="stylesheet" href="_static/nature.css" type="text/css" />
+    <link rel="stylesheet" href="_static/pygments.css" type="text/css" />
+    <link rel="stylesheet" type="text/css" href="_static/graphviz.css" />
+    <script id="documentation_options" data-url_root="./" src="_static/documentation_options.js"></script>
+    <script src="_static/jquery.js"></script>
+    <script src="_static/underscore.js"></script>
+    <script src="_static/doctools.js"></script>
+    <script src="_static/language_data.js"></script>
+    <link rel="index" title="Index" href="genindex.html" />
+    <link rel="search" title="Search" href="search.html" /> 
+  </head><body>
+    <div class="related" role="navigation" aria-label="related navigation">
+      <h3>Navigation</h3>
+      <ul>
+        <li class="right" style="margin-right: 10px">
+          <a href="genindex.html" title="General Index"
+             accesskey="I">index</a></li>
+        <li class="right" >
+          <a href="py-modindex.html" title="Python Module Index"
+             >modules</a> |</li>
+        <li class="nav-item nav-item-0"><a href="#">Machine Learning Data Handler 1.2 documentation</a> &#187;</li> 
+      </ul>
+    </div>  
+
+    <div class="document">
+      <div class="documentwrapper">
+        <div class="bodywrapper">
+          <div class="body" role="main">
+            
+  <div class="section" id="welcome-to-machine-learning-data-handler-s-documentation">
+<h1>Welcome to Machine Learning Data Handler’s documentation!<a class="headerlink" href="#welcome-to-machine-learning-data-handler-s-documentation" title="Permalink to this headline">¶</a></h1>
+<div class="toctree-wrapper compound">
+</div>
+<p>Welcome to the documentation site of the Machine Learning Data Handler. The following site includes all necessary info about the current status.</p>
+<div class="section" id="last-update">
+<h2>Last Update<a class="headerlink" href="#last-update" title="Permalink to this headline">¶</a></h2>
+<p>Last update of the documentation is from 10 of May 2020 at 22:20. This document will be split upon others while including a document for each module used within this project.</p>
+</div>
+<div class="section" id="context">
+<h2>Context<a class="headerlink" href="#context" title="Permalink to this headline">¶</a></h2>
+<p>The main goal of the code in this repository is to provide a Python classes to quickly solve tasks which are common amongst Machine Learning Project with respect to data. It aims at providing code
+that can be used in other Machine Learning projects to ease the execute of the very time-consuming step of data handling. It Therefore includes three major classes:</p>
+<blockquote>
+<div><p>1. <em>Data Explorer</em>: is a class that aims at quickly generating insights about the underlying data. It includes methods for different types of data, provides basic statistic, memory usage, missing data calculator
+plotting functions. It furthermore has some functionality to analyze data by time, mixed types and GIS (Geo Information System) in terms of latitude and longitude columns</p>
+<p>2. <em>FeatureBuilder</em>: is a class which aims at quickly generating features. It is intended to be used for generating feature of special data. Different feature generating steps can be add in a composite class
+and are stored in a pipeline. The pipeline can then be wrapped and executed to generate new fetaures. The special data mentioned in the beginning is at the moment (10 of May 2020 at 22:20):</p>
+<blockquote>
+<div><ul class="simple">
+<li><p><em>time</em>: several feature related to date time columns are provided:
+- converting strings to time
+- converting Unix time Stamps to date time
+- time difference between two date time columns
+- basic time features</p></li>
+<li><p><em>GIS</em>: several features related to Geo Information Systems are provided as:
+- basic gis features applying radians or rounding the latitude/longitude
+- Haversine distance between two points
+- Clustering algorithms for geo data</p></li>
+</ul>
+</div></blockquote>
+<p>3. <em>DataPreProcessor</em>: allows to quickly generate a pre-processed dataframe for Machine Learning purposes. It aims at quickly building data pipelines and generate test and train data. It gives the user the control
+to modify the transformation steps but includes using properties to quickly apply the same steps to named or typed based feature lists.</p>
+</div></blockquote>
+<p>The respetive tables are written from a parquet file format</p>
+</div>
+<div class="section" id="project-directory">
+<h2>Project Directory<a class="headerlink" href="#project-directory" title="Permalink to this headline">¶</a></h2>
+<dl class="simple">
+<dt>The project directory is as shown in the following. The respective directories are:</dt><dd><ul class="simple">
+<li><p><em>src/:</em> contains all modules for the code</p></li>
+<li><p><em>docs/:</em> contains all files for documentation</p></li>
+<li><p><em>ims/:</em> contains images and data vizualisation</p></li>
+<li><p><em>test/:</em> contains a script for testing purposes</p></li>
+</ul>
+</dd>
+<dt>Furthermore, different files are found directly in the repository</dt><dd><ul class="simple">
+<li><p><em>requirements.txt</em>: required Python packages within the code</p></li>
+<li><p><em>README.md</em>: information about this module</p></li>
+</ul>
+</dd>
+</dl>
+<div class="highlight-default notranslate"><div class="highlight"><pre><span></span>ML_Data_Prep_backup/
+├── __init__.py
+├── docs/
+│   ├── build/
+│   │   ├── doctrees/
+│   │   │   ├── base.doctree
+│   │   │   ├── Basic_Attributes.doctree
+│   │   │   ├── Data_Selector.doctree
+│   │   │   ├── environment.pickle
+│   │   │   └── ML_Data_Handler.doctree
+│   │   └── html/
+│   │       ├── .buildinfo
+│   │       ├── _modules/
+│   │       │   ├── baseattrs.html
+│   │       │   ├── dataframeselector.html
+│   │       │   ├── index.html
+│   │       │   ├── numpy.html
+│   │       │   └── sklearn/
+│   │       │       └── base.html
+│   │       ├── _sources/
+│   │       │   ├── base.rst.txt
+│   │       │   ├── Basic_Attributes.rst.txt
+│   │       │   ├── Data_Selector.rst.txt
+│   │       │   └── ML_Data_Handler.rst.txt
+│   │       ├── _static/
+│   │       │   ├── basic.css
+│   │       │   ├── doctools.js
+│   │       │   ├── documentation_options.js
+│   │       │   ├── file.png
+│   │       │   ├── graphviz.css
+│   │       │   ├── jquery-3.4.1.js
+│   │       │   ├── jquery.js
+│   │       │   ├── language_data.js
+│   │       │   ├── minus.png
+│   │       │   ├── nature.css
+│   │       │   ├── plus.png
+│   │       │   ├── pygments.css
+│   │       │   ├── searchtools.js
+│   │       │   ├── underscore-1.3.1.js
+│   │       │   └── underscore.js
+│   │       ├── base.html
+│   │       ├── Basic_Attributes.html
+│   │       ├── Data_Selector.html
+│   │       ├── genindex.html
+│   │       ├── ML_Data_Handler.html
+│   │       ├── objects.inv
+│   │       ├── py-modindex.html
+│   │       ├── search.html
+│   │       └── searchindex.js
+│   ├── make.bat
+│   ├── Makefile
+│   └── source/
+│       ├── _static/
+│       ├── _templates/
+│       ├── conf.py
+│       └── ML_Data_Handler.rst
+├── logs/
+│   └── log_src.utilities_2020-05-10.log
+├── ml_prepaper.py
+├── README.md
+├── requirements.txt
+├── src/
+│   ├── __init__.py
+│   ├── baseattrs.py
+│   ├── dataframeselector.py
+│   ├── date_and_time.py
+│   ├── explorer.py
+│   ├── feature_builder.py
+│   ├── gis.py
+│   ├── preprocess.py
+│   ├── textfeatures.py
+│   └── utilities.py
+└── test/
+    ├── config.yaml
+    ├── Quick_usage_demo.ipynb
+    └── sunspots.csv
+</pre></div>
+</div>
+</div>
+<div class="section" id="usage">
+<h2>Usage<a class="headerlink" href="#usage" title="Permalink to this headline">¶</a></h2>
+<p>Before running the Code, ensure that you have all requirements installed. You can the import them in your costum Machine Learning Projects and use them.
+A usage jupyter notebook is shown in the test directory.</p>
+</div>
+</div>
+<div class="section" id="source-code">
+<h1>Source Code<a class="headerlink" href="#source-code" title="Permalink to this headline">¶</a></h1>
+<ol class="arabic simple">
+<li><p><code class="docutils literal notranslate"><span class="pre">baseattrs.py</span></code>: Contains basic classes which are inherited most other modules.</p></li>
+<li><p><code class="docutils literal notranslate"><span class="pre">dataframeselector.py</span></code>: Contains methods to select subsetf of DataFrames based on names or type.</p></li>
+<li><p><code class="docutils literal notranslate"><span class="pre">date_and_time</span></code>: Provides methods to generate date and time features and methods to analyze them.</p></li>
+<li><p><code class="docutils literal notranslate"><span class="pre">explorer:</span></code> Contains the source code for the DataExplorer.</p></li>
+<li><p><code class="docutils literal notranslate"><span class="pre">feature_builder:</span></code> Contains the source code for the  FeatureBuilder.</p></li>
+<li><p><code class="docutils literal notranslate"><span class="pre">gis:</span></code> Provides methods to generate Geoinformation System features and methods to analyze them.</p></li>
+<li><p><code class="docutils literal notranslate"><span class="pre">preprocess:</span></code> Contains the source code for the Data Pre DataPreProcessor.</p></li>
+<li><p><code class="docutils literal notranslate"><span class="pre">utilities</span></code>: Contains some uti functions.</p></li>
+<li><p><code class="docutils literal notranslate"><span class="pre">textfeatures</span></code>: not yet implemented</p></li>
+</ol>
+<div class="section" id="module-baseattrs">
+<span id="basic-attributes"></span><h2>Basic Attributes<a class="headerlink" href="#module-baseattrs" title="Permalink to this headline">¶</a></h2>
+<p>This module includes a class which defines basic attributes and methods for the Data Explorer, Preprocessor and FeatureBuilder
+and all their custom classes. The respective modules import this class and inherit from it</p>
+<dl class="py class">
+<dt id="baseattrs.BasicDataAttributes">
+<em class="property">class </em><code class="sig-prename descclassname">baseattrs.</code><code class="sig-name descname">BasicDataAttributes</code><span class="sig-paren">(</span><em class="sig-param"><span class="n">data_source</span></em>, <em class="sig-param"><span class="n">target_name</span><span class="o">=</span><span class="default_value">''</span></em>, <em class="sig-param"><span class="n">features</span><span class="o">=</span><span class="default_value">None</span></em><span class="sig-paren">)</span><a class="reference internal" href="_modules/baseattrs.html#BasicDataAttributes"><span class="viewcode-link">[source]</span></a><a class="headerlink" href="#baseattrs.BasicDataAttributes" title="Permalink to this definition">¶</a></dt>
+<dd><p>This class contains several attributes, methods and properties used within different classes.</p>
+<dl class="py method">
+<dt id="baseattrs.BasicDataAttributes.Features">
+<em class="property">property </em><code class="sig-name descname">Features</code><a class="headerlink" href="#baseattrs.BasicDataAttributes.Features" title="Permalink to this definition">¶</a></dt>
+<dd><p>Can be used to reset the current DataFrame to a specified set of features</p>
+<dl class="field-list simple">
+<dt class="field-odd">Return type</dt>
+<dd class="field-odd"><p><code class="xref py py-class docutils literal notranslate"><span class="pre">Sequence</span></code>[<code class="xref py py-class docutils literal notranslate"><span class="pre">str</span></code>]</p>
+</dd>
+<dt class="field-even">Returns</dt>
+<dd class="field-even"><p></p>
+</dd>
+</dl>
+</dd></dl>
+
+<dl class="py method">
+<dt id="baseattrs.BasicDataAttributes.__init__">
+<code class="sig-name descname">__init__</code><span class="sig-paren">(</span><em class="sig-param"><span class="n">data_source</span></em>, <em class="sig-param"><span class="n">target_name</span><span class="o">=</span><span class="default_value">''</span></em>, <em class="sig-param"><span class="n">features</span><span class="o">=</span><span class="default_value">None</span></em><span class="sig-paren">)</span><a class="reference internal" href="_modules/baseattrs.html#BasicDataAttributes.__init__"><span class="viewcode-link">[source]</span></a><a class="headerlink" href="#baseattrs.BasicDataAttributes.__init__" title="Permalink to this definition">¶</a></dt>
+<dd><p>Initialization function for Basic Data Attributes.</p>
+<dl class="field-list simple">
+<dt class="field-odd">Parameters</dt>
+<dd class="field-odd"><ul class="simple">
+<li><p><strong>data_source</strong> (<em>str</em><em> or </em><em>pd.DataFrame</em>) – a string with a file containing Data or a pandas DataFrame to be read.</p></li>
+<li><p><strong>target_name</strong> (<code class="xref py py-class docutils literal notranslate"><span class="pre">str</span></code>) – optionally specify the target_name column within the data set</p></li>
+<li><p><strong>features</strong> (<code class="xref py py-data docutils literal notranslate"><span class="pre">Union</span></code>[<code class="xref py py-class docutils literal notranslate"><span class="pre">str</span></code>, <code class="xref py py-class docutils literal notranslate"><span class="pre">Sequence</span></code>, <code class="docutils literal notranslate"><span class="pre">None</span></code>]) – optionally pre define features which are to be kept upon initialization</p></li>
+</ul>
+</dd>
+</dl>
+</dd></dl>
+
+<dl class="py method">
+<dt id="baseattrs.BasicDataAttributes.all_feature_columns">
+<em class="property">property </em><code class="sig-name descname">all_feature_columns</code><a class="headerlink" href="#baseattrs.BasicDataAttributes.all_feature_columns" title="Permalink to this definition">¶</a></dt>
+<dd><blockquote>
+<div><p>Returns all feature columns of the data frame</p>
+</div></blockquote>
+<dl class="field-list simple">
+<dt class="field-odd">Returns</dt>
+<dd class="field-odd"><p>a list of all feature columns</p>
+</dd>
+<dt class="field-even">Return type</dt>
+<dd class="field-even"><p>list</p>
+</dd>
+<dt class="field-odd">Returns</dt>
+<dd class="field-odd"><p></p>
+</dd>
+</dl>
+</dd></dl>
+
+<dl class="py method">
+<dt id="baseattrs.BasicDataAttributes.bool_features">
+<em class="property">property </em><code class="sig-name descname">bool_features</code><a class="headerlink" href="#baseattrs.BasicDataAttributes.bool_features" title="Permalink to this definition">¶</a></dt>
+<dd><p>Returns all feature columns having a boolean data type</p>
+<dl class="field-list simple">
+<dt class="field-odd">Returns</dt>
+<dd class="field-odd"><p>a list of all feature columns having a boolean data type</p>
+</dd>
+<dt class="field-even">Return type</dt>
+<dd class="field-even"><p>list</p>
+</dd>
+</dl>
+</dd></dl>
+
+<dl class="py method">
+<dt id="baseattrs.BasicDataAttributes.categorical_features">
+<em class="property">property </em><code class="sig-name descname">categorical_features</code><a class="headerlink" href="#baseattrs.BasicDataAttributes.categorical_features" title="Permalink to this definition">¶</a></dt>
+<dd><p>Returns all feature columns having a categorical data type</p>
+<dl class="field-list simple">
+<dt class="field-odd">Returns</dt>
+<dd class="field-odd"><p>a list of all feature columns having a categorical data type</p>
+</dd>
+<dt class="field-even">Return type</dt>
+<dd class="field-even"><p>list</p>
+</dd>
+</dl>
+</dd></dl>
+
+<dl class="py method">
+<dt id="baseattrs.BasicDataAttributes.convert_nested_dictionary_class">
+<em class="property">static </em><code class="sig-name descname">convert_nested_dictionary_class</code><span class="sig-paren">(</span><em class="sig-param"><span class="n">d</span></em><span class="sig-paren">)</span><a class="reference internal" href="_modules/baseattrs.html#BasicDataAttributes.convert_nested_dictionary_class"><span class="viewcode-link">[source]</span></a><a class="headerlink" href="#baseattrs.BasicDataAttributes.convert_nested_dictionary_class" title="Permalink to this definition">¶</a></dt>
+<dd><p>Takes a dictionary and converts a string values to the corresponding Python classes</p>
+<dl class="field-list simple">
+<dt class="field-odd">Parameters</dt>
+<dd class="field-odd"><p><strong>d</strong> (<code class="xref py py-class docutils literal notranslate"><span class="pre">Dict</span></code>) – a dictionary holding values</p>
+</dd>
+<dt class="field-even">Return type</dt>
+<dd class="field-even"><p><code class="xref py py-class docutils literal notranslate"><span class="pre">Dict</span></code></p>
+</dd>
+<dt class="field-odd">Returns</dt>
+<dd class="field-odd"><p>the dictionary whose key values are now pointing to the value’s corresponding classes</p>
+</dd>
+</dl>
+</dd></dl>
+
+<dl class="py method">
+<dt id="baseattrs.BasicDataAttributes.date_features">
+<em class="property">property </em><code class="sig-name descname">date_features</code><a class="headerlink" href="#baseattrs.BasicDataAttributes.date_features" title="Permalink to this definition">¶</a></dt>
+<dd><p>Returns all feature columns having a datetime data type</p>
+<dl class="field-list simple">
+<dt class="field-odd">Returns</dt>
+<dd class="field-odd"><p>a list of all feature columns having a datetime data type</p>
+</dd>
+<dt class="field-even">Return type</dt>
+<dd class="field-even"><p>list</p>
+</dd>
+</dl>
+</dd></dl>
+
+<dl class="py attribute">
+<dt id="baseattrs.BasicDataAttributes.dtype_bool">
+<code class="sig-name descname">dtype_bool</code><a class="headerlink" href="#baseattrs.BasicDataAttributes.dtype_bool" title="Permalink to this definition">¶</a></dt>
+<dd><p>alias of <code class="xref py py-class docutils literal notranslate"><span class="pre">builtins.bool</span></code></p>
+</dd></dl>
+
+<dl class="py attribute">
+<dt id="baseattrs.BasicDataAttributes.dtype_cat">
+<code class="sig-name descname">dtype_cat</code><em class="property"> = 'category'</em><a class="headerlink" href="#baseattrs.BasicDataAttributes.dtype_cat" title="Permalink to this definition">¶</a></dt>
+<dd></dd></dl>
+
+<dl class="py attribute">
+<dt id="baseattrs.BasicDataAttributes.dtype_date">
+<code class="sig-name descname">dtype_date</code><a class="headerlink" href="#baseattrs.BasicDataAttributes.dtype_date" title="Permalink to this definition">¶</a></dt>
+<dd><p>alias of <code class="xref py py-class docutils literal notranslate"><span class="pre">numpy.datetime64</span></code></p>
+</dd></dl>
+
+<dl class="py attribute">
+<dt id="baseattrs.BasicDataAttributes.dtype_num">
+<code class="sig-name descname">dtype_num</code><a class="headerlink" href="#baseattrs.BasicDataAttributes.dtype_num" title="Permalink to this definition">¶</a></dt>
+<dd><p>alias of <code class="xref py py-class docutils literal notranslate"><span class="pre">numpy.number</span></code></p>
+</dd></dl>
+
+<dl class="py attribute">
+<dt id="baseattrs.BasicDataAttributes.dtype_str">
+<code class="sig-name descname">dtype_str</code><a class="headerlink" href="#baseattrs.BasicDataAttributes.dtype_str" title="Permalink to this definition">¶</a></dt>
+<dd><p>alias of <code class="xref py py-class docutils literal notranslate"><span class="pre">builtins.object</span></code></p>
+</dd></dl>
+
+<dl class="py method">
+<dt id="baseattrs.BasicDataAttributes.feature_types">
+<em class="property">property </em><code class="sig-name descname">feature_types</code><a class="headerlink" href="#baseattrs.BasicDataAttributes.feature_types" title="Permalink to this definition">¶</a></dt>
+<dd><p>Returns a list of type for all features.</p>
+<dl class="field-list simple">
+<dt class="field-odd">Returns</dt>
+<dd class="field-odd"><p>list of type for all features</p>
+</dd>
+<dt class="field-even">Return type</dt>
+<dd class="field-even"><p>list</p>
+</dd>
+</dl>
+</dd></dl>
+
+<dl class="py method">
+<dt id="baseattrs.BasicDataAttributes.ingest">
+<code class="sig-name descname">ingest</code><span class="sig-paren">(</span><em class="sig-param"><span class="o">**</span><span class="n">options</span></em><span class="sig-paren">)</span><a class="reference internal" href="_modules/baseattrs.html#BasicDataAttributes.ingest"><span class="viewcode-link">[source]</span></a><a class="headerlink" href="#baseattrs.BasicDataAttributes.ingest" title="Permalink to this definition">¶</a></dt>
+<dd><p>Ingests the data source provided in the attribute and derives a pandas DataFrame out of it. The following data source are possible:</p>
+<blockquote>
+<div><ul class="simple">
+<li><p>csv files</p></li>
+<li><p>json files</p></li>
+<li><p>parquet files</p></li>
+<li><p>pickle files</p></li>
+<li><p>pandas DataFrame</p></li>
+</ul>
+</div></blockquote>
+<p>When the data source is a string containing a pointer to a file, the respective file is read. If it is however a pandas DataFrame, the data is kept
+in a DataFrame.</p>
+<p>The pandas DataFrame is saved into the input attribute</p>
+<dl class="field-list simple">
+<dt class="field-odd">Parameters</dt>
+<dd class="field-odd"><p><strong>options</strong> – </p>
+</dd>
+<dt class="field-even">Returns</dt>
+<dd class="field-even"><p></p>
+</dd>
+</dl>
+</dd></dl>
+
+<dl class="py method">
+<dt id="baseattrs.BasicDataAttributes.numerical_features">
+<em class="property">property </em><code class="sig-name descname">numerical_features</code><a class="headerlink" href="#baseattrs.BasicDataAttributes.numerical_features" title="Permalink to this definition">¶</a></dt>
+<dd><p>Returns all feature columns having a numerical data type, i.e. int and float</p>
+<dl class="field-list simple">
+<dt class="field-odd">Returns</dt>
+<dd class="field-odd"><p>a list of all feature columns having a numerical data type, i.e. int and float</p>
+</dd>
+<dt class="field-even">Return type</dt>
+<dd class="field-even"><p>list</p>
+</dd>
+</dl>
+</dd></dl>
+
+<dl class="py method">
+<dt id="baseattrs.BasicDataAttributes.reset_feature_type">
+<code class="sig-name descname">reset_feature_type</code><span class="sig-paren">(</span><em class="sig-param"><span class="n">feature</span></em>, <em class="sig-param"><span class="n">dtype</span></em><span class="sig-paren">)</span><a class="reference internal" href="_modules/baseattrs.html#BasicDataAttributes.reset_feature_type"><span class="viewcode-link">[source]</span></a><a class="headerlink" href="#baseattrs.BasicDataAttributes.reset_feature_type" title="Permalink to this definition">¶</a></dt>
+<dd><p>This function can be used to reset the data type for a specified column</p>
+<dl class="field-list simple">
+<dt class="field-odd">Parameters</dt>
+<dd class="field-odd"><ul class="simple">
+<li><p><strong>feature</strong> (<code class="xref py py-class docutils literal notranslate"><span class="pre">str</span></code>) – <p>’’</p>
+</p></li>
+<li><p><strong>dtype</strong> (<code class="xref py py-data docutils literal notranslate"><span class="pre">Union</span></code>[<code class="xref py py-class docutils literal notranslate"><span class="pre">str</span></code>, <code class="xref py py-class docutils literal notranslate"><span class="pre">number</span></code>, <code class="xref py py-class docutils literal notranslate"><span class="pre">int</span></code>, <code class="xref py py-class docutils literal notranslate"><span class="pre">float</span></code>]) – </p></li>
+</ul>
+</dd>
+<dt class="field-even">Returns</dt>
+<dd class="field-even"><p></p>
+</dd>
+</dl>
+</dd></dl>
+
+<dl class="py method">
+<dt id="baseattrs.BasicDataAttributes.string_features">
+<em class="property">property </em><code class="sig-name descname">string_features</code><a class="headerlink" href="#baseattrs.BasicDataAttributes.string_features" title="Permalink to this definition">¶</a></dt>
+<dd><p>Returns all feature columns having a object data type. In pandas, object data types are found to be string features. It is however possible,
+that these are other native Python objects as list, dict or tuples.</p>
+<dl class="field-list simple">
+<dt class="field-odd">Returns</dt>
+<dd class="field-odd"><p>a list of all feature columns having an object data type</p>
+</dd>
+<dt class="field-even">Return type</dt>
+<dd class="field-even"><p>list</p>
+</dd>
+</dl>
+</dd></dl>
+
+</dd></dl>
+
+<dl class="py class">
+<dt id="baseattrs.BaseStats">
+<em class="property">class </em><code class="sig-prename descclassname">baseattrs.</code><code class="sig-name descname">BaseStats</code><span class="sig-paren">(</span><em class="sig-param"><span class="n">data</span></em><span class="sig-paren">)</span><a class="reference internal" href="_modules/baseattrs.html#BaseStats"><span class="viewcode-link">[source]</span></a><a class="headerlink" href="#baseattrs.BaseStats" title="Permalink to this definition">¶</a></dt>
+<dd><dl class="py method">
+<dt id="baseattrs.BaseStats.__init__">
+<code class="sig-name descname">__init__</code><span class="sig-paren">(</span><em class="sig-param"><span class="n">data</span></em><span class="sig-paren">)</span><a class="reference internal" href="_modules/baseattrs.html#BaseStats.__init__"><span class="viewcode-link">[source]</span></a><a class="headerlink" href="#baseattrs.BaseStats.__init__" title="Permalink to this definition">¶</a></dt>
+<dd><p>Initialization of the basic class. It accepts a pandas DataFrame as input.</p>
+<dl class="field-list simple">
+<dt class="field-odd">Parameters</dt>
+<dd class="field-odd"><p><strong>data</strong> (<code class="xref py py-data docutils literal notranslate"><span class="pre">Union</span></code>[<code class="xref py py-class docutils literal notranslate"><span class="pre">str</span></code>, <code class="xref py py-class docutils literal notranslate"><span class="pre">DataFrame</span></code>]) – the base DataFrame</p>
+</dd>
+<dt class="field-even">Rtype data</dt>
+<dd class="field-even"><p>pd.DataFrame</p>
+</dd>
+</dl>
+</dd></dl>
+
+<dl class="py method">
+<dt id="baseattrs.BaseStats._abs_rel_namedtuple_creator">
+<em class="property">static </em><code class="sig-name descname">_abs_rel_namedtuple_creator</code><span class="sig-paren">(</span><em class="sig-param"><span class="n">value</span></em><span class="sig-paren">)</span><a class="reference internal" href="_modules/baseattrs.html#BaseStats._abs_rel_namedtuple_creator"><span class="viewcode-link">[source]</span></a><a class="headerlink" href="#baseattrs.BaseStats._abs_rel_namedtuple_creator" title="Permalink to this definition">¶</a></dt>
+<dd><p>Returns a namedtuple with an absolute and percent attribute</p>
+<dl class="field-list simple">
+<dt class="field-odd">Parameters</dt>
+<dd class="field-odd"><p><strong>value</strong> (<code class="xref py py-class docutils literal notranslate"><span class="pre">str</span></code>) – the namedtuple name</p>
+</dd>
+<dt class="field-even">Returns</dt>
+<dd class="field-even"><p>a namedtuple with absolute and percent values</p>
+</dd>
+<dt class="field-odd">Return type</dt>
+<dd class="field-odd"><p>namedtuple</p>
+</dd>
+</dl>
+</dd></dl>
+
+<dl class="py method">
+<dt id="baseattrs.BaseStats.get_missing_values">
+<code class="sig-name descname">get_missing_values</code><span class="sig-paren">(</span><em class="sig-param"><span class="n">column</span></em><span class="sig-paren">)</span><a class="reference internal" href="_modules/baseattrs.html#BaseStats.get_missing_values"><span class="viewcode-link">[source]</span></a><a class="headerlink" href="#baseattrs.BaseStats.get_missing_values" title="Permalink to this definition">¶</a></dt>
+<dd><p>Returns the amount of missing values for a given column. Returns a namedtuple including the absolute and relative value of missing values.</p>
+<dl class="field-list simple">
+<dt class="field-odd">Parameters</dt>
+<dd class="field-odd"><p><strong>column</strong> (<code class="xref py py-class docutils literal notranslate"><span class="pre">str</span></code>) – a string of the DataFame column</p>
+</dd>
+<dt class="field-even">Returns</dt>
+<dd class="field-even"><p>a namedtuple with absolute and relative amount of missing values</p>
+</dd>
+<dt class="field-odd">Return type</dt>
+<dd class="field-odd"><p>namedtuple</p>
+</dd>
+</dl>
+</dd></dl>
+
+<dl class="py method">
+<dt id="baseattrs.BaseStats.get_size_in_memory">
+<code class="sig-name descname">get_size_in_memory</code><span class="sig-paren">(</span><em class="sig-param"><span class="n">column</span></em><span class="sig-paren">)</span><a class="reference internal" href="_modules/baseattrs.html#BaseStats.get_size_in_memory"><span class="viewcode-link">[source]</span></a><a class="headerlink" href="#baseattrs.BaseStats.get_size_in_memory" title="Permalink to this definition">¶</a></dt>
+<dd><p>Returns the amount of memory consumed by the given column</p>
+<dl class="field-list simple">
+<dt class="field-odd">Parameters</dt>
+<dd class="field-odd"><p><strong>column</strong> (<code class="xref py py-class docutils literal notranslate"><span class="pre">str</span></code>) – a string of the DataFame column</p>
+</dd>
+<dt class="field-even">Returns</dt>
+<dd class="field-even"><p>the amount of memory consumed by the columns</p>
+</dd>
+<dt class="field-odd">Return type</dt>
+<dd class="field-odd"><p>str</p>
+</dd>
+</dl>
+</dd></dl>
+
+<dl class="py method">
+<dt id="baseattrs.BaseStats.get_stats">
+<code class="sig-name descname">get_stats</code><span class="sig-paren">(</span><span class="sig-paren">)</span><a class="reference internal" href="_modules/baseattrs.html#BaseStats.get_stats"><span class="viewcode-link">[source]</span></a><a class="headerlink" href="#baseattrs.BaseStats.get_stats" title="Permalink to this definition">¶</a></dt>
+<dd><p>Returns the summary statistics of the pd.DataFrame</p>
+<dl class="field-list simple">
+<dt class="field-odd">Return type</dt>
+<dd class="field-odd"><p><code class="xref py py-class docutils literal notranslate"><span class="pre">DataFrame</span></code></p>
+</dd>
+<dt class="field-even">Returns</dt>
+<dd class="field-even"><p>an overview of the descriptive statistics</p>
+</dd>
+</dl>
+</dd></dl>
+
+<dl class="py method">
+<dt id="baseattrs.BaseStats.get_unique_values">
+<code class="sig-name descname">get_unique_values</code><span class="sig-paren">(</span><em class="sig-param"><span class="n">column</span></em><span class="sig-paren">)</span><a class="reference internal" href="_modules/baseattrs.html#BaseStats.get_unique_values"><span class="viewcode-link">[source]</span></a><a class="headerlink" href="#baseattrs.BaseStats.get_unique_values" title="Permalink to this definition">¶</a></dt>
+<dd><p>Returns the amount of unique values for a given column. Returns a namedtuple including the absolute and relative value of missing values.</p>
+<dl class="field-list simple">
+<dt class="field-odd">Parameters</dt>
+<dd class="field-odd"><p><strong>column</strong> (<code class="xref py py-class docutils literal notranslate"><span class="pre">str</span></code>) – a string of the DataFame column</p>
+</dd>
+<dt class="field-even">Returns</dt>
+<dd class="field-even"><p>a namedtuple with absolute and relative amount of unique values</p>
+</dd>
+<dt class="field-odd">Return type</dt>
+<dd class="field-odd"><p>namedtuple</p>
+</dd>
+</dl>
+</dd></dl>
+
+</dd></dl>
+
+</div>
+<div class="section" id="module-dataframeselector">
+<span id="data-selector"></span><h2>Data Selector<a class="headerlink" href="#module-dataframeselector" title="Permalink to this headline">¶</a></h2>
+<p>This module includes source code to filter Pandas DataFrame to pre-defined columns.
+They inherit the BaseEstimator and TransformerMixin classes from scikit-learn which add a <code class="docutils literal notranslate"><span class="pre">fit_transform</span></code> method and get a new Data Frame.
+There are two DataFrame selector classes:</p>
+<blockquote>
+<div><ul class="simple">
+<li><p><code class="docutils literal notranslate"><span class="pre">TypeSelector</span></code>: accepts a data type as input and returns a DataFrame with all columns of the data type</p></li>
+<li><p><code class="docutils literal notranslate"><span class="pre">NameSelector</span></code>: in contrast, accepts a string or a list of feature names and returns all column whose name is given</p></li>
+</ul>
+</div></blockquote>
+<p>Furthermore, two other classes are inside this class</p>
+<blockquote>
+<div><ul class="simple">
+<li><p>it includes a BooleanTransformer which allows to transform boolean features to numerical</p></li>
+<li><p>it includes a DummyEncoder which can be used to create dummy columns out of Categorical Features</p></li>
+</ul>
+</div></blockquote>
+<dl class="py class">
+<dt id="dataframeselector.NameSelector">
+<em class="property">class </em><code class="sig-prename descclassname">dataframeselector.</code><code class="sig-name descname">NameSelector</code><span class="sig-paren">(</span><em class="sig-param"><span class="n">features</span></em><span class="sig-paren">)</span><a class="reference internal" href="_modules/dataframeselector.html#NameSelector"><span class="viewcode-link">[source]</span></a><a class="headerlink" href="#dataframeselector.NameSelector" title="Permalink to this definition">¶</a></dt>
+<dd><p>Selects a subset of columns from a DataFrame based on a list of feature name</p>
+<dl class="py method">
+<dt id="dataframeselector.NameSelector.__init__">
+<code class="sig-name descname">__init__</code><span class="sig-paren">(</span><em class="sig-param"><span class="n">features</span></em><span class="sig-paren">)</span><a class="reference internal" href="_modules/dataframeselector.html#NameSelector.__init__"><span class="viewcode-link">[source]</span></a><a class="headerlink" href="#dataframeselector.NameSelector.__init__" title="Permalink to this definition">¶</a></dt>
+<dd><p>Specify the feature name(s) to be selected. Either as a string of a feature or a list of features</p>
+<dl class="field-list simple">
+<dt class="field-odd">Parameters</dt>
+<dd class="field-odd"><p><strong>features</strong> (<em>Union</em><em>[</em><em>str</em><em>, </em><em>Sequence</em><em>[</em><em>str</em><em>]</em><em>]</em>) – the features to be selected</p>
+</dd>
+</dl>
+</dd></dl>
+
+<dl class="py method">
+<dt id="dataframeselector.NameSelector.fit">
+<code class="sig-name descname">fit</code><span class="sig-paren">(</span><em class="sig-param"><span class="n">X</span></em>, <em class="sig-param"><span class="n">y</span><span class="o">=</span><span class="default_value">None</span></em>, <em class="sig-param"><span class="o">**</span><span class="n">kwargs</span></em><span class="sig-paren">)</span><a class="reference internal" href="_modules/dataframeselector.html#NameSelector.fit"><span class="viewcode-link">[source]</span></a><a class="headerlink" href="#dataframeselector.NameSelector.fit" title="Permalink to this definition">¶</a></dt>
+<dd></dd></dl>
+
+<dl class="py method">
+<dt id="dataframeselector.NameSelector.transform">
+<code class="sig-name descname">transform</code><span class="sig-paren">(</span><em class="sig-param"><span class="n">X</span></em><span class="sig-paren">)</span><a class="reference internal" href="_modules/dataframeselector.html#NameSelector.transform"><span class="viewcode-link">[source]</span></a><a class="headerlink" href="#dataframeselector.NameSelector.transform" title="Permalink to this definition">¶</a></dt>
+<dd><p>The method to select the data based on feature names</p>
+<dl class="field-list simple">
+<dt class="field-odd">Parameters</dt>
+<dd class="field-odd"><p><strong>X</strong> (<code class="xref py py-class docutils literal notranslate"><span class="pre">DataFrame</span></code>) – the Initial DataFrame</p>
+</dd>
+<dt class="field-even">Return type</dt>
+<dd class="field-even"><p><code class="xref py py-class docutils literal notranslate"><span class="pre">DataFrame</span></code></p>
+</dd>
+<dt class="field-odd">Returns</dt>
+<dd class="field-odd"><p></p>
+</dd>
+</dl>
+</dd></dl>
+
+</dd></dl>
+
+<dl class="py class">
+<dt id="dataframeselector.TypeSelector">
+<em class="property">class </em><code class="sig-prename descclassname">dataframeselector.</code><code class="sig-name descname">TypeSelector</code><span class="sig-paren">(</span><em class="sig-param"><span class="n">dtype</span></em><span class="sig-paren">)</span><a class="reference internal" href="_modules/dataframeselector.html#TypeSelector"><span class="viewcode-link">[source]</span></a><a class="headerlink" href="#dataframeselector.TypeSelector" title="Permalink to this definition">¶</a></dt>
+<dd><p>‘Selects a subset of columns from a DataFrame based on the type of data</p>
+<dl class="py method">
+<dt id="dataframeselector.TypeSelector.__init__">
+<code class="sig-name descname">__init__</code><span class="sig-paren">(</span><em class="sig-param"><span class="n">dtype</span></em><span class="sig-paren">)</span><a class="reference internal" href="_modules/dataframeselector.html#TypeSelector.__init__"><span class="viewcode-link">[source]</span></a><a class="headerlink" href="#dataframeselector.TypeSelector.__init__" title="Permalink to this definition">¶</a></dt>
+<dd><p>Initializes a Type Selector object that selects subset of the DataFrame</p>
+<dl class="field-list simple">
+<dt class="field-odd">Parameters</dt>
+<dd class="field-odd"><p><strong>dtype</strong> (<em>Union</em><em>[</em><em>str</em><em>, </em><em>int</em><em>, </em><em>float</em><em>, </em><em>number</em><em>, </em><em>pd.datetime</em><em>]</em>) – the given data type for selection</p>
+</dd>
+</dl>
+</dd></dl>
+
+<dl class="py method">
+<dt id="dataframeselector.TypeSelector.fit">
+<code class="sig-name descname">fit</code><span class="sig-paren">(</span><em class="sig-param"><span class="n">X</span></em>, <em class="sig-param"><span class="n">y</span><span class="o">=</span><span class="default_value">None</span></em>, <em class="sig-param"><span class="o">**</span><span class="n">kwargs</span></em><span class="sig-paren">)</span><a class="reference internal" href="_modules/dataframeselector.html#TypeSelector.fit"><span class="viewcode-link">[source]</span></a><a class="headerlink" href="#dataframeselector.TypeSelector.fit" title="Permalink to this definition">¶</a></dt>
+<dd></dd></dl>
+
+<dl class="py method">
+<dt id="dataframeselector.TypeSelector.transform">
+<code class="sig-name descname">transform</code><span class="sig-paren">(</span><em class="sig-param"><span class="n">X</span></em><span class="sig-paren">)</span><a class="reference internal" href="_modules/dataframeselector.html#TypeSelector.transform"><span class="viewcode-link">[source]</span></a><a class="headerlink" href="#dataframeselector.TypeSelector.transform" title="Permalink to this definition">¶</a></dt>
+<dd><p>The method to select the data based on the data type</p>
+<dl class="field-list simple">
+<dt class="field-odd">Parameters</dt>
+<dd class="field-odd"><p><strong>X</strong> (<code class="xref py py-class docutils literal notranslate"><span class="pre">DataFrame</span></code>) – the Initial DataFrame</p>
+</dd>
+<dt class="field-even">Return type</dt>
+<dd class="field-even"><p><code class="xref py py-class docutils literal notranslate"><span class="pre">DataFrame</span></code></p>
+</dd>
+<dt class="field-odd">Returns</dt>
+<dd class="field-odd"><p></p>
+</dd>
+</dl>
+</dd></dl>
+
+</dd></dl>
+
+</div>
+<div class="section" id="module-date_and_time">
+<span id="data-and-time"></span><h2>Data and Time<a class="headerlink" href="#module-date_and_time" title="Permalink to this headline">¶</a></h2>
+<p>This module defines a data class used to process features by time.
+It now has only minor method which are intended to have more methods added by time. As of today (08.05.2020), it has the following methods</p>
+<blockquote>
+<div><ul class="simple">
+<li><p><code class="docutils literal notranslate"><span class="pre">rolling_mean_plot</span></code>: a plot for visualizing time data</p></li>
+<li><p><code class="docutils literal notranslate"><span class="pre">rel_plot</span></code>: a plot for visualizing time data</p></li>
+</ul>
+</div></blockquote>
+<p>Furthermore, it has code to generate features out of date time data.
+Note that all of those classes are using the BaseEstimator and TransformerMixin classes from the scikit-learn bases classes.
+In order to use the <code class="docutils literal notranslate"><span class="pre">fit_transform</span></code> implemented by the scikit-learn, every single Feature Transformer needs to have a  <code class="docutils literal notranslate"><span class="pre">fit</span></code> and <code class="docutils literal notranslate"><span class="pre">transform</span></code> method.
+The <code class="docutils literal notranslate"><span class="pre">fit</span></code> methods returns the object itself and is therefore not documented</p>
+<dl class="py class">
+<dt id="date_and_time.DateByAnalyzer">
+<em class="property">class </em><code class="sig-prename descclassname">date_and_time.</code><code class="sig-name descname">DateByAnalyzer</code><span class="sig-paren">(</span><em class="sig-param"><span class="n">data</span></em>, <em class="sig-param"><span class="n">x_cols</span></em>, <em class="sig-param"><span class="n">date_cols</span></em><span class="sig-paren">)</span><a class="reference internal" href="_modules/date_and_time.html#DateByAnalyzer"><span class="viewcode-link">[source]</span></a><a class="headerlink" href="#date_and_time.DateByAnalyzer" title="Permalink to this definition">¶</a></dt>
+<dd><p>A class which can be used to plot features (x_cols) by Time</p>
+<dl class="py method">
+<dt id="date_and_time.DateByAnalyzer.__init__">
+<code class="sig-name descname">__init__</code><span class="sig-paren">(</span><em class="sig-param"><span class="n">data</span></em>, <em class="sig-param"><span class="n">x_cols</span></em>, <em class="sig-param"><span class="n">date_cols</span></em><span class="sig-paren">)</span><a class="reference internal" href="_modules/date_and_time.html#DateByAnalyzer.__init__"><span class="viewcode-link">[source]</span></a><a class="headerlink" href="#date_and_time.DateByAnalyzer.__init__" title="Permalink to this definition">¶</a></dt>
+<dd><p>Initializes a Date By Analyzer object</p>
+<dl class="field-list simple">
+<dt class="field-odd">Parameters</dt>
+<dd class="field-odd"><ul class="simple">
+<li><p><strong>data</strong> (<code class="xref py py-data docutils literal notranslate"><span class="pre">Union</span></code>[<code class="xref py py-class docutils literal notranslate"><span class="pre">str</span></code>, <code class="xref py py-class docutils literal notranslate"><span class="pre">DataFrame</span></code>]) – The source or Data Frame the source data comes from</p></li>
+<li><p><strong>x_cols</strong> (<code class="xref py py-data docutils literal notranslate"><span class="pre">Union</span></code>[<code class="xref py py-class docutils literal notranslate"><span class="pre">str</span></code>, <code class="xref py py-class docutils literal notranslate"><span class="pre">Sequence</span></code>[<code class="xref py py-class docutils literal notranslate"><span class="pre">str</span></code>]]) – the different columns which are to be analyzed by time</p></li>
+<li><p><strong>date_cols</strong> (<code class="xref py py-data docutils literal notranslate"><span class="pre">Union</span></code>[<code class="xref py py-class docutils literal notranslate"><span class="pre">str</span></code>, <code class="xref py py-class docutils literal notranslate"><span class="pre">Sequence</span></code>[<code class="xref py py-class docutils literal notranslate"><span class="pre">str</span></code>]]) – the date columns.</p></li>
+</ul>
+</dd>
+</dl>
+</dd></dl>
+
+<dl class="py method">
+<dt id="date_and_time.DateByAnalyzer.rel_plot">
+<code class="sig-name descname">rel_plot</code><span class="sig-paren">(</span><em class="sig-param"><span class="o">**</span><span class="n">options</span></em><span class="sig-paren">)</span><a class="reference internal" href="_modules/date_and_time.html#DateByAnalyzer.rel_plot"><span class="viewcode-link">[source]</span></a><a class="headerlink" href="#date_and_time.DateByAnalyzer.rel_plot" title="Permalink to this definition">¶</a></dt>
+<dd><p>Generates a relationship plot between x column by the date.</p>
+<dl class="field-list simple">
+<dt class="field-odd">Parameters</dt>
+<dd class="field-odd"><p><strong>options</strong> – </p>
+</dd>
+<dt class="field-even">Returns</dt>
+<dd class="field-even"><p></p>
+</dd>
+</dl>
+</dd></dl>
+
+<dl class="py method">
+<dt id="date_and_time.DateByAnalyzer.rolling_mean_plot">
+<code class="sig-name descname">rolling_mean_plot</code><span class="sig-paren">(</span><em class="sig-param"><span class="n">n_roll</span><span class="o">=</span><span class="default_value">6</span></em>, <em class="sig-param"><span class="o">**</span><span class="n">options</span></em><span class="sig-paren">)</span><a class="reference internal" href="_modules/date_and_time.html#DateByAnalyzer.rolling_mean_plot"><span class="viewcode-link">[source]</span></a><a class="headerlink" href="#date_and_time.DateByAnalyzer.rolling_mean_plot" title="Permalink to this definition">¶</a></dt>
+<dd><p>Plots a rolling mean over time of the x column</p>
+<dl class="field-list simple">
+<dt class="field-odd">Parameters</dt>
+<dd class="field-odd"><ul class="simple">
+<li><p><strong>n_roll</strong> (<code class="xref py py-class docutils literal notranslate"><span class="pre">int</span></code>) – number of Windows to take into the calculation of the mean</p></li>
+<li><p><strong>options</strong> (<code class="xref py py-class docutils literal notranslate"><span class="pre">Dict</span></code>) – plotting options</p></li>
+</ul>
+</dd>
+<dt class="field-even">Returns</dt>
+<dd class="field-even"><p></p>
+</dd>
+</dl>
+</dd></dl>
+
+</dd></dl>
+
+<dl class="py class">
+<dt id="date_and_time.UnixTimeStampConverter">
+<em class="property">class </em><code class="sig-prename descclassname">date_and_time.</code><code class="sig-name descname">UnixTimeStampConverter</code><span class="sig-paren">(</span><em class="sig-param"><span class="n">features</span></em><span class="sig-paren">)</span><a class="reference internal" href="_modules/date_and_time.html#UnixTimeStampConverter"><span class="viewcode-link">[source]</span></a><a class="headerlink" href="#date_and_time.UnixTimeStampConverter" title="Permalink to this definition">¶</a></dt>
+<dd><p>Converts the Unix Time Stamp of a feature to a datetime Object</p>
+<dl class="py method">
+<dt id="date_and_time.UnixTimeStampConverter.__init__">
+<code class="sig-name descname">__init__</code><span class="sig-paren">(</span><em class="sig-param"><span class="n">features</span></em><span class="sig-paren">)</span><a class="reference internal" href="_modules/date_and_time.html#UnixTimeStampConverter.__init__"><span class="viewcode-link">[source]</span></a><a class="headerlink" href="#date_and_time.UnixTimeStampConverter.__init__" title="Permalink to this definition">¶</a></dt>
+<dd><p>Initialize self.  See help(type(self)) for accurate signature.</p>
+</dd></dl>
+
+<dl class="py method">
+<dt id="date_and_time.UnixTimeStampConverter.fit">
+<code class="sig-name descname">fit</code><span class="sig-paren">(</span><em class="sig-param"><span class="n">X</span></em>, <em class="sig-param"><span class="n">y</span><span class="o">=</span><span class="default_value">None</span></em>, <em class="sig-param"><span class="o">**</span><span class="n">kwargs</span></em><span class="sig-paren">)</span><a class="reference internal" href="_modules/date_and_time.html#UnixTimeStampConverter.fit"><span class="viewcode-link">[source]</span></a><a class="headerlink" href="#date_and_time.UnixTimeStampConverter.fit" title="Permalink to this definition">¶</a></dt>
+<dd><dl class="field-list simple">
+<dt class="field-odd">Return type</dt>
+<dd class="field-odd"><p><a class="reference internal" href="#date_and_time.UnixTimeStampConverter" title="date_and_time.UnixTimeStampConverter"><code class="xref py py-class docutils literal notranslate"><span class="pre">UnixTimeStampConverter</span></code></a></p>
+</dd>
+</dl>
+</dd></dl>
+
+<dl class="py method">
+<dt id="date_and_time.UnixTimeStampConverter.transform">
+<code class="sig-name descname">transform</code><span class="sig-paren">(</span><em class="sig-param"><span class="n">X</span></em><span class="sig-paren">)</span><a class="reference internal" href="_modules/date_and_time.html#UnixTimeStampConverter.transform"><span class="viewcode-link">[source]</span></a><a class="headerlink" href="#date_and_time.UnixTimeStampConverter.transform" title="Permalink to this definition">¶</a></dt>
+<dd><p>Transforms a Unix Timestamp to a Pandas DataFrame <code class="docutils literal notranslate"><span class="pre">datetime</span></code> object</p>
+<dl class="field-list simple">
+<dt class="field-odd">Parameters</dt>
+<dd class="field-odd"><p><strong>X</strong> (<code class="xref py py-class docutils literal notranslate"><span class="pre">DataFrame</span></code>) – The DataFrame whose columns is a UnixTimeStamp</p>
+</dd>
+<dt class="field-even">Return type</dt>
+<dd class="field-even"><p><code class="xref py py-class docutils literal notranslate"><span class="pre">DataFrame</span></code></p>
+</dd>
+<dt class="field-odd">Returns</dt>
+<dd class="field-odd"><p></p>
+</dd>
+</dl>
+</dd></dl>
+
+</dd></dl>
+
+<dl class="py class">
+<dt id="date_and_time.TimeFeatureBasic">
+<em class="property">class </em><code class="sig-prename descclassname">date_and_time.</code><code class="sig-name descname">TimeFeatureBasic</code><span class="sig-paren">(</span><em class="sig-param"><span class="n">time_features</span></em>, <em class="sig-param"><span class="n">delete_original_column</span><span class="o">=</span><span class="default_value">True</span></em>, <em class="sig-param"><span class="n">month</span><span class="o">=</span><span class="default_value">True</span></em>, <em class="sig-param"><span class="n">year</span><span class="o">=</span><span class="default_value">True</span></em>, <em class="sig-param"><span class="n">day</span><span class="o">=</span><span class="default_value">True</span></em>, <em class="sig-param"><span class="n">dayofweek</span><span class="o">=</span><span class="default_value">True</span></em>, <em class="sig-param"><span class="n">dayofyear</span><span class="o">=</span><span class="default_value">True</span></em>, <em class="sig-param"><span class="n">hour</span><span class="o">=</span><span class="default_value">True</span></em>, <em class="sig-param"><span class="n">minute</span><span class="o">=</span><span class="default_value">True</span></em>, <em class="sig-param"><span class="n">week</span><span class="o">=</span><span class="default_value">True</span></em>, <em class="sig-param"><span class="n">weekend</span><span class="o">=</span><span class="default_value">True</span></em>, <em class="sig-param"><span class="n">weekofyear</span><span class="o">=</span><span class="default_value">True</span></em>, <em class="sig-param"><span class="n">quarter</span><span class="o">=</span><span class="default_value">True</span></em>, <em class="sig-param"><span class="n">is_leap_year</span><span class="o">=</span><span class="default_value">True</span></em>, <em class="sig-param"><span class="n">is_month_end</span><span class="o">=</span><span class="default_value">True</span></em>, <em class="sig-param"><span class="n">is_month_start</span><span class="o">=</span><span class="default_value">True</span></em>, <em class="sig-param"><span class="n">is_quarter_start</span><span class="o">=</span><span class="default_value">True</span></em>, <em class="sig-param"><span class="n">is_quarter_end</span><span class="o">=</span><span class="default_value">True</span></em>, <em class="sig-param"><span class="n">is_year_start</span><span class="o">=</span><span class="default_value">True</span></em>, <em class="sig-param"><span class="n">is_year_end</span><span class="o">=</span><span class="default_value">True</span></em><span class="sig-paren">)</span><a class="reference internal" href="_modules/date_and_time.html#TimeFeatureBasic"><span class="viewcode-link">[source]</span></a><a class="headerlink" href="#date_and_time.TimeFeatureBasic" title="Permalink to this definition">¶</a></dt>
+<dd><p>Derives Time features properties in the DataFra e column</p>
+<dl class="py method">
+<dt id="date_and_time.TimeFeatureBasic.__init__">
+<code class="sig-name descname">__init__</code><span class="sig-paren">(</span><em class="sig-param"><span class="n">time_features</span></em>, <em class="sig-param"><span class="n">delete_original_column</span><span class="o">=</span><span class="default_value">True</span></em>, <em class="sig-param"><span class="n">month</span><span class="o">=</span><span class="default_value">True</span></em>, <em class="sig-param"><span class="n">year</span><span class="o">=</span><span class="default_value">True</span></em>, <em class="sig-param"><span class="n">day</span><span class="o">=</span><span class="default_value">True</span></em>, <em class="sig-param"><span class="n">dayofweek</span><span class="o">=</span><span class="default_value">True</span></em>, <em class="sig-param"><span class="n">dayofyear</span><span class="o">=</span><span class="default_value">True</span></em>, <em class="sig-param"><span class="n">hour</span><span class="o">=</span><span class="default_value">True</span></em>, <em class="sig-param"><span class="n">minute</span><span class="o">=</span><span class="default_value">True</span></em>, <em class="sig-param"><span class="n">week</span><span class="o">=</span><span class="default_value">True</span></em>, <em class="sig-param"><span class="n">weekend</span><span class="o">=</span><span class="default_value">True</span></em>, <em class="sig-param"><span class="n">weekofyear</span><span class="o">=</span><span class="default_value">True</span></em>, <em class="sig-param"><span class="n">quarter</span><span class="o">=</span><span class="default_value">True</span></em>, <em class="sig-param"><span class="n">is_leap_year</span><span class="o">=</span><span class="default_value">True</span></em>, <em class="sig-param"><span class="n">is_month_end</span><span class="o">=</span><span class="default_value">True</span></em>, <em class="sig-param"><span class="n">is_month_start</span><span class="o">=</span><span class="default_value">True</span></em>, <em class="sig-param"><span class="n">is_quarter_start</span><span class="o">=</span><span class="default_value">True</span></em>, <em class="sig-param"><span class="n">is_quarter_end</span><span class="o">=</span><span class="default_value">True</span></em>, <em class="sig-param"><span class="n">is_year_start</span><span class="o">=</span><span class="default_value">True</span></em>, <em class="sig-param"><span class="n">is_year_end</span><span class="o">=</span><span class="default_value">True</span></em><span class="sig-paren">)</span><a class="reference internal" href="_modules/date_and_time.html#TimeFeatureBasic.__init__"><span class="viewcode-link">[source]</span></a><a class="headerlink" href="#date_and_time.TimeFeatureBasic.__init__" title="Permalink to this definition">¶</a></dt>
+<dd><p>Initializes a Time Feature creator object.</p>
+<dl class="field-list simple">
+<dt class="field-odd">Parameters</dt>
+<dd class="field-odd"><ul class="simple">
+<li><p><strong>delete_original_column</strong> (<em>bool</em>) – a flag indicating if the original column is dropped from the resulting DataFrame</p></li>
+<li><p><strong>month</strong> (<em>bool</em>) – a flag indicating if the datetime’s <code class="docutils literal notranslate"><span class="pre">month</span></code> is derived</p></li>
+<li><p><strong>year</strong> (<em>bool</em>) – a flag indicating if the datetime’s <code class="docutils literal notranslate"><span class="pre">year</span></code> is derived</p></li>
+<li><p><strong>day</strong> (<em>bool</em>) – a flag indicating if the datetime’s <code class="docutils literal notranslate"><span class="pre">day</span></code> is derived</p></li>
+<li><p><strong>dayofweek</strong> (<em>bool</em>) – a flag indicating if the datetime’s <code class="docutils literal notranslate"><span class="pre">day</span> <span class="pre">of</span> <span class="pre">the</span> <span class="pre">week</span></code> is derived</p></li>
+<li><p><strong>dayofyear</strong> (<em>bool</em>) – a flag indicating if the datetime’s <code class="docutils literal notranslate"><span class="pre">day</span> <span class="pre">of</span> <span class="pre">the</span> <span class="pre">year</span></code> is derived</p></li>
+<li><p><strong>hour</strong> (<em>bool</em>) – a flag indicating if the datetime’s <code class="docutils literal notranslate"><span class="pre">hour</span></code> is derived</p></li>
+<li><p><strong>minute</strong> (<em>bool</em>) – a flag indicating if the datetime’s <code class="docutils literal notranslate"><span class="pre">minute</span></code> is derived</p></li>
+<li><p><strong>week</strong> (<em>bool</em>) – a flag indicating if the datetime’s <code class="docutils literal notranslate"><span class="pre">week</span></code> is derived</p></li>
+<li><p><strong>weekend</strong> (<em>bool</em>) – a flag indicating if the datetime is during a weekend</p></li>
+<li><p><strong>weekofyear</strong> (<em>bool</em>) – a flag indicating if the datetime’s <a href="#id1"><span class="problematic" id="id2">``</span></a>week of year` is derived</p></li>
+<li><p><strong>quarter</strong> (<em>bool</em>) – a flag indicating if the datetime’s <code class="docutils literal notranslate"><span class="pre">quarter</span></code> is derived</p></li>
+<li><p><strong>is_leap_year</strong> (<em>bool</em>) – a flag indicating if the datetime’s  derives, if it is a leap year</p></li>
+<li><p><strong>is_month_end</strong> (<em>bool</em>) – a flag indicating if the datetime’s  derives, if it is the month’s last day</p></li>
+<li><p><strong>is_month_start</strong> (<em>bool</em>) – a flag indicating if the datetime’s  derives, if it is the month’s first day</p></li>
+<li><p><strong>is_quarter_start</strong> (<code class="xref py py-class docutils literal notranslate"><span class="pre">bool</span></code>) – a flag indicating if the datetime’s  derives, if it is the quarter’s first day</p></li>
+<li><p><strong>is_quarter_end</strong> (<em>bool</em>) – a flag indicating if the datetime’s  derives, if it is the quarter’s last day</p></li>
+<li><p><strong>is_year_start</strong> (<em>bool</em>) – a flag indicating if the datetime’s  derives, if it is the year’s first day</p></li>
+<li><p><strong>is_year_end</strong> (<em>bool</em>) – a flag indicating if the datetime’s  derives, if it is the year’s last day</p></li>
+</ul>
+</dd>
+</dl>
+</dd></dl>
+
+<dl class="py method">
+<dt id="date_and_time.TimeFeatureBasic.fit">
+<code class="sig-name descname">fit</code><span class="sig-paren">(</span><em class="sig-param"><span class="n">X</span></em>, <em class="sig-param"><span class="n">y</span><span class="o">=</span><span class="default_value">None</span></em>, <em class="sig-param"><span class="o">**</span><span class="n">kwargs</span></em><span class="sig-paren">)</span><a class="reference internal" href="_modules/date_and_time.html#TimeFeatureBasic.fit"><span class="viewcode-link">[source]</span></a><a class="headerlink" href="#date_and_time.TimeFeatureBasic.fit" title="Permalink to this definition">¶</a></dt>
+<dd></dd></dl>
+
+<dl class="py method">
+<dt id="date_and_time.TimeFeatureBasic.transform">
+<code class="sig-name descname">transform</code><span class="sig-paren">(</span><em class="sig-param"><span class="n">X</span></em><span class="sig-paren">)</span><a class="reference internal" href="_modules/date_and_time.html#TimeFeatureBasic.transform"><span class="viewcode-link">[source]</span></a><a class="headerlink" href="#date_and_time.TimeFeatureBasic.transform" title="Permalink to this definition">¶</a></dt>
+<dd><p>Iterates over all boolean columns. If they are set to True, the respective feature is derived</p>
+<dl class="field-list simple">
+<dt class="field-odd">Parameters</dt>
+<dd class="field-odd"><p><strong>X</strong> (<code class="xref py py-class docutils literal notranslate"><span class="pre">DataFrame</span></code>) – The DataFrame for which the different features a re derived</p>
+</dd>
+<dt class="field-even">Return type</dt>
+<dd class="field-even"><p><code class="xref py py-class docutils literal notranslate"><span class="pre">DataFrame</span></code></p>
+</dd>
+<dt class="field-odd">Returns</dt>
+<dd class="field-odd"><p></p>
+</dd>
+</dl>
+</dd></dl>
+
+</dd></dl>
+
+<dl class="py class">
+<dt id="date_and_time.TimeDifference">
+<em class="property">class </em><code class="sig-prename descclassname">date_and_time.</code><code class="sig-name descname">TimeDifference</code><span class="sig-paren">(</span><em class="sig-param"><span class="n">x_time</span></em>, <em class="sig-param"><span class="n">y_time</span></em>, <em class="sig-param"><span class="n">days</span><span class="o">=</span><span class="default_value">True</span></em>, <em class="sig-param"><span class="n">seconds</span><span class="o">=</span><span class="default_value">False</span></em>, <em class="sig-param"><span class="n">microseconds</span><span class="o">=</span><span class="default_value">False</span></em>, <em class="sig-param"><span class="n">nanoseconds</span><span class="o">=</span><span class="default_value">False</span></em>, <em class="sig-param"><span class="n">components</span><span class="o">=</span><span class="default_value">False</span></em><span class="sig-paren">)</span><a class="reference internal" href="_modules/date_and_time.html#TimeDifference"><span class="viewcode-link">[source]</span></a><a class="headerlink" href="#date_and_time.TimeDifference" title="Permalink to this definition">¶</a></dt>
+<dd><p>Returns the difference in time between two different time columns.</p>
+<dl class="py method">
+<dt id="date_and_time.TimeDifference.__init__">
+<code class="sig-name descname">__init__</code><span class="sig-paren">(</span><em class="sig-param"><span class="n">x_time</span></em>, <em class="sig-param"><span class="n">y_time</span></em>, <em class="sig-param"><span class="n">days</span><span class="o">=</span><span class="default_value">True</span></em>, <em class="sig-param"><span class="n">seconds</span><span class="o">=</span><span class="default_value">False</span></em>, <em class="sig-param"><span class="n">microseconds</span><span class="o">=</span><span class="default_value">False</span></em>, <em class="sig-param"><span class="n">nanoseconds</span><span class="o">=</span><span class="default_value">False</span></em>, <em class="sig-param"><span class="n">components</span><span class="o">=</span><span class="default_value">False</span></em><span class="sig-paren">)</span><a class="reference internal" href="_modules/date_and_time.html#TimeDifference.__init__"><span class="viewcode-link">[source]</span></a><a class="headerlink" href="#date_and_time.TimeDifference.__init__" title="Permalink to this definition">¶</a></dt>
+<dd><p>Initializes a Time Difference Calculator object to fit_transform a DataFrame
+The following return columns can be retrieved:</p>
+<blockquote>
+<div><ul class="simple">
+<li><p><code class="docutils literal notranslate"><span class="pre">days</span></code>: the difference of days between the two columns</p></li>
+<li><p><code class="docutils literal notranslate"><span class="pre">seconds</span></code>: the difference of seconds between the two columns</p></li>
+<li><p><code class="docutils literal notranslate"><span class="pre">microseconds</span></code>: the difference of microseconds between the two columns</p></li>
+<li><p>`` nanoseconds``:  the difference of nanoseconds between the two columns</p></li>
+<li><p><code class="docutils literal notranslate"><span class="pre">components</span></code>: the difference expressed in date time components</p></li>
+</ul>
+</div></blockquote>
+<dl class="field-list simple">
+<dt class="field-odd">Parameters</dt>
+<dd class="field-odd"><ul class="simple">
+<li><p><strong>x_time</strong> (<em>str</em>) – first time column</p></li>
+<li><p><strong>y_time</strong> (<em>str</em>) – second time column</p></li>
+<li><p><strong>days</strong> (<em>bool</em>) – a flag indicating if a column with the difference in <code class="docutils literal notranslate"><span class="pre">days</span></code> is returned</p></li>
+<li><p><strong>seconds</strong> (<em>bool</em>) – a flag indicating if a column with the difference in <code class="docutils literal notranslate"><span class="pre">seconds</span></code> is returned</p></li>
+<li><p><strong>microseconds</strong> (<em>bool</em>) – a flag indicating if a column with the difference in <code class="docutils literal notranslate"><span class="pre">microseconds</span></code> is returned</p></li>
+<li><p><strong>nanoseconds</strong> (<em>bool</em>) – a flag indicating if a column with the difference in <code class="docutils literal notranslate"><span class="pre">nanoseconds</span></code> is returned</p></li>
+<li><p><strong>components</strong> (<code class="xref py py-class docutils literal notranslate"><span class="pre">bool</span></code>) – a flag indicating if a column with the difference in <code class="docutils literal notranslate"><span class="pre">datetime</span> <span class="pre">components</span></code> is returned</p></li>
+</ul>
+</dd>
+</dl>
+</dd></dl>
+
+<dl class="py method">
+<dt id="date_and_time.TimeDifference.fit">
+<code class="sig-name descname">fit</code><span class="sig-paren">(</span><em class="sig-param"><span class="n">X</span></em>, <em class="sig-param"><span class="n">y</span><span class="o">=</span><span class="default_value">None</span></em>, <em class="sig-param"><span class="o">**</span><span class="n">kwargs</span></em><span class="sig-paren">)</span><a class="reference internal" href="_modules/date_and_time.html#TimeDifference.fit"><span class="viewcode-link">[source]</span></a><a class="headerlink" href="#date_and_time.TimeDifference.fit" title="Permalink to this definition">¶</a></dt>
+<dd><dl class="field-list simple">
+<dt class="field-odd">Return type</dt>
+<dd class="field-odd"><p><a class="reference internal" href="#date_and_time.TimeDifference" title="date_and_time.TimeDifference"><code class="xref py py-class docutils literal notranslate"><span class="pre">TimeDifference</span></code></a></p>
+</dd>
+</dl>
+</dd></dl>
+
+<dl class="py method">
+<dt id="date_and_time.TimeDifference.transform">
+<code class="sig-name descname">transform</code><span class="sig-paren">(</span><em class="sig-param"><span class="n">X</span></em><span class="sig-paren">)</span><a class="reference internal" href="_modules/date_and_time.html#TimeDifference.transform"><span class="viewcode-link">[source]</span></a><a class="headerlink" href="#date_and_time.TimeDifference.transform" title="Permalink to this definition">¶</a></dt>
+<dd><p>Transforms the DataFrame by creating new columns yielding the time difference.
+Iterates over all boolean arguments and applies a transformation is the boolean flag is set to True.</p>
+<dl class="field-list simple">
+<dt class="field-odd">Parameters</dt>
+<dd class="field-odd"><p><strong>X</strong> (<code class="xref py py-class docutils literal notranslate"><span class="pre">DataFrame</span></code>) – The DataFrame for which the time difference between x_time and y_time is yielded</p>
+</dd>
+<dt class="field-even">Return type</dt>
+<dd class="field-even"><p><code class="xref py py-class docutils literal notranslate"><span class="pre">DataFrame</span></code></p>
+</dd>
+<dt class="field-odd">Returns</dt>
+<dd class="field-odd"><p></p>
+</dd>
+</dl>
+</dd></dl>
+
+</dd></dl>
+
+<dl class="py class">
+<dt id="date_and_time.StringToTimeConverter">
+<em class="property">class </em><code class="sig-prename descclassname">date_and_time.</code><code class="sig-name descname">StringToTimeConverter</code><span class="sig-paren">(</span><em class="sig-param"><span class="n">features</span></em>, <em class="sig-param"><span class="n">format_string</span></em><span class="sig-paren">)</span><a class="reference internal" href="_modules/date_and_time.html#StringToTimeConverter"><span class="viewcode-link">[source]</span></a><a class="headerlink" href="#date_and_time.StringToTimeConverter" title="Permalink to this definition">¶</a></dt>
+<dd><p>Converts a time column expressed as a string to a Datetime object</p>
+<dl class="py method">
+<dt id="date_and_time.StringToTimeConverter.__init__">
+<code class="sig-name descname">__init__</code><span class="sig-paren">(</span><em class="sig-param"><span class="n">features</span></em>, <em class="sig-param"><span class="n">format_string</span></em><span class="sig-paren">)</span><a class="reference internal" href="_modules/date_and_time.html#StringToTimeConverter.__init__"><span class="viewcode-link">[source]</span></a><a class="headerlink" href="#date_and_time.StringToTimeConverter.__init__" title="Permalink to this definition">¶</a></dt>
+<dd><p>Initializes an object to convert string column to a datetime column</p>
+<dl class="field-list simple">
+<dt class="field-odd">Parameters</dt>
+<dd class="field-odd"><ul class="simple">
+<li><p><strong>features</strong> (<em>Union</em><em>[</em><em>str</em><em>, </em><em>Sequence</em><em>]</em>) – the feature column whose column string is to be converted</p></li>
+<li><p><strong>format_string</strong> (<em>str</em>) – the string format to be converted to a datetime object</p></li>
+</ul>
+</dd>
+</dl>
+</dd></dl>
+
+<dl class="py method">
+<dt id="date_and_time.StringToTimeConverter.as_date_time">
+<em class="property">static </em><code class="sig-name descname">as_date_time</code><span class="sig-paren">(</span><em class="sig-param"><span class="n">date_str</span></em>, <em class="sig-param"><span class="n">format_string</span><span class="o">=</span><span class="default_value">'%Y-%m-%d'</span></em><span class="sig-paren">)</span><a class="reference internal" href="_modules/date_and_time.html#StringToTimeConverter.as_date_time"><span class="viewcode-link">[source]</span></a><a class="headerlink" href="#date_and_time.StringToTimeConverter.as_date_time" title="Permalink to this definition">¶</a></dt>
+<dd><p>Converts a date string to a Python datetime object. Format string is YYYY-MM-DD</p>
+<dl class="field-list simple">
+<dt class="field-odd">Parameters</dt>
+<dd class="field-odd"><p><strong>date_str</strong> (<em>str</em>) – a date in a string format</p>
+</dd>
+<dt class="field-even">Format_string</dt>
+<dd class="field-even"><p>the string format</p>
+</dd>
+<dt class="field-odd">Returns</dt>
+<dd class="field-odd"><p>the date in a datetime format</p>
+</dd>
+<dt class="field-even">Return type</dt>
+<dd class="field-even"><p>datetime</p>
+</dd>
+</dl>
+</dd></dl>
+
+<dl class="py method">
+<dt id="date_and_time.StringToTimeConverter.fit">
+<code class="sig-name descname">fit</code><span class="sig-paren">(</span><em class="sig-param"><span class="n">X</span></em>, <em class="sig-param"><span class="n">y</span><span class="o">=</span><span class="default_value">None</span></em>, <em class="sig-param"><span class="o">**</span><span class="n">kwargs</span></em><span class="sig-paren">)</span><a class="reference internal" href="_modules/date_and_time.html#StringToTimeConverter.fit"><span class="viewcode-link">[source]</span></a><a class="headerlink" href="#date_and_time.StringToTimeConverter.fit" title="Permalink to this definition">¶</a></dt>
+<dd></dd></dl>
+
+<dl class="py method">
+<dt id="date_and_time.StringToTimeConverter.transform">
+<code class="sig-name descname">transform</code><span class="sig-paren">(</span><em class="sig-param"><span class="n">X</span></em><span class="sig-paren">)</span><a class="reference internal" href="_modules/date_and_time.html#StringToTimeConverter.transform"><span class="viewcode-link">[source]</span></a><a class="headerlink" href="#date_and_time.StringToTimeConverter.transform" title="Permalink to this definition">¶</a></dt>
+<dd><p>Transforms the DataFrame columns to an datetime object.</p>
+<dl class="field-list simple">
+<dt class="field-odd">Parameters</dt>
+<dd class="field-odd"><p><strong>X</strong> (<code class="xref py py-class docutils literal notranslate"><span class="pre">DataFrame</span></code>) – The DataFrame for which the time difference between x_time and y_time is yielded</p>
+</dd>
+<dt class="field-even">Return type</dt>
+<dd class="field-even"><p><code class="xref py py-class docutils literal notranslate"><span class="pre">DataFrame</span></code></p>
+</dd>
+<dt class="field-odd">Returns</dt>
+<dd class="field-odd"><p></p>
+</dd>
+</dl>
+</dd></dl>
+
+</dd></dl>
+
+</div>
+<div class="section" id="module-gis">
+<span id="geoinformation-system"></span><h2>Geoinformation System<a class="headerlink" href="#module-gis" title="Permalink to this headline">¶</a></h2>
+<p>This module contains source code to analyze geographical information (gis) data.
+It includes two classes where on inherits from the other. The class purposes are especially suited for
+visualization of the data</p>
+<p>Furthermore, ut contains methods to generate features out of Geographical Information System (GIS).
+Note that all of those classes are using the BaseEstimator and TransformerMixin classes from the scikit-learn bases classes.
+In order to use the <code class="docutils literal notranslate"><span class="pre">fit_transform</span></code> implemented by the scikit-learn, every single Feature Transformer needs to have a  <code class="docutils literal notranslate"><span class="pre">fit</span></code> and <code class="docutils literal notranslate"><span class="pre">transform</span></code> method.
+The <code class="docutils literal notranslate"><span class="pre">fit</span></code> methods returns the object itself and is therefore not documented</p>
+<dl class="py class">
+<dt id="gis.GisAnalyzer">
+<em class="property">class </em><code class="sig-prename descclassname">gis.</code><code class="sig-name descname">GisAnalyzer</code><span class="sig-paren">(</span><em class="sig-param"><span class="n">data</span></em>, <em class="sig-param"><span class="n">lat</span><span class="o">=</span><span class="default_value">''</span></em>, <em class="sig-param"><span class="n">lon</span><span class="o">=</span><span class="default_value">''</span></em><span class="sig-paren">)</span><a class="reference internal" href="_modules/gis.html#GisAnalyzer"><span class="viewcode-link">[source]</span></a><a class="headerlink" href="#gis.GisAnalyzer" title="Permalink to this definition">¶</a></dt>
+<dd><p>A class used to visualise geographical data based on latitude and longitude columns</p>
+<dl class="py method">
+<dt id="gis.GisAnalyzer.__init__">
+<code class="sig-name descname">__init__</code><span class="sig-paren">(</span><em class="sig-param"><span class="n">data</span></em>, <em class="sig-param"><span class="n">lat</span><span class="o">=</span><span class="default_value">''</span></em>, <em class="sig-param"><span class="n">lon</span><span class="o">=</span><span class="default_value">''</span></em><span class="sig-paren">)</span><a class="reference internal" href="_modules/gis.html#GisAnalyzer.__init__"><span class="viewcode-link">[source]</span></a><a class="headerlink" href="#gis.GisAnalyzer.__init__" title="Permalink to this definition">¶</a></dt>
+<dd><p>Initializes a GIS Analyzer object. It expects a DataFrame as input. Furthermore, it has the <code class="docutils literal notranslate"><span class="pre">lat</span></code> and <code class="docutils literal notranslate"><span class="pre">lon</span></code> columns which are
+used for defining the latitude and longitude. They do not have to be set upon object creation but can be reset using the corresponding
+<code class="docutils literal notranslate"><span class="pre">set_lat</span></code> and <code class="docutils literal notranslate"><span class="pre">set_lon</span></code> methods.
+It also has three mapping objects indicating the map style, a color list and a grad list.</p>
+<dl class="field-list simple">
+<dt class="field-odd">Parameters</dt>
+<dd class="field-odd"><ul class="simple">
+<li><p><strong>data</strong> (<em>pd.DataFrame</em>) – the data holding the geographical latitude and longitude columns</p></li>
+<li><p><strong>lat</strong> (<em>str</em>) – the latitude feature column name</p></li>
+<li><p><strong>lon</strong> (<em>str</em>) – the longitude feature column name</p></li>
+</ul>
+</dd>
+</dl>
+</dd></dl>
+
+<dl class="py method">
+<dt id="gis.GisAnalyzer._generate_base_map">
+<code class="sig-name descname">_generate_base_map</code><span class="sig-paren">(</span><em class="sig-param"><span class="n">style</span></em>, <em class="sig-param"><span class="n">zoom_start</span></em><span class="sig-paren">)</span><a class="reference internal" href="_modules/gis.html#GisAnalyzer._generate_base_map"><span class="viewcode-link">[source]</span></a><a class="headerlink" href="#gis.GisAnalyzer._generate_base_map" title="Permalink to this definition">¶</a></dt>
+<dd><p>Private method that generates a basic BaseMap and stores it in OBJECT.map</p>
+<dl class="field-list simple">
+<dt class="field-odd">Return type</dt>
+<dd class="field-odd"><p><a class="reference internal" href="#gis.GisAnalyzer" title="gis.GisAnalyzer"><code class="xref py py-class docutils literal notranslate"><span class="pre">GisAnalyzer</span></code></a></p>
+</dd>
+</dl>
+</dd></dl>
+
+<dl class="py method">
+<dt id="gis.GisAnalyzer.coordinates">
+<em class="property">property </em><code class="sig-name descname">coordinates</code><a class="headerlink" href="#gis.GisAnalyzer.coordinates" title="Permalink to this definition">¶</a></dt>
+<dd><p>A property putting the latitude and longitude to a list. Used as an alias to avoid writing [lat,lon] any time the GIS is plotted</p>
+<dl class="field-list simple">
+<dt class="field-odd">Return type</dt>
+<dd class="field-odd"><p><code class="xref py py-class docutils literal notranslate"><span class="pre">List</span></code>[<code class="xref py py-class docutils literal notranslate"><span class="pre">str</span></code>]</p>
+</dd>
+<dt class="field-even">Returns</dt>
+<dd class="field-even"><p>a list of the latitude and longitude</p>
+</dd>
+</dl>
+</dd></dl>
+
+<dl class="py method">
+<dt id="gis.GisAnalyzer.generate_heat_map">
+<code class="sig-name descname">generate_heat_map</code><span class="sig-paren">(</span><em class="sig-param"><span class="n">style</span><span class="o">=</span><span class="default_value">6</span></em>, <em class="sig-param"><span class="n">zoom_start</span><span class="o">=</span><span class="default_value">12</span></em><span class="sig-paren">)</span><a class="reference internal" href="_modules/gis.html#GisAnalyzer.generate_heat_map"><span class="viewcode-link">[source]</span></a><a class="headerlink" href="#gis.GisAnalyzer.generate_heat_map" title="Permalink to this definition">¶</a></dt>
+<dd><p>Creates a HeatMap with the coordinates found in the latitude and longitude columns.</p>
+<dl class="field-list simple">
+<dt class="field-odd">Parameters</dt>
+<dd class="field-odd"><ul class="simple">
+<li><p><strong>style</strong> (<em>int</em>) – indicates which style of the map to be used</p></li>
+<li><p><strong>zoom_start</strong> (<em>int</em>) – set the initial zoom of the map</p></li>
+</ul>
+</dd>
+<dt class="field-even">Returns</dt>
+<dd class="field-even"><p></p>
+</dd>
+</dl>
+</dd></dl>
+
+<dl class="py method">
+<dt id="gis.GisAnalyzer.generate_heat_map_with_time">
+<code class="sig-name descname">generate_heat_map_with_time</code><span class="sig-paren">(</span><em class="sig-param"><span class="n">style</span><span class="o">=</span><span class="default_value">6</span></em>, <em class="sig-param"><span class="n">zoom_start</span><span class="o">=</span><span class="default_value">12</span></em>, <em class="sig-param"><span class="n">time_var</span><span class="o">=</span><span class="default_value">'hours'</span></em>, <em class="sig-param"><span class="n">time_max_val</span><span class="o">=</span><span class="default_value">24</span></em><span class="sig-paren">)</span><a class="reference internal" href="_modules/gis.html#GisAnalyzer.generate_heat_map_with_time"><span class="viewcode-link">[source]</span></a><a class="headerlink" href="#gis.GisAnalyzer.generate_heat_map_with_time" title="Permalink to this definition">¶</a></dt>
+<dd><p>Generates a interactive HeatMap which enables a geographic visualization by time.</p>
+<dl class="field-list simple">
+<dt class="field-odd">Parameters</dt>
+<dd class="field-odd"><ul class="simple">
+<li><p><strong>style</strong> (<em>int</em>) – indicates which style of the map to be used</p></li>
+<li><p><strong>zoom_start</strong> (<em>int</em>) – set the initial zoom of the map</p></li>
+<li><p><strong>time_var</strong> (<em>str</em>) – the label of the time column by which the data is analyzed by</p></li>
+<li><p><strong>time_max_val</strong> (<em>int</em>) – the maximal time value to be shown</p></li>
+</ul>
+</dd>
+<dt class="field-even">Returns</dt>
+<dd class="field-even"><p></p>
+</dd>
+</dl>
+</dd></dl>
+
+<dl class="py method">
+<dt id="gis.GisAnalyzer.generate_map_cluster">
+<code class="sig-name descname">generate_map_cluster</code><span class="sig-paren">(</span><em class="sig-param"><span class="n">style</span><span class="o">=</span><span class="default_value">6</span></em>, <em class="sig-param"><span class="n">zoom_start</span><span class="o">=</span><span class="default_value">12</span></em>, <em class="sig-param"><span class="n">include_heat_map</span><span class="o">=</span><span class="default_value">True</span></em><span class="sig-paren">)</span><a class="reference internal" href="_modules/gis.html#GisAnalyzer.generate_map_cluster"><span class="viewcode-link">[source]</span></a><a class="headerlink" href="#gis.GisAnalyzer.generate_map_cluster" title="Permalink to this definition">¶</a></dt>
+<dd><p>Generates a map which includes cluster depending on the GIS distances between the different points. The Cluster itself depends on the zooming level</p>
+<dl class="field-list simple">
+<dt class="field-odd">Parameters</dt>
+<dd class="field-odd"><ul class="simple">
+<li><p><strong>style</strong> (<em>int</em>) – indicates which style of the map to be used</p></li>
+<li><p><strong>zoom_start</strong> (<em>int</em>) – set the initial zoom of the map</p></li>
+<li><p><strong>include_heat_map</strong> (<em>bool</em>) – a flag which indicates if an additional HeatMap shall be added to the Map</p></li>
+</ul>
+</dd>
+<dt class="field-even">Returns</dt>
+<dd class="field-even"><p></p>
+</dd>
+</dl>
+</dd></dl>
+
+<dl class="py method">
+<dt id="gis.GisAnalyzer.initial_lat">
+<em class="property">property </em><code class="sig-name descname">initial_lat</code><a class="headerlink" href="#gis.GisAnalyzer.initial_lat" title="Permalink to this definition">¶</a></dt>
+<dd><p>A property yielding the first latitude entry.</p>
+<dl class="field-list simple">
+<dt class="field-odd">Return type</dt>
+<dd class="field-odd"><p><code class="xref py py-class docutils literal notranslate"><span class="pre">float</span></code></p>
+</dd>
+<dt class="field-even">Returns</dt>
+<dd class="field-even"><p>the first entry of the latitude column</p>
+</dd>
+</dl>
+</dd></dl>
+
+<dl class="py method">
+<dt id="gis.GisAnalyzer.initial_lon">
+<em class="property">property </em><code class="sig-name descname">initial_lon</code><a class="headerlink" href="#gis.GisAnalyzer.initial_lon" title="Permalink to this definition">¶</a></dt>
+<dd><p>A property yielding the first longitude entry</p>
+<dl class="field-list simple">
+<dt class="field-odd">Return type</dt>
+<dd class="field-odd"><p><code class="xref py py-class docutils literal notranslate"><span class="pre">float</span></code></p>
+</dd>
+<dt class="field-even">Returns</dt>
+<dd class="field-even"><p>the first entry of the longitude column</p>
+</dd>
+</dl>
+</dd></dl>
+
+<dl class="py method">
+<dt id="gis.GisAnalyzer.set_lat">
+<code class="sig-name descname">set_lat</code><span class="sig-paren">(</span><em class="sig-param"><span class="n">lat</span></em><span class="sig-paren">)</span><a class="reference internal" href="_modules/gis.html#GisAnalyzer.set_lat"><span class="viewcode-link">[source]</span></a><a class="headerlink" href="#gis.GisAnalyzer.set_lat" title="Permalink to this definition">¶</a></dt>
+<dd><p>Resets the name of the latitude column</p>
+<dl class="field-list simple">
+<dt class="field-odd">Parameters</dt>
+<dd class="field-odd"><p><strong>lat</strong> (<em>str</em>) – the label oft the latitude columns</p>
+</dd>
+<dt class="field-even">Return type</dt>
+<dd class="field-even"><p><a class="reference internal" href="#gis.GisAnalyzer" title="gis.GisAnalyzer"><code class="xref py py-class docutils literal notranslate"><span class="pre">GisAnalyzer</span></code></a></p>
+</dd>
+<dt class="field-odd">Returns</dt>
+<dd class="field-odd"><p>the object with its <code class="docutils literal notranslate"><span class="pre">lat</span></code> attribute reset</p>
+</dd>
+</dl>
+</dd></dl>
+
+<dl class="py method">
+<dt id="gis.GisAnalyzer.set_lon">
+<code class="sig-name descname">set_lon</code><span class="sig-paren">(</span><em class="sig-param"><span class="n">lon</span></em><span class="sig-paren">)</span><a class="reference internal" href="_modules/gis.html#GisAnalyzer.set_lon"><span class="viewcode-link">[source]</span></a><a class="headerlink" href="#gis.GisAnalyzer.set_lon" title="Permalink to this definition">¶</a></dt>
+<dd><p>Resets the name of the longitude column</p>
+<dl class="field-list simple">
+<dt class="field-odd">Parameters</dt>
+<dd class="field-odd"><p><strong>lon</strong> (<em>str</em>) – the label oft the longitude columns</p>
+</dd>
+<dt class="field-even">Return type</dt>
+<dd class="field-even"><p><a class="reference internal" href="#gis.GisAnalyzer" title="gis.GisAnalyzer"><code class="xref py py-class docutils literal notranslate"><span class="pre">GisAnalyzer</span></code></a></p>
+</dd>
+<dt class="field-odd">Returns</dt>
+<dd class="field-odd"><p>the object with its <code class="docutils literal notranslate"><span class="pre">lon</span></code> attribute reset</p>
+</dd>
+</dl>
+</dd></dl>
+
+<dl class="py method">
+<dt id="gis.GisAnalyzer.simple_plot">
+<code class="sig-name descname">simple_plot</code><span class="sig-paren">(</span><em class="sig-param"><span class="o">**</span><span class="n">options</span></em><span class="sig-paren">)</span><a class="reference internal" href="_modules/gis.html#GisAnalyzer.simple_plot"><span class="viewcode-link">[source]</span></a><a class="headerlink" href="#gis.GisAnalyzer.simple_plot" title="Permalink to this definition">¶</a></dt>
+<dd><p>Generates a simple scatter plot of the coordinates. The scatter is an abstraction of the data by not include the actual map.
+It can be used to quickly have a look on a basic map.</p>
+<dl class="field-list simple">
+<dt class="field-odd">Parameters</dt>
+<dd class="field-odd"><p><strong>options</strong> – the seaborn scatter plot options</p>
+</dd>
+<dt class="field-even">Returns</dt>
+<dd class="field-even"><p></p>
+</dd>
+</dl>
+</dd></dl>
+
+</dd></dl>
+
+<dl class="py class">
+<dt id="gis.GisAnalyzerWithClusterLabel">
+<em class="property">class </em><code class="sig-prename descclassname">gis.</code><code class="sig-name descname">GisAnalyzerWithClusterLabel</code><span class="sig-paren">(</span><em class="sig-param"><span class="n">data</span></em>, <em class="sig-param"><span class="n">lat</span><span class="o">=</span><span class="default_value">''</span></em>, <em class="sig-param"><span class="n">lon</span><span class="o">=</span><span class="default_value">''</span></em>, <em class="sig-param"><span class="n">cluster_label</span><span class="o">=</span><span class="default_value">None</span></em><span class="sig-paren">)</span><a class="reference internal" href="_modules/gis.html#GisAnalyzerWithClusterLabel"><span class="viewcode-link">[source]</span></a><a class="headerlink" href="#gis.GisAnalyzerWithClusterLabel" title="Permalink to this definition">¶</a></dt>
+<dd><p>A class derived from the GisAnalyzer used to visualise geographical data based on latitude and longitude columns and take into account cluster labels</p>
+<dl class="py method">
+<dt id="gis.GisAnalyzerWithClusterLabel.__init__">
+<code class="sig-name descname">__init__</code><span class="sig-paren">(</span><em class="sig-param"><span class="n">data</span></em>, <em class="sig-param"><span class="n">lat</span><span class="o">=</span><span class="default_value">''</span></em>, <em class="sig-param"><span class="n">lon</span><span class="o">=</span><span class="default_value">''</span></em>, <em class="sig-param"><span class="n">cluster_label</span><span class="o">=</span><span class="default_value">None</span></em><span class="sig-paren">)</span><a class="reference internal" href="_modules/gis.html#GisAnalyzerWithClusterLabel.__init__"><span class="viewcode-link">[source]</span></a><a class="headerlink" href="#gis.GisAnalyzerWithClusterLabel.__init__" title="Permalink to this definition">¶</a></dt>
+<dd><p>Initializes a GIS Analyzer object. It expects a DataFrame as input. Furthermore, it has the <code class="docutils literal notranslate"><span class="pre">lat</span></code> and <code class="docutils literal notranslate"><span class="pre">lon</span></code> columns which are
+used for defining the latitude and longitude. They do not have to be set upon object creation but can be reset using the corresponding
+<code class="docutils literal notranslate"><span class="pre">set_lat</span></code> and <code class="docutils literal notranslate"><span class="pre">set_lon</span></code> methods. Additionally, a set of labels can be indicated as well. The purpose hereby lies especially in visualizing
+geographic clusters.
+It also has three mapping objects indicating the map style, a color list and a grad list.</p>
+<dl class="field-list simple">
+<dt class="field-odd">Parameters</dt>
+<dd class="field-odd"><ul class="simple">
+<li><p><strong>data</strong> (<em>pd.DataFrame</em>) – the data holding the geographical latitude and longitude columns</p></li>
+<li><p><strong>lat</strong> (<em>str</em>) – the latitude feature column name</p></li>
+<li><p><strong>lon</strong> (<em>str</em>) – the longitude feature column name</p></li>
+<li><p><strong>cluster_label</strong> (<em>list</em>) – single or multiple column labels indicating the clustering label</p></li>
+</ul>
+</dd>
+</dl>
+</dd></dl>
+
+<dl class="py method">
+<dt id="gis.GisAnalyzerWithClusterLabel.simple_plot_by_cluster_labels">
+<code class="sig-name descname">simple_plot_by_cluster_labels</code><span class="sig-paren">(</span><em class="sig-param"><span class="o">**</span><span class="n">options</span></em><span class="sig-paren">)</span><a class="reference internal" href="_modules/gis.html#GisAnalyzerWithClusterLabel.simple_plot_by_cluster_labels"><span class="viewcode-link">[source]</span></a><a class="headerlink" href="#gis.GisAnalyzerWithClusterLabel.simple_plot_by_cluster_labels" title="Permalink to this definition">¶</a></dt>
+<dd><p>Plots the geographical data by all the different cluster labels.</p>
+<dl class="field-list simple">
+<dt class="field-odd">Parameters</dt>
+<dd class="field-odd"><p><strong>options</strong> (<em>dict</em>) – options used by the <code class="docutils literal notranslate"><span class="pre">simple_plot</span></code></p>
+</dd>
+<dt class="field-even">Returns</dt>
+<dd class="field-even"><p></p>
+</dd>
+</dl>
+</dd></dl>
+
+</dd></dl>
+
+<dl class="py class">
+<dt id="gis.GisBasicTransformer">
+<em class="property">class </em><code class="sig-prename descclassname">gis.</code><code class="sig-name descname">GisBasicTransformer</code><span class="sig-paren">(</span><em class="sig-param"><span class="n">lat</span></em>, <em class="sig-param"><span class="n">lon</span></em>, <em class="sig-param"><span class="n">round_factor</span><span class="o">=</span><span class="default_value">0</span></em>, <em class="sig-param"><span class="n">radian</span><span class="o">=</span><span class="default_value">True</span></em><span class="sig-paren">)</span><a class="reference internal" href="_modules/gis.html#GisBasicTransformer"><span class="viewcode-link">[source]</span></a><a class="headerlink" href="#gis.GisBasicTransformer" title="Permalink to this definition">¶</a></dt>
+<dd><p>Derives primitive feature transformation for GIS
+The primitive transformations are:</p>
+<blockquote>
+<div><ul class="simple">
+<li><p><code class="docutils literal notranslate"><span class="pre">round</span></code>: round the GIS to a specific digit length. This can be considered as a feature as it groups together</p></li>
+</ul>
+<p>points with similar values. It reduces information but reduces the dimension of the feature
+- <code class="docutils literal notranslate"><span class="pre">radians</span></code>: a simple transformation to get the radians of the GIS.</p>
+</div></blockquote>
+<p># TODO include x,y,z features.</p>
+<dl class="py method">
+<dt id="gis.GisBasicTransformer.__init__">
+<code class="sig-name descname">__init__</code><span class="sig-paren">(</span><em class="sig-param"><span class="n">lat</span></em>, <em class="sig-param"><span class="n">lon</span></em>, <em class="sig-param"><span class="n">round_factor</span><span class="o">=</span><span class="default_value">0</span></em>, <em class="sig-param"><span class="n">radian</span><span class="o">=</span><span class="default_value">True</span></em><span class="sig-paren">)</span><a class="reference internal" href="_modules/gis.html#GisBasicTransformer.__init__"><span class="viewcode-link">[source]</span></a><a class="headerlink" href="#gis.GisBasicTransformer.__init__" title="Permalink to this definition">¶</a></dt>
+<dd><p>Initializes a primitive feature creator object</p>
+<dl class="field-list simple">
+<dt class="field-odd">Parameters</dt>
+<dd class="field-odd"><ul class="simple">
+<li><p><strong>lat</strong> (<em>str</em>) – the column name of the latitude column</p></li>
+<li><p><strong>lon</strong> (<em>str</em>) – the column name of the longitude column</p></li>
+<li><p><strong>round_factor</strong> (<em>int</em>) – if set and &gt;0, it indicate the number of digits to round the geo data.</p></li>
+<li><p><strong>radian</strong> (<em>bool</em>) – a flag indicating if the radians shall be derived</p></li>
+</ul>
+</dd>
+</dl>
+</dd></dl>
+
+<dl class="py method">
+<dt id="gis.GisBasicTransformer.fit">
+<code class="sig-name descname">fit</code><span class="sig-paren">(</span><em class="sig-param"><span class="n">X</span></em>, <em class="sig-param"><span class="n">y</span><span class="o">=</span><span class="default_value">None</span></em>, <em class="sig-param"><span class="o">**</span><span class="n">kwargs</span></em><span class="sig-paren">)</span><a class="reference internal" href="_modules/gis.html#GisBasicTransformer.fit"><span class="viewcode-link">[source]</span></a><a class="headerlink" href="#gis.GisBasicTransformer.fit" title="Permalink to this definition">¶</a></dt>
+<dd></dd></dl>
+
+<dl class="py method">
+<dt id="gis.GisBasicTransformer.transform">
+<code class="sig-name descname">transform</code><span class="sig-paren">(</span><em class="sig-param"><span class="n">X</span></em><span class="sig-paren">)</span><a class="reference internal" href="_modules/gis.html#GisBasicTransformer.transform"><span class="viewcode-link">[source]</span></a><a class="headerlink" href="#gis.GisBasicTransformer.transform" title="Permalink to this definition">¶</a></dt>
+<dd><p>Transforms the DataFrame. Checks the both arguments and applies the respective function if the condition hols (round &gt;0; radian = True)</p>
+<dl class="field-list simple">
+<dt class="field-odd">Parameters</dt>
+<dd class="field-odd"><p><strong>X</strong> (<code class="xref py py-class docutils literal notranslate"><span class="pre">DataFrame</span></code>) – the original DataFrame</p>
+</dd>
+<dt class="field-even">Return type</dt>
+<dd class="field-even"><p><code class="xref py py-class docutils literal notranslate"><span class="pre">DataFrame</span></code></p>
+</dd>
+<dt class="field-odd">Returns</dt>
+<dd class="field-odd"><p></p>
+</dd>
+</dl>
+</dd></dl>
+
+</dd></dl>
+
+<dl class="py class">
+<dt id="gis.GisDistance">
+<em class="property">class </em><code class="sig-prename descclassname">gis.</code><code class="sig-name descname">GisDistance</code><span class="sig-paren">(</span><em class="sig-param"><span class="n">lat_1</span></em>, <em class="sig-param"><span class="n">lon_1</span></em>, <em class="sig-param"><span class="n">lat_2</span></em>, <em class="sig-param"><span class="n">lon_2</span></em>, <em class="sig-param"><span class="n">label</span><span class="o">=</span><span class="default_value">'distance'</span></em><span class="sig-paren">)</span><a class="reference internal" href="_modules/gis.html#GisDistance"><span class="viewcode-link">[source]</span></a><a class="headerlink" href="#gis.GisDistance" title="Permalink to this definition">¶</a></dt>
+<dd><p>Calculates the haversine distance between two geo points</p>
+<dl class="py method">
+<dt id="gis.GisDistance.__init__">
+<code class="sig-name descname">__init__</code><span class="sig-paren">(</span><em class="sig-param"><span class="n">lat_1</span></em>, <em class="sig-param"><span class="n">lon_1</span></em>, <em class="sig-param"><span class="n">lat_2</span></em>, <em class="sig-param"><span class="n">lon_2</span></em>, <em class="sig-param"><span class="n">label</span><span class="o">=</span><span class="default_value">'distance'</span></em><span class="sig-paren">)</span><a class="reference internal" href="_modules/gis.html#GisDistance.__init__"><span class="viewcode-link">[source]</span></a><a class="headerlink" href="#gis.GisDistance.__init__" title="Permalink to this definition">¶</a></dt>
+<dd><p>Initializes an object which calculates the Haversine distance between two points</p>
+<dl class="field-list simple">
+<dt class="field-odd">Parameters</dt>
+<dd class="field-odd"><ul class="simple">
+<li><p><strong>lat_1</strong> (<em>str</em>) – the column name of the first point’s latitude column</p></li>
+<li><p><strong>lon_1</strong> (<em>str</em>) – the column name of the first point’s longitude column</p></li>
+<li><p><strong>lat_2</strong> (<em>str</em>) – the column name of the second point’s latitude column</p></li>
+<li><p><strong>lon_2</strong> (<em>str</em>) – the column name of the second point’s longitude column</p></li>
+<li><p><strong>label</strong> (<em>str</em>) – the column label of the newly created column capturing the distance</p></li>
+</ul>
+</dd>
+</dl>
+</dd></dl>
+
+<dl class="py method">
+<dt id="gis.GisDistance.fit">
+<code class="sig-name descname">fit</code><span class="sig-paren">(</span><em class="sig-param"><span class="n">X</span></em>, <em class="sig-param"><span class="n">y</span><span class="o">=</span><span class="default_value">None</span></em>, <em class="sig-param"><span class="o">**</span><span class="n">kwargs</span></em><span class="sig-paren">)</span><a class="reference internal" href="_modules/gis.html#GisDistance.fit"><span class="viewcode-link">[source]</span></a><a class="headerlink" href="#gis.GisDistance.fit" title="Permalink to this definition">¶</a></dt>
+<dd></dd></dl>
+
+<dl class="py method">
+<dt id="gis.GisDistance.haversine_distance">
+<code class="sig-name descname">haversine_distance</code><span class="sig-paren">(</span><em class="sig-param"><span class="n">row</span></em><span class="sig-paren">)</span><a class="reference internal" href="_modules/gis.html#GisDistance.haversine_distance"><span class="viewcode-link">[source]</span></a><a class="headerlink" href="#gis.GisDistance.haversine_distance" title="Permalink to this definition">¶</a></dt>
+<dd><p>The formulae for the haversine distance. It takes a DataFrame’s row as an input arguments, derives the four GIS points and applies the Formula to it.</p>
+<dl class="field-list simple">
+<dt class="field-odd">Parameters</dt>
+<dd class="field-odd"><p><strong>row</strong> (<em>pd.DataFrame</em>) – a DataFrame row</p>
+</dd>
+<dt class="field-even">Returns</dt>
+<dd class="field-even"><p>the haversine distance for the row</p>
+</dd>
+</dl>
+</dd></dl>
+
+<dl class="py method">
+<dt id="gis.GisDistance.transform">
+<code class="sig-name descname">transform</code><span class="sig-paren">(</span><em class="sig-param"><span class="n">X</span></em><span class="sig-paren">)</span><a class="reference internal" href="_modules/gis.html#GisDistance.transform"><span class="viewcode-link">[source]</span></a><a class="headerlink" href="#gis.GisDistance.transform" title="Permalink to this definition">¶</a></dt>
+<dd><p>Applies the haversine_distance formula to all rows and saves the value in a newly generated column</p>
+<dl class="field-list simple">
+<dt class="field-odd">Parameters</dt>
+<dd class="field-odd"><p><strong>X</strong> (<code class="xref py py-class docutils literal notranslate"><span class="pre">DataFrame</span></code>) – the original DataFrame</p>
+</dd>
+<dt class="field-even">Return type</dt>
+<dd class="field-even"><p><code class="xref py py-class docutils literal notranslate"><span class="pre">DataFrame</span></code></p>
+</dd>
+<dt class="field-odd">Returns</dt>
+<dd class="field-odd"><p></p>
+</dd>
+</dl>
+</dd></dl>
+
+</dd></dl>
+
+<dl class="py class">
+<dt id="gis.GisCluster">
+<em class="property">class </em><code class="sig-prename descclassname">gis.</code><code class="sig-name descname">GisCluster</code><span class="sig-paren">(</span><em class="sig-param"><span class="n">lat</span></em>, <em class="sig-param"><span class="n">lon</span></em>, <em class="sig-param"><span class="n">kmeans</span><span class="o">=</span><span class="default_value">True</span></em>, <em class="sig-param"><span class="n">kmeans_params</span><span class="o">=</span><span class="default_value">None</span></em>, <em class="sig-param"><span class="n">dbscan</span><span class="o">=</span><span class="default_value">True</span></em>, <em class="sig-param"><span class="n">dbscan_params</span><span class="o">=</span><span class="default_value">None</span></em>, <em class="sig-param"><span class="n">birch</span><span class="o">=</span><span class="default_value">True</span></em>, <em class="sig-param"><span class="n">birch_params</span><span class="o">=</span><span class="default_value">None</span></em>, <em class="sig-param"><span class="n">hdbscan</span><span class="o">=</span><span class="default_value">True</span></em>, <em class="sig-param"><span class="n">hdbscan_params</span><span class="o">=</span><span class="default_value">None</span></em>, <em class="sig-param"><span class="n">agglomerative</span><span class="o">=</span><span class="default_value">True</span></em>, <em class="sig-param"><span class="n">agglomerative_params</span><span class="o">=</span><span class="default_value">None</span></em><span class="sig-paren">)</span><a class="reference internal" href="_modules/gis.html#GisCluster"><span class="viewcode-link">[source]</span></a><a class="headerlink" href="#gis.GisCluster" title="Permalink to this definition">¶</a></dt>
+<dd><p>Applies Machine Learning based clustering on the GIS data.</p>
+<dl class="py method">
+<dt id="gis.GisCluster.__init__">
+<code class="sig-name descname">__init__</code><span class="sig-paren">(</span><em class="sig-param"><span class="n">lat</span></em>, <em class="sig-param"><span class="n">lon</span></em>, <em class="sig-param"><span class="n">kmeans</span><span class="o">=</span><span class="default_value">True</span></em>, <em class="sig-param"><span class="n">kmeans_params</span><span class="o">=</span><span class="default_value">None</span></em>, <em class="sig-param"><span class="n">dbscan</span><span class="o">=</span><span class="default_value">True</span></em>, <em class="sig-param"><span class="n">dbscan_params</span><span class="o">=</span><span class="default_value">None</span></em>, <em class="sig-param"><span class="n">birch</span><span class="o">=</span><span class="default_value">True</span></em>, <em class="sig-param"><span class="n">birch_params</span><span class="o">=</span><span class="default_value">None</span></em>, <em class="sig-param"><span class="n">hdbscan</span><span class="o">=</span><span class="default_value">True</span></em>, <em class="sig-param"><span class="n">hdbscan_params</span><span class="o">=</span><span class="default_value">None</span></em>, <em class="sig-param"><span class="n">agglomerative</span><span class="o">=</span><span class="default_value">True</span></em>, <em class="sig-param"><span class="n">agglomerative_params</span><span class="o">=</span><span class="default_value">None</span></em><span class="sig-paren">)</span><a class="reference internal" href="_modules/gis.html#GisCluster.__init__"><span class="viewcode-link">[source]</span></a><a class="headerlink" href="#gis.GisCluster.__init__" title="Permalink to this definition">¶</a></dt>
+<dd><p>Creates an object that applies a possibly multitude of different clustering algorithms on the data</p>
+<dl class="field-list simple">
+<dt class="field-odd">Parameters</dt>
+<dd class="field-odd"><ul class="simple">
+<li><p><strong>lat</strong> (<em>str</em>) – the column name of the latitude column</p></li>
+<li><p><strong>lon</strong> (<em>str</em>) – the column name of the longitude column</p></li>
+<li><p><strong>kmeans</strong> (<em>bool</em>) – a flag indicating if the k-means clustering algorithm is applied</p></li>
+<li><p><strong>kmeans_params</strong> (<em>dict</em>) – indicates k-means clustering hyper parameters</p></li>
+<li><p><strong>dbscan</strong> (<em>bool</em>) – a flag indicating if the DBSCAN clustering algorithm is applied</p></li>
+<li><p><strong>dbscan_params</strong> (<em>dict</em>) – indicates DBSCAN clustering hyper parameters</p></li>
+<li><p><strong>birch</strong> (<em>bool</em>) – a flag indicating if the BIRCH clustering algorithm is applied</p></li>
+<li><p><strong>birch_params</strong> (<em>dict</em>) – indicates BIRCH clustering hyper parameters</p></li>
+<li><p><strong>hdbscan</strong> (<em>bool</em>) – a flag indicating if the HDBSCAN clustering algorithm is applied</p></li>
+<li><p><strong>hdbscan_params</strong> (<em>dict</em>) – indicates HDBSCAN clustering hyper parameters</p></li>
+<li><p><strong>agglomerative</strong> (<em>bool</em>) – a flag indicating if the Agglomerative clustering algorithm is applied</p></li>
+<li><p><strong>agglomerative_params</strong> (<em>dict</em>) – indicates Agglomerative clustering hyper parameters</p></li>
+</ul>
+</dd>
+</dl>
+</dd></dl>
+
+<dl class="py method">
+<dt id="gis.GisCluster.fit">
+<code class="sig-name descname">fit</code><span class="sig-paren">(</span><em class="sig-param"><span class="n">X</span></em>, <em class="sig-param"><span class="n">y</span><span class="o">=</span><span class="default_value">None</span></em>, <em class="sig-param"><span class="o">**</span><span class="n">kwargs</span></em><span class="sig-paren">)</span><a class="reference internal" href="_modules/gis.html#GisCluster.fit"><span class="viewcode-link">[source]</span></a><a class="headerlink" href="#gis.GisCluster.fit" title="Permalink to this definition">¶</a></dt>
+<dd></dd></dl>
+
+<dl class="py method">
+<dt id="gis.GisCluster.transform">
+<code class="sig-name descname">transform</code><span class="sig-paren">(</span><em class="sig-param"><span class="n">X</span></em><span class="sig-paren">)</span><a class="reference internal" href="_modules/gis.html#GisCluster.transform"><span class="viewcode-link">[source]</span></a><a class="headerlink" href="#gis.GisCluster.transform" title="Permalink to this definition">¶</a></dt>
+<dd><p>Applies the clustering based on which algorithm with respective parameters have been specified.
+For each clustering algorithm set to True, the clustering is performed using the respective algorithm’s hyper parameters</p>
+<dl class="field-list simple">
+<dt class="field-odd">Parameters</dt>
+<dd class="field-odd"><p><strong>X</strong> (<code class="xref py py-class docutils literal notranslate"><span class="pre">DataFrame</span></code>) – The initial DataFrame</p>
+</dd>
+<dt class="field-even">Return type</dt>
+<dd class="field-even"><p><code class="xref py py-class docutils literal notranslate"><span class="pre">DataFrame</span></code></p>
+</dd>
+<dt class="field-odd">Returns</dt>
+<dd class="field-odd"><p></p>
+</dd>
+</dl>
+</dd></dl>
+
+</dd></dl>
+
+</div>
+<div class="section" id="module-explorer">
+<span id="explorer"></span><h2>Explorer<a class="headerlink" href="#module-explorer" title="Permalink to this headline">¶</a></h2>
+<p>This module provides a class to generate a data explorer object. It can handle different kinds of inputs and
+generate quick overview, statistics and plots. It includes some subclasses to generate views and statistics for
+different types of features. These include:</p>
+<blockquote>
+<div><ul class="simple">
+<li><p>Numerical</p></li>
+<li><p>Categorical</p></li>
+<li><p>Mixed Types</p></li>
+<li><p>GIS (Geo Data)</p></li>
+<li><p>Numerical by Time</p></li>
+</ul>
+</div></blockquote>
+<dl class="py class">
+<dt id="explorer.CategoricalAnalyzer">
+<em class="property">class </em><code class="sig-prename descclassname">explorer.</code><code class="sig-name descname">CategoricalAnalyzer</code><span class="sig-paren">(</span><em class="sig-param"><span class="n">data</span></em><span class="sig-paren">)</span><a class="reference internal" href="_modules/explorer.html#CategoricalAnalyzer"><span class="viewcode-link">[source]</span></a><a class="headerlink" href="#explorer.CategoricalAnalyzer" title="Permalink to this definition">¶</a></dt>
+<dd><p>Provides basic statistics and visualization for categorical features</p>
+<dl class="py method">
+<dt id="explorer.CategoricalAnalyzer.__init__">
+<code class="sig-name descname">__init__</code><span class="sig-paren">(</span><em class="sig-param"><span class="n">data</span></em><span class="sig-paren">)</span><a class="reference internal" href="_modules/explorer.html#CategoricalAnalyzer.__init__"><span class="viewcode-link">[source]</span></a><a class="headerlink" href="#explorer.CategoricalAnalyzer.__init__" title="Permalink to this definition">¶</a></dt>
+<dd><p>Initializes a CategoricalAnalyzer object. Takes data file name or a pandas DataFrame as input</p>
+<dl class="field-list simple">
+<dt class="field-odd">Parameters</dt>
+<dd class="field-odd"><p><strong>data</strong> (<em>Union</em><em>[</em><em>str</em><em>, </em><em>pd.DataFrame</em><em>]</em>) – link to a file or a pandas DataFrame</p>
+</dd>
+</dl>
+</dd></dl>
+
+<dl class="py method">
+<dt id="explorer.CategoricalAnalyzer.cat_bar_plot">
+<code class="sig-name descname">cat_bar_plot</code><span class="sig-paren">(</span><em class="sig-param"><span class="o">**</span><span class="n">options</span></em><span class="sig-paren">)</span><a class="reference internal" href="_modules/explorer.html#CategoricalAnalyzer.cat_bar_plot"><span class="viewcode-link">[source]</span></a><a class="headerlink" href="#explorer.CategoricalAnalyzer.cat_bar_plot" title="Permalink to this definition">¶</a></dt>
+<dd><p>Generates a bar plot for all frequency values</p>
+<dl class="field-list simple">
+<dt class="field-odd">Parameters</dt>
+<dd class="field-odd"><p><strong>options</strong> (<em>Mapping</em>) – options settings the plotter function</p>
+</dd>
+<dt class="field-even">Return type</dt>
+<dd class="field-even"><p><code class="docutils literal notranslate"><span class="pre">None</span></code></p>
+</dd>
+</dl>
+</dd></dl>
+
+<dl class="py method">
+<dt id="explorer.CategoricalAnalyzer.frequencies">
+<code class="sig-name descname">frequencies</code><span class="sig-paren">(</span><span class="sig-paren">)</span><a class="reference internal" href="_modules/explorer.html#CategoricalAnalyzer.frequencies"><span class="viewcode-link">[source]</span></a><a class="headerlink" href="#explorer.CategoricalAnalyzer.frequencies" title="Permalink to this definition">¶</a></dt>
+<dd><p>For each column, calculates the different frequencies and saved them in a file</p>
+<dl class="field-list simple">
+<dt class="field-odd">Return type</dt>
+<dd class="field-odd"><p><code class="xref py py-class docutils literal notranslate"><span class="pre">Mapping</span></code>[<code class="xref py py-class docutils literal notranslate"><span class="pre">str</span></code>, <code class="xref py py-class docutils literal notranslate"><span class="pre">DataFrame</span></code>]</p>
+</dd>
+<dt class="field-even">Returns</dt>
+<dd class="field-even"><p>a dictionary with each column name as key and the frequencies as value</p>
+</dd>
+</dl>
+</dd></dl>
+
+</dd></dl>
+
+<dl class="py class">
+<dt id="explorer.DataExplorer">
+<em class="property">class </em><code class="sig-prename descclassname">explorer.</code><code class="sig-name descname">DataExplorer</code><span class="sig-paren">(</span><em class="sig-param"><span class="n">data_source</span></em>, <em class="sig-param"><span class="n">target</span><span class="o">=</span><span class="default_value">''</span></em><span class="sig-paren">)</span><a class="reference internal" href="_modules/explorer.html#DataExplorer"><span class="viewcode-link">[source]</span></a><a class="headerlink" href="#explorer.DataExplorer" title="Permalink to this definition">¶</a></dt>
+<dd><p>Initializes a Data Explorer object. This object can be used to quickly generate insights of different features.</p>
+<dl class="py method">
+<dt id="explorer.DataExplorer.Boolean_Data">
+<em class="property">property </em><code class="sig-name descname">Boolean_Data</code><a class="headerlink" href="#explorer.DataExplorer.Boolean_Data" title="Permalink to this definition">¶</a></dt>
+<dd><p>A property which initializes a Categorical Analyzer for boolean values.
+Takes all boolean columns and uses them in a Categorical Analyzer object.</p>
+<dl class="field-list simple">
+<dt class="field-odd">Returns</dt>
+<dd class="field-odd"><p>A Categorical Analyzer Object containing boolean values</p>
+</dd>
+<dt class="field-even">Return type</dt>
+<dd class="field-even"><p><a class="reference internal" href="#explorer.CategoricalAnalyzer" title="explorer.CategoricalAnalyzer">CategoricalAnalyzer</a></p>
+</dd>
+</dl>
+</dd></dl>
+
+<dl class="py method">
+<dt id="explorer.DataExplorer.Categorical_Data">
+<em class="property">property </em><code class="sig-name descname">Categorical_Data</code><a class="headerlink" href="#explorer.DataExplorer.Categorical_Data" title="Permalink to this definition">¶</a></dt>
+<dd><p>A property which initializes a Categorical Analyzer for categorical values.
+Takes all categorical features and uses them in a Categorical Analyzer object.</p>
+<dl class="field-list simple">
+<dt class="field-odd">Returns</dt>
+<dd class="field-odd"><p>A Categorical Data Analyzer</p>
+</dd>
+<dt class="field-even">Return type</dt>
+<dd class="field-even"><p><a class="reference internal" href="#explorer.CategoricalAnalyzer" title="explorer.CategoricalAnalyzer">CategoricalAnalyzer</a></p>
+</dd>
+</dl>
+</dd></dl>
+
+<dl class="py method">
+<dt id="explorer.DataExplorer.Data_Mixed_Types">
+<em class="property">property </em><code class="sig-name descname">Data_Mixed_Types</code><a class="headerlink" href="#explorer.DataExplorer.Data_Mixed_Types" title="Permalink to this definition">¶</a></dt>
+<dd><p>A property which returns a data set of different types. This can be used to analyze relationships between different features of different types.</p>
+<dl class="field-list simple">
+<dt class="field-odd">Return type</dt>
+<dd class="field-odd"><p>Data_Mixed_Types</p>
+</dd>
+<dt class="field-even">Returns</dt>
+<dd class="field-even"><p></p>
+</dd>
+</dl>
+</dd></dl>
+
+<dl class="py method">
+<dt id="explorer.DataExplorer.Date_By_Data">
+<em class="property">property </em><code class="sig-name descname">Date_By_Data</code><a class="headerlink" href="#explorer.DataExplorer.Date_By_Data" title="Permalink to this definition">¶</a></dt>
+<dd><p>A property which returns a Data By Date object. This can be used to analyze columns by time.</p>
+<dl class="field-list simple">
+<dt class="field-odd">Return type</dt>
+<dd class="field-odd"><p>Date_By_Data</p>
+</dd>
+<dt class="field-even">Returns</dt>
+<dd class="field-even"><p></p>
+</dd>
+</dl>
+</dd></dl>
+
+<dl class="py method">
+<dt id="explorer.DataExplorer.GIS_Data">
+<em class="property">property </em><code class="sig-name descname">GIS_Data</code><a class="headerlink" href="#explorer.DataExplorer.GIS_Data" title="Permalink to this definition">¶</a></dt>
+<dd><p>A property which initializes a GIS Analyzer by taking the first and second entry of the gis feature list.</p>
+<dl class="field-list simple">
+<dt class="field-odd">Return type</dt>
+<dd class="field-odd"><p><a class="reference internal" href="#gis.GisAnalyzer" title="gis.GisAnalyzer"><code class="xref py py-class docutils literal notranslate"><span class="pre">GisAnalyzer</span></code></a></p>
+</dd>
+<dt class="field-even">Returns</dt>
+<dd class="field-even"><p></p>
+</dd>
+</dl>
+</dd></dl>
+
+<dl class="py method">
+<dt id="explorer.DataExplorer.GIS_features">
+<em class="property">property </em><code class="sig-name descname">GIS_features</code><a class="headerlink" href="#explorer.DataExplorer.GIS_features" title="Permalink to this definition">¶</a></dt>
+<dd><p>A property which returns all gis features of the DataFrame</p>
+<dl class="field-list simple">
+<dt class="field-odd">Return type</dt>
+<dd class="field-odd"><p><code class="xref py py-class docutils literal notranslate"><span class="pre">Sequence</span></code>[<code class="xref py py-class docutils literal notranslate"><span class="pre">str</span></code>]</p>
+</dd>
+<dt class="field-even">Returns</dt>
+<dd class="field-even"><p>a list of GIS features</p>
+</dd>
+</dl>
+</dd></dl>
+
+<dl class="py method">
+<dt id="explorer.DataExplorer.Gis_DataWithLabel">
+<em class="property">property </em><code class="sig-name descname">Gis_DataWithLabel</code><a class="headerlink" href="#explorer.DataExplorer.Gis_DataWithLabel" title="Permalink to this definition">¶</a></dt>
+<dd><p>A property which returns all gis features with a corresponding label. This is intended to check for clustering algorithms results</p>
+<dl class="field-list simple">
+<dt class="field-odd">Return type</dt>
+<dd class="field-odd"><p>Gis_DataWithLabel</p>
+</dd>
+<dt class="field-even">Returns</dt>
+<dd class="field-even"><p>a GisDatawithLabel object to analyze geo data and corresponding labels</p>
+</dd>
+</dl>
+</dd></dl>
+
+<dl class="py method">
+<dt id="explorer.DataExplorer.Numerical_Data">
+<em class="property">property </em><code class="sig-name descname">Numerical_Data</code><a class="headerlink" href="#explorer.DataExplorer.Numerical_Data" title="Permalink to this definition">¶</a></dt>
+<dd><p>Selects all numerical values and uses those as input values to create a Numerical_Data processor object.</p>
+<dl class="field-list simple">
+<dt class="field-odd">Return type</dt>
+<dd class="field-odd"><p><a class="reference internal" href="#explorer.NumericalAnalyzer" title="explorer.NumericalAnalyzer"><code class="xref py py-class docutils literal notranslate"><span class="pre">NumericalAnalyzer</span></code></a></p>
+</dd>
+<dt class="field-even">Returns</dt>
+<dd class="field-even"><p>a numerical data analyzer</p>
+</dd>
+</dl>
+</dd></dl>
+
+<dl class="py method">
+<dt id="explorer.DataExplorer.String_Data">
+<em class="property">property </em><code class="sig-name descname">String_Data</code><a class="headerlink" href="#explorer.DataExplorer.String_Data" title="Permalink to this definition">¶</a></dt>
+<dd><p>A property which initializes a String Data Analyzer object. Takes all string columns and uses them in a Categorical Analyzer object.</p>
+<dl class="field-list simple">
+<dt class="field-odd">Returns</dt>
+<dd class="field-odd"><p>a Categorical Analyzer with all string features</p>
+</dd>
+<dt class="field-even">Return type</dt>
+<dd class="field-even"><p><a class="reference internal" href="#explorer.CategoricalAnalyzer" title="explorer.CategoricalAnalyzer">CategoricalAnalyzer</a></p>
+</dd>
+</dl>
+</dd></dl>
+
+<dl class="py method">
+<dt id="explorer.DataExplorer.__init__">
+<code class="sig-name descname">__init__</code><span class="sig-paren">(</span><em class="sig-param"><span class="n">data_source</span></em>, <em class="sig-param"><span class="n">target</span><span class="o">=</span><span class="default_value">''</span></em><span class="sig-paren">)</span><a class="reference internal" href="_modules/explorer.html#DataExplorer.__init__"><span class="viewcode-link">[source]</span></a><a class="headerlink" href="#explorer.DataExplorer.__init__" title="Permalink to this definition">¶</a></dt>
+<dd><p>Initializes a Data Explorer Object. Takes a pandas DataFrame or a pointer to a data file and allows to quickly analyze it</p>
+<dl class="field-list simple">
+<dt class="field-odd">Parameters</dt>
+<dd class="field-odd"><ul class="simple">
+<li><p><strong>data_source</strong> (<em>Union</em><em>[</em><em>str</em><em>, </em><em>pd.DataFrame</em><em>]</em>) – link to a file or a pandas DataFrame</p></li>
+<li><p><strong>target</strong> (<em>str</em>) – target column which is the interest of ML modeling</p></li>
+</ul>
+</dd>
+</dl>
+</dd></dl>
+
+<dl class="py method">
+<dt id="explorer.DataExplorer.len_bool_features">
+<em class="property">property </em><code class="sig-name descname">len_bool_features</code><a class="headerlink" href="#explorer.DataExplorer.len_bool_features" title="Permalink to this definition">¶</a></dt>
+<dd><p>Returns the length of all boolean features</p>
+<dl class="field-list simple">
+<dt class="field-odd">Returns</dt>
+<dd class="field-odd"><p>the length of all boolean features</p>
+</dd>
+<dt class="field-even">Return type</dt>
+<dd class="field-even"><p>int</p>
+</dd>
+</dl>
+</dd></dl>
+
+<dl class="py method">
+<dt id="explorer.DataExplorer.len_categorical_features">
+<em class="property">property </em><code class="sig-name descname">len_categorical_features</code><a class="headerlink" href="#explorer.DataExplorer.len_categorical_features" title="Permalink to this definition">¶</a></dt>
+<dd><p>Returns the length of all categorical features</p>
+<dl class="field-list simple">
+<dt class="field-odd">Returns</dt>
+<dd class="field-odd"><p>the length of all categorical features</p>
+</dd>
+<dt class="field-even">Return type</dt>
+<dd class="field-even"><p>int</p>
+</dd>
+</dl>
+</dd></dl>
+
+<dl class="py method">
+<dt id="explorer.DataExplorer.len_date_features">
+<em class="property">property </em><code class="sig-name descname">len_date_features</code><a class="headerlink" href="#explorer.DataExplorer.len_date_features" title="Permalink to this definition">¶</a></dt>
+<dd><p>Returns the length of all date features</p>
+<dl class="field-list simple">
+<dt class="field-odd">Returns</dt>
+<dd class="field-odd"><p>the length of all date features</p>
+</dd>
+<dt class="field-even">Return type</dt>
+<dd class="field-even"><p>int</p>
+</dd>
+</dl>
+</dd></dl>
+
+<dl class="py method">
+<dt id="explorer.DataExplorer.len_gis_features">
+<em class="property">property </em><code class="sig-name descname">len_gis_features</code><a class="headerlink" href="#explorer.DataExplorer.len_gis_features" title="Permalink to this definition">¶</a></dt>
+<dd><p>Returns the length of all GIS features.</p>
+<dl class="field-list simple">
+<dt class="field-odd">Returns</dt>
+<dd class="field-odd"><p>the length of all GIS features</p>
+</dd>
+<dt class="field-even">Return type</dt>
+<dd class="field-even"><p>int</p>
+</dd>
+</dl>
+</dd></dl>
+
+<dl class="py method">
+<dt id="explorer.DataExplorer.len_numerical_features">
+<em class="property">property </em><code class="sig-name descname">len_numerical_features</code><a class="headerlink" href="#explorer.DataExplorer.len_numerical_features" title="Permalink to this definition">¶</a></dt>
+<dd><p>Returns the length of all numerical features</p>
+<dl class="field-list simple">
+<dt class="field-odd">Returns</dt>
+<dd class="field-odd"><p>the length of all numerical features</p>
+</dd>
+<dt class="field-even">Return type</dt>
+<dd class="field-even"><p>int</p>
+</dd>
+</dl>
+</dd></dl>
+
+<dl class="py method">
+<dt id="explorer.DataExplorer.len_string_features">
+<em class="property">property </em><code class="sig-name descname">len_string_features</code><a class="headerlink" href="#explorer.DataExplorer.len_string_features" title="Permalink to this definition">¶</a></dt>
+<dd><p>Returns the length of all string features</p>
+<dl class="field-list simple">
+<dt class="field-odd">Returns</dt>
+<dd class="field-odd"><p>the length of all string features</p>
+</dd>
+<dt class="field-even">Return type</dt>
+<dd class="field-even"><p>int</p>
+</dd>
+</dl>
+</dd></dl>
+
+<dl class="py method">
+<dt id="explorer.DataExplorer.plot_grid">
+<em class="property">static </em><code class="sig-name descname">plot_grid</code><span class="sig-paren">(</span><em class="sig-param"><span class="n">number</span></em><span class="sig-paren">)</span><a class="reference internal" href="_modules/explorer.html#DataExplorer.plot_grid"><span class="viewcode-link">[source]</span></a><a class="headerlink" href="#explorer.DataExplorer.plot_grid" title="Permalink to this definition">¶</a></dt>
+<dd><p>A function used to determine the number of grids when doing multiple graphics.</p>
+<dl class="field-list simple">
+<dt class="field-odd">Parameters</dt>
+<dd class="field-odd"><p><strong>number</strong> (<em>int</em>) – number of graphics to be performed</p>
+</dd>
+<dt class="field-even">Return type</dt>
+<dd class="field-even"><p><code class="xref py py-class docutils literal notranslate"><span class="pre">namedtuple</span></code></p>
+</dd>
+<dt class="field-odd">Returns</dt>
+<dd class="field-odd"><p>a namedtuple indicating the number of rows and number of columns</p>
+</dd>
+</dl>
+</dd></dl>
+
+</dd></dl>
+
+<dl class="py class">
+<dt id="explorer.MixedDataAnalyser">
+<em class="property">class </em><code class="sig-prename descclassname">explorer.</code><code class="sig-name descname">MixedDataAnalyser</code><span class="sig-paren">(</span><em class="sig-param"><span class="n">data</span></em>, <em class="sig-param"><span class="n">nums</span></em>, <em class="sig-param"><span class="n">group</span></em><span class="sig-paren">)</span><a class="reference internal" href="_modules/explorer.html#MixedDataAnalyser"><span class="viewcode-link">[source]</span></a><a class="headerlink" href="#explorer.MixedDataAnalyser" title="Permalink to this definition">¶</a></dt>
+<dd><p>Initializes an object to handle numerical and categorical features. At the current state, the code only consists of a prototype</p>
+<dl class="py method">
+<dt id="explorer.MixedDataAnalyser.__init__">
+<code class="sig-name descname">__init__</code><span class="sig-paren">(</span><em class="sig-param"><span class="n">data</span></em>, <em class="sig-param"><span class="n">nums</span></em>, <em class="sig-param"><span class="n">group</span></em><span class="sig-paren">)</span><a class="reference internal" href="_modules/explorer.html#MixedDataAnalyser.__init__"><span class="viewcode-link">[source]</span></a><a class="headerlink" href="#explorer.MixedDataAnalyser.__init__" title="Permalink to this definition">¶</a></dt>
+<dd><p>Initializes a NumericalAnalyzer object. Takes data file name or a pandas DataFrame as input</p>
+<dl class="field-list simple">
+<dt class="field-odd">Parameters</dt>
+<dd class="field-odd"><p><strong>data</strong> (<em>Union</em><em>[</em><em>str</em><em>, </em><em>pd.DataFrame</em><em>]</em>) – link to a file or a pandas DataFrame:</p>
+</dd>
+</dl>
+</dd></dl>
+
+</dd></dl>
+
+<dl class="py class">
+<dt id="explorer.NumericalAnalyzer">
+<em class="property">class </em><code class="sig-prename descclassname">explorer.</code><code class="sig-name descname">NumericalAnalyzer</code><span class="sig-paren">(</span><em class="sig-param"><span class="n">data</span></em><span class="sig-paren">)</span><a class="reference internal" href="_modules/explorer.html#NumericalAnalyzer"><span class="viewcode-link">[source]</span></a><a class="headerlink" href="#explorer.NumericalAnalyzer" title="Permalink to this definition">¶</a></dt>
+<dd><p>Provides basic visualization for numerical features</p>
+<dl class="py method">
+<dt id="explorer.NumericalAnalyzer.__init__">
+<code class="sig-name descname">__init__</code><span class="sig-paren">(</span><em class="sig-param"><span class="n">data</span></em><span class="sig-paren">)</span><a class="reference internal" href="_modules/explorer.html#NumericalAnalyzer.__init__"><span class="viewcode-link">[source]</span></a><a class="headerlink" href="#explorer.NumericalAnalyzer.__init__" title="Permalink to this definition">¶</a></dt>
+<dd><p>Initializes a NumericalAnalyzer object. Takes data file name or a pandas DataFrame as input</p>
+<dl class="field-list simple">
+<dt class="field-odd">Parameters</dt>
+<dd class="field-odd"><p><strong>data</strong> (<em>Union</em><em>[</em><em>str</em><em>, </em><em>pd.DataFrame</em><em>]</em>) – link to a file or a pandas DataFrame:</p>
+</dd>
+</dl>
+</dd></dl>
+
+<dl class="py method">
+<dt id="explorer.NumericalAnalyzer.corr">
+<code class="sig-name descname">corr</code><span class="sig-paren">(</span><em class="sig-param"><span class="o">**</span><span class="n">options</span></em><span class="sig-paren">)</span><a class="reference internal" href="_modules/explorer.html#NumericalAnalyzer.corr"><span class="viewcode-link">[source]</span></a><a class="headerlink" href="#explorer.NumericalAnalyzer.corr" title="Permalink to this definition">¶</a></dt>
+<dd><p>Generates a correlation heat map of all correlation between the data’s features</p>
+<dl class="field-list simple">
+<dt class="field-odd">Parameters</dt>
+<dd class="field-odd"><p><strong>options</strong> (<em>Mapping</em>) – options settings the plotter function</p>
+</dd>
+</dl>
+</dd></dl>
+
+<dl class="py method">
+<dt id="explorer.NumericalAnalyzer.pair_plot">
+<code class="sig-name descname">pair_plot</code><span class="sig-paren">(</span><em class="sig-param"><span class="o">**</span><span class="n">options</span></em><span class="sig-paren">)</span><a class="reference internal" href="_modules/explorer.html#NumericalAnalyzer.pair_plot"><span class="viewcode-link">[source]</span></a><a class="headerlink" href="#explorer.NumericalAnalyzer.pair_plot" title="Permalink to this definition">¶</a></dt>
+<dd><p>Generates a pair plot of all data</p>
+<dl class="field-list simple">
+<dt class="field-odd">Parameters</dt>
+<dd class="field-odd"><p><strong>options</strong> (<em>Mapping</em>) – options settings the plotter function</p>
+</dd>
+<dt class="field-even">Returns</dt>
+<dd class="field-even"><p></p>
+</dd>
+</dl>
+</dd></dl>
+
+</dd></dl>
+
+</div>
+<div class="section" id="module-feature_builder">
+<span id="feature-builder"></span><h2>Feature Builder<a class="headerlink" href="#module-feature_builder" title="Permalink to this headline">¶</a></h2>
+<p>This module provides classes to generate a feature builder instance.
+It imports Feature builder classes for special data as Geo Data or Time columns. It is intended to build meaningful features out of them
+and return the resulting DataFrame</p>
+<dl class="py class">
+<dt id="feature_builder.FeatureBuilder">
+<em class="property">class </em><code class="sig-prename descclassname">feature_builder.</code><code class="sig-name descname">FeatureBuilder</code><span class="sig-paren">(</span><em class="sig-param"><span class="n">data_source</span></em><span class="sig-paren">)</span><a class="reference internal" href="_modules/feature_builder.html#FeatureBuilder"><span class="viewcode-link">[source]</span></a><a class="headerlink" href="#feature_builder.FeatureBuilder" title="Permalink to this definition">¶</a></dt>
+<dd><p>Main class to generate a feature builder. It has methods to apply the classes defined in the module. It is intended
+to generate feature of special data type. At the moment, following feature classes are implemented:</p>
+<blockquote>
+<div><ul class="simple">
+<li><p>time</p></li>
+<li><p>gis</p></li>
+</ul>
+</div></blockquote>
+<p>In future version, other classes as text is going to be implemented</p>
+<blockquote>
+<div><p>Usage: the idea of this class is to have pipelines generator for the above-mentioned data types.
+In order to add and convert time features, the following implementation is used:</p>
+<p># Initialize a feature builder “builder”
+# adding two generic time features
+&gt; <a href="#id3"><span class="problematic" id="id4">builder.Time.add_</span></a>…
+&gt; <a href="#id5"><span class="problematic" id="id6">builder.Time.add_</span></a>..
+# and then wrap the pipeline and rut it via
+&gt; builder.wrap_and_run_current_pipeline()</p>
+</div></blockquote>
+<dl class="py method">
+<dt id="feature_builder.FeatureBuilder.__init__">
+<code class="sig-name descname">__init__</code><span class="sig-paren">(</span><em class="sig-param"><span class="n">data_source</span></em><span class="sig-paren">)</span><a class="reference internal" href="_modules/feature_builder.html#FeatureBuilder.__init__"><span class="viewcode-link">[source]</span></a><a class="headerlink" href="#feature_builder.FeatureBuilder.__init__" title="Permalink to this definition">¶</a></dt>
+<dd><p>Initializes a feature builder object. As its parent classes, only a pointer to a file or a pandas DataFrame is required for initialization</p>
+<p>Other attributes are as follows:</p>
+<blockquote>
+<div><p>The main feature builder classes:
+- <code class="docutils literal notranslate"><span class="pre">Time</span></code>: is an attribute which allows to build pipeline for creating time related features
+- <code class="docutils literal notranslate"><span class="pre">GIS</span></code>: is an attribute which allows to build pipeline for creating gis related features</p>
+<p>After applying feature transformation:
+- <code class="docutils literal notranslate"><span class="pre">transformed_input</span></code>: is pandas DataFrame containing the derived features
+- <code class="docutils literal notranslate"><span class="pre">transformed_features</span></code>: are all new columns derived within the feature creation</p>
+<p>Pipeline information:
+- wrapped_pipeline: is an attribute, which contains all information when a pipeline of <code class="docutils literal notranslate"><span class="pre">Time</span></code> or <code class="docutils literal notranslate"><span class="pre">GIS</span></code> has been wrapped
+- _current_feature_family_in_pipeline: gives information, to which feature class the current pipeline belongs to. Only time and gis is allowed at the moment</p>
+</div></blockquote>
+<dl class="field-list simple">
+<dt class="field-odd">Parameters</dt>
+<dd class="field-odd"><p><strong>data_source</strong> (<em>Union</em><em>[</em><em>str</em><em>, </em><em>pd.DataFrame</em><em>]</em>) – the source of the data</p>
+</dd>
+</dl>
+</dd></dl>
+
+<dl class="py method">
+<dt id="feature_builder.FeatureBuilder.get_transformer_feature_names">
+<em class="property">static </em><code class="sig-name descname">get_transformer_feature_names</code><span class="sig-paren">(</span><em class="sig-param"><span class="n">column_transformer</span></em><span class="sig-paren">)</span><a class="reference internal" href="_modules/feature_builder.html#FeatureBuilder.get_transformer_feature_names"><span class="viewcode-link">[source]</span></a><a class="headerlink" href="#feature_builder.FeatureBuilder.get_transformer_feature_names" title="Permalink to this definition">¶</a></dt>
+<dd><p>Gets all generated feature names of a feature transformer column after column transformation</p>
+<dl class="field-list simple">
+<dt class="field-odd">Parameters</dt>
+<dd class="field-odd"><p><strong>column_transformer</strong> (<em>ColumnTransformer</em>) – a transformer of a column transformer pipeline</p>
+</dd>
+<dt class="field-even">Returns</dt>
+<dd class="field-even"><p>all feature names of the newly generated DataFrame:</p>
+</dd>
+<dt class="field-odd">Return type</dt>
+<dd class="field-odd"><p>list</p>
+</dd>
+</dl>
+</dd></dl>
+
+<dl class="py method">
+<dt id="feature_builder.FeatureBuilder.run_wrapped_pipeline">
+<code class="sig-name descname">run_wrapped_pipeline</code><span class="sig-paren">(</span><span class="sig-paren">)</span><a class="reference internal" href="_modules/feature_builder.html#FeatureBuilder.run_wrapped_pipeline"><span class="viewcode-link">[source]</span></a><a class="headerlink" href="#feature_builder.FeatureBuilder.run_wrapped_pipeline" title="Permalink to this definition">¶</a></dt>
+<dd><p>If a pipeline has been wrapped and saved into the wrapped_pipeline attribute, it takes this wrapped pipeline and executes it. It then returns
+a DataFrame after all transformation steps have been applied</p>
+<p>Caution: Temporary results are not saved within this pipeline. For instance, if two pipeline steps transform a given column and the
+second transformation steps depends on the transformation results of the first step, the steps might fall.</p>
+<blockquote>
+<div><p>Example:
+# A first transformer converts a date in a string format to date format
+&gt; builder.Time.add_str_to_time(‘Month’, “%Y-%m”)
+# A second transformer derives basic features of a datetime column. It therefore expects the column to be in a datetime format:
+&gt; builder.Time.add_basic_features(‘Month’)
+# Setting the wrapper to the Time feature, wrapping and running will result in an error
+&gt; builder.set_current_feature_dimension(‘time’)
+&gt; builder.wrap_pip()
+&gt; builder.run_wrapped_pipeline()</p>
+<p>This happens because the result of the first transformer (changing the data type) is not taken into account by the second transformer</p>
+<p>In order to evade the error, the pipeline needs to be wrapped and run separately as follows:
+&gt; builder.Time.add_str_to_time(‘Month’, “%Y-%m”)
+&gt; builder.wrap_pip().run_wrapped_pipeline()
+&gt; builder.Time.add_basic_features(‘Month’)
+&gt; builder.wrap_pip().run_wrapped_pipeline()</p>
+</div></blockquote>
+<dl class="field-list simple">
+<dt class="field-odd">Return type</dt>
+<dd class="field-odd"><p><code class="xref py py-data docutils literal notranslate"><span class="pre">Optional</span></code>[<a class="reference internal" href="#feature_builder.FeatureBuilder" title="feature_builder.FeatureBuilder"><code class="xref py py-class docutils literal notranslate"><span class="pre">FeatureBuilder</span></code></a>]</p>
+</dd>
+<dt class="field-even">Returns</dt>
+<dd class="field-even"><p></p>
+</dd>
+</dl>
+</dd></dl>
+
+<dl class="py method">
+<dt id="feature_builder.FeatureBuilder.set_current_pipeline_feature_family">
+<code class="sig-name descname">set_current_pipeline_feature_family</code><span class="sig-paren">(</span><em class="sig-param"><span class="n">value</span></em><span class="sig-paren">)</span><a class="reference internal" href="_modules/feature_builder.html#FeatureBuilder.set_current_pipeline_feature_family"><span class="viewcode-link">[source]</span></a><a class="headerlink" href="#feature_builder.FeatureBuilder.set_current_pipeline_feature_family" title="Permalink to this definition">¶</a></dt>
+<dd><p>Resets the features of the current pipeline. Use this function to switch between different pipeline generators and wrap and run them</p>
+<dl class="field-list simple">
+<dt class="field-odd">Parameters</dt>
+<dd class="field-odd"><p><strong>value</strong> (<em>str</em>) – a feature family</p>
+</dd>
+<dt class="field-even">Return type</dt>
+<dd class="field-even"><p><a class="reference internal" href="#feature_builder.FeatureBuilder" title="feature_builder.FeatureBuilder"><code class="xref py py-class docutils literal notranslate"><span class="pre">FeatureBuilder</span></code></a></p>
+</dd>
+<dt class="field-odd">Returns</dt>
+<dd class="field-odd"><p></p>
+</dd>
+</dl>
+</dd></dl>
+
+<dl class="py method">
+<dt id="feature_builder.FeatureBuilder.wrap_and_run_current_pipeline">
+<code class="sig-name descname">wrap_and_run_current_pipeline</code><span class="sig-paren">(</span><span class="sig-paren">)</span><a class="reference internal" href="_modules/feature_builder.html#FeatureBuilder.wrap_and_run_current_pipeline"><span class="viewcode-link">[source]</span></a><a class="headerlink" href="#feature_builder.FeatureBuilder.wrap_and_run_current_pipeline" title="Permalink to this definition">¶</a></dt>
+<dd><p>Wraps the current pipeline steps and executes all steps.</p>
+<p>This function is saver to use as temporary results are saved and the following operations are performed on the temporary data.
+Therefore, two chaining transformations where one depends on the other will run through.</p>
+<p>This function is the recommend approach to run a pipeline in order to guarantee that all temporary results are saved in a tmp file taken into account.</p>
+<dl class="field-list simple">
+<dt class="field-odd">Returns</dt>
+<dd class="field-odd"><p></p>
+</dd>
+</dl>
+</dd></dl>
+
+<dl class="py method">
+<dt id="feature_builder.FeatureBuilder.wrap_pip">
+<code class="sig-name descname">wrap_pip</code><span class="sig-paren">(</span><span class="sig-paren">)</span><a class="reference internal" href="_modules/feature_builder.html#FeatureBuilder.wrap_pip"><span class="viewcode-link">[source]</span></a><a class="headerlink" href="#feature_builder.FeatureBuilder.wrap_pip" title="Permalink to this definition">¶</a></dt>
+<dd><p>Wraps the pipeline of the feature whose value is currently set in the <code class="docutils literal notranslate"><span class="pre">_current_feature_family_in_pipeline</span></code> and wraps it into the
+wrapped pipeline attribute as a ColumnTransformer object</p>
+<dl class="field-list simple">
+<dt class="field-odd">Return type</dt>
+<dd class="field-odd"><p><a class="reference internal" href="#feature_builder.FeatureBuilder" title="feature_builder.FeatureBuilder"><code class="xref py py-class docutils literal notranslate"><span class="pre">FeatureBuilder</span></code></a></p>
+</dd>
+<dt class="field-even">Returns</dt>
+<dd class="field-even"><p></p>
+</dd>
+</dl>
+</dd></dl>
+
+</dd></dl>
+
+</div>
+<div class="section" id="module-preprocess">
+<span id="data-pre-processor"></span><h2>Data Pre Processor<a class="headerlink" href="#module-preprocess" title="Permalink to this headline">¶</a></h2>
+<p>This module provides a data class which can be used to perform standard pre_processing steps
+It inherits data attributes from the BasicDataAttributes class and extends them by adding
+Preprocessing methods, attributes and properties.
+It requires a config file in yaml format which adds a mapping for dictionary keywords and corresponding pre processor classes</p>
+<dl class="py class">
+<dt id="preprocess.BooleanTransformer">
+<em class="property">class </em><code class="sig-prename descclassname">preprocess.</code><code class="sig-name descname">BooleanTransformer</code><a class="reference internal" href="_modules/preprocess.html#BooleanTransformer"><span class="viewcode-link">[source]</span></a><a class="headerlink" href="#preprocess.BooleanTransformer" title="Permalink to this definition">¶</a></dt>
+<dd><p>Transforms all boolean features to a numeric data type (1/0)</p>
+<dl class="py method">
+<dt id="preprocess.BooleanTransformer.fit">
+<code class="sig-name descname">fit</code><span class="sig-paren">(</span><em class="sig-param"><span class="n">X</span></em>, <em class="sig-param"><span class="n">y</span><span class="o">=</span><span class="default_value">None</span></em>, <em class="sig-param"><span class="o">**</span><span class="n">kwargs</span></em><span class="sig-paren">)</span><a class="reference internal" href="_modules/preprocess.html#BooleanTransformer.fit"><span class="viewcode-link">[source]</span></a><a class="headerlink" href="#preprocess.BooleanTransformer.fit" title="Permalink to this definition">¶</a></dt>
+<dd></dd></dl>
+
+<dl class="py method">
+<dt id="preprocess.BooleanTransformer.transform">
+<em class="property">static </em><code class="sig-name descname">transform</code><span class="sig-paren">(</span><em class="sig-param"><span class="n">X</span></em><span class="sig-paren">)</span><a class="reference internal" href="_modules/preprocess.html#BooleanTransformer.transform"><span class="viewcode-link">[source]</span></a><a class="headerlink" href="#preprocess.BooleanTransformer.transform" title="Permalink to this definition">¶</a></dt>
+<dd><p>Converts all boolean features by replacing <code class="docutils literal notranslate"><span class="pre">True</span></code> values by <code class="docutils literal notranslate"><span class="pre">1</span></code> and <code class="docutils literal notranslate"><span class="pre">False</span></code> by 0.
+:type X: <code class="xref py py-class docutils literal notranslate"><span class="pre">int</span></code>
+:param X: the Initial DataFrame
+:return:</p>
+</dd></dl>
+
+</dd></dl>
+
+<dl class="py class">
+<dt id="preprocess.DataPreProcessor">
+<em class="property">class </em><code class="sig-prename descclassname">preprocess.</code><code class="sig-name descname">DataPreProcessor</code><span class="sig-paren">(</span><em class="sig-param"><span class="n">data_source</span></em>, <em class="sig-param"><span class="n">target_name</span></em>, <em class="sig-param"><span class="n">config</span></em>, <em class="sig-param"><span class="n">features</span><span class="o">=</span><span class="default_value">None</span></em><span class="sig-paren">)</span><a class="reference internal" href="_modules/preprocess.html#DataPreProcessor"><span class="viewcode-link">[source]</span></a><a class="headerlink" href="#preprocess.DataPreProcessor" title="Permalink to this definition">¶</a></dt>
+<dd><p>A class used to perform pre-processing steps to the input data.</p>
+<dl class="py method">
+<dt id="preprocess.DataPreProcessor.Categorical_Encoder">
+<em class="property">property </em><code class="sig-name descname">Categorical_Encoder</code><a class="headerlink" href="#preprocess.DataPreProcessor.Categorical_Encoder" title="Permalink to this definition">¶</a></dt>
+<dd><p>A property which returns a Categorical_Encoder instance which encodes categorical values</p>
+<dl class="field-list simple">
+<dt class="field-odd">Returns</dt>
+<dd class="field-odd"><p>the Categorical_Encoder attribute</p>
+</dd>
+</dl>
+</dd></dl>
+
+<dl class="py method">
+<dt id="preprocess.DataPreProcessor.Encoder">
+<em class="property">property </em><code class="sig-name descname">Encoder</code><a class="headerlink" href="#preprocess.DataPreProcessor.Encoder" title="Permalink to this definition">¶</a></dt>
+<dd><p>A property which returns a Encoder instance which encodes string values</p>
+<dl class="field-list simple">
+<dt class="field-odd">Returns</dt>
+<dd class="field-odd"><p>the Encoder attribute</p>
+</dd>
+</dl>
+</dd></dl>
+
+<dl class="py method">
+<dt id="preprocess.DataPreProcessor.Imputer">
+<em class="property">property </em><code class="sig-name descname">Imputer</code><a class="headerlink" href="#preprocess.DataPreProcessor.Imputer" title="Permalink to this definition">¶</a></dt>
+<dd><p>A property which returns a Imputer instance which replaces missing values.</p>
+<dl class="field-list simple">
+<dt class="field-odd">Returns</dt>
+<dd class="field-odd"><p>the Imputer attribute</p>
+</dd>
+</dl>
+</dd></dl>
+
+<dl class="py method">
+<dt id="preprocess.DataPreProcessor.Scaler">
+<em class="property">property </em><code class="sig-name descname">Scaler</code><a class="headerlink" href="#preprocess.DataPreProcessor.Scaler" title="Permalink to this definition">¶</a></dt>
+<dd><p>A property which returns a Scaler instance for numerical data</p>
+<dl class="field-list simple">
+<dt class="field-odd">Returns</dt>
+<dd class="field-odd"><p>the Scaler attribute</p>
+</dd>
+</dl>
+</dd></dl>
+
+<dl class="py method">
+<dt id="preprocess.DataPreProcessor.SubSetSelector">
+<em class="property">property </em><code class="sig-name descname">SubSetSelector</code><a class="headerlink" href="#preprocess.DataPreProcessor.SubSetSelector" title="Permalink to this definition">¶</a></dt>
+<dd><p>A property which returns the pandas DataFrame subset selector</p>
+<dl class="field-list simple">
+<dt class="field-odd">Returns</dt>
+<dd class="field-odd"><p>the SubSetSelector attribute</p>
+</dd>
+</dl>
+</dd></dl>
+
+<dl class="py method">
+<dt id="preprocess.DataPreProcessor.__init__">
+<code class="sig-name descname">__init__</code><span class="sig-paren">(</span><em class="sig-param"><span class="n">data_source</span></em>, <em class="sig-param"><span class="n">target_name</span></em>, <em class="sig-param"><span class="n">config</span></em>, <em class="sig-param"><span class="n">features</span><span class="o">=</span><span class="default_value">None</span></em><span class="sig-paren">)</span><a class="reference internal" href="_modules/preprocess.html#DataPreProcessor.__init__"><span class="viewcode-link">[source]</span></a><a class="headerlink" href="#preprocess.DataPreProcessor.__init__" title="Permalink to this definition">¶</a></dt>
+<dd><p>Initializes a Data Preprocessor object. It requires a data source which can either be a string to a file or a pandas DataFrame.
+Furthermore, it requires a target name for the target to predict.</p>
+<p>The last parameters is a dictionary containing a mapping to preprocessor class. The recommend way is to read a config.yaml file and pass the return value as a parameter
+to this object. The mapping file necessarily requires the following keywords:</p>
+<blockquote>
+<div><p>&gt;&gt; “mapping” must be a primary key.</p>
+</div></blockquote>
+<dl class="simple">
+<dt>Withing the mapping dictionary, the following second level keywords are mandatory:</dt><dd><p>&gt;&gt; “imputer”
+&gt;&gt; “encoder”
+&gt;&gt; “scaler”
+&gt;&gt; “subset_selector”
+&gt;&gt; “categorical_encoder”</p>
+</dd>
+</dl>
+<p>The values obtained by the second level keywords are pointer to the corresponding preprocessor class.</p>
+<blockquote>
+<div><p>Example of a yaml mapping:</p>
+<p>&gt;&gt; mapping:
+&gt;&gt;     scaler:
+&gt;&gt;           ‘minmax’: MinMaxScaler
+&gt;&gt;             ‘standard’: StandardScaler
+&gt;&gt;     encoder:
+&gt;&gt;             ‘onehot’: OneHotEncoder
+&gt;&gt;             ‘label’: LabelEncoder
+&gt;&gt;             ‘binarize’: Binarizer
+&gt;&gt;     categorical_encoder:
+&gt;&gt;             ‘onehot’: OneHotEncoder
+&gt;&gt;             ‘label’: LabelEncoder
+&gt;&gt;             ‘binarize’: Binarizer
+&gt;&gt;     subset_selector:
+&gt;&gt;             ‘name’ : NameSelector
+&gt;&gt;             ‘type’ : TypeSelector
+&gt;&gt;     imputer:
+&gt;&gt;             simple : SimpleImputer
+&gt;&gt;             knn : KNNImputer</p>
+</div></blockquote>
+<dl class="field-list simple">
+<dt class="field-odd">Parameters</dt>
+<dd class="field-odd"><ul class="simple">
+<li><p><strong>data_source</strong> – provides a string to a file to be read or a plain pandas DataFrame</p></li>
+<li><p><strong>target_name</strong> – the label of the target to be analyzed</p></li>
+<li><p><strong>config</strong> – a config file containing mappings for preprocessor classes</p></li>
+<li><p><strong>features</strong> – optionally, the feature of interest can be defined here</p></li>
+</ul>
+</dd>
+</dl>
+<p># TODO make keys optionals</p>
+</dd></dl>
+
+<dl class="py method">
+<dt id="preprocess.DataPreProcessor.create_pipeline">
+<code class="sig-name descname">create_pipeline</code><span class="sig-paren">(</span><span class="sig-paren">)</span><a class="reference internal" href="_modules/preprocess.html#DataPreProcessor.create_pipeline"><span class="viewcode-link">[source]</span></a><a class="headerlink" href="#preprocess.DataPreProcessor.create_pipeline" title="Permalink to this definition">¶</a></dt>
+<dd><p>Creates a data pre processing pipelines. For each data type, assembles the different data pre processing steps in a list.
+It then checks, which data type is non empty. If it is non-empty the pipeline step is added to the processing pipeline.
+It then returns the fully assembled pipeline.</p>
+<p>The current version of this function operates on the TypeSelector
+# TODO add a version for naming based pre processors</p>
+<dl class="field-list simple">
+<dt class="field-odd">Returns</dt>
+<dd class="field-odd"><p>a pipeline which can be used to fit_transform the original data</p>
+</dd>
+<dt class="field-even">Return type</dt>
+<dd class="field-even"><p>Pipeline</p>
+</dd>
+</dl>
+</dd></dl>
+
+<dl class="py method">
+<dt id="preprocess.DataPreProcessor.get_config_classes_by_key">
+<code class="sig-name descname">get_config_classes_by_key</code><span class="sig-paren">(</span><em class="sig-param"><span class="n">key</span></em><span class="sig-paren">)</span><a class="reference internal" href="_modules/preprocess.html#DataPreProcessor.get_config_classes_by_key"><span class="viewcode-link">[source]</span></a><a class="headerlink" href="#preprocess.DataPreProcessor.get_config_classes_by_key" title="Permalink to this definition">¶</a></dt>
+<dd><p>Takes a dictionary keys that points to Preprocessor classes as a raw string and converts the raw string to the
+corresponding Python classes</p>
+<dl class="field-list simple">
+<dt class="field-odd">Parameters</dt>
+<dd class="field-odd"><p><strong>key</strong> (<em>str</em>) – a dictionary key which points to a PreProcessor classes as a raw string</p>
+</dd>
+<dt class="field-even">Returns</dt>
+<dd class="field-even"><p>the converted dictionary</p>
+</dd>
+<dt class="field-odd">Return type</dt>
+<dd class="field-odd"><p>dict</p>
+</dd>
+</dl>
+</dd></dl>
+
+<dl class="py method">
+<dt id="preprocess.DataPreProcessor.get_train_test_data">
+<code class="sig-name descname">get_train_test_data</code><span class="sig-paren">(</span><em class="sig-param"><span class="n">as_df</span><span class="o">=</span><span class="default_value">False</span></em>, <em class="sig-param"><span class="n">test_size</span><span class="o">=</span><span class="default_value">0.2</span></em>, <em class="sig-param"><span class="o">**</span><span class="n">options</span></em><span class="sig-paren">)</span><a class="reference internal" href="_modules/preprocess.html#DataPreProcessor.get_train_test_data"><span class="viewcode-link">[source]</span></a><a class="headerlink" href="#preprocess.DataPreProcessor.get_train_test_data" title="Permalink to this definition">¶</a></dt>
+<dd><p>Creates test and train data set based on the <code class="docutils literal notranslate"><span class="pre">create_pipeline</span></code> method.</p>
+<dl class="field-list simple">
+<dt class="field-odd">Parameters</dt>
+<dd class="field-odd"><ul class="simple">
+<li><p><strong>as_df</strong> (<em>bool</em>) – a flag indicating if the returned data is a pandas DataFrame</p></li>
+<li><p><strong>test_size</strong> (<em>float</em>) – the proportion of test size in the slitted data</p></li>
+<li><p><strong>options</strong> – Further options of the split_train_test function</p></li>
+</ul>
+</dd>
+<dt class="field-even">Returns</dt>
+<dd class="field-even"><p>a namedtuple with a <code class="docutils literal notranslate"><span class="pre">test</span></code> attribute containing the test data and a <code class="docutils literal notranslate"><span class="pre">train</span></code> attribute containing the training data</p>
+</dd>
+<dt class="field-odd">Return type</dt>
+<dd class="field-odd"><p>namedtuple</p>
+</dd>
+</dl>
+</dd></dl>
+
+</dd></dl>
+
+</div>
+<div class="section" id="module-utilities">
+<span id="utilities"></span><h2>utilities<a class="headerlink" href="#module-utilities" title="Permalink to this headline">¶</a></h2>
+<p>This Module provides some Function which are considered util. They are not necessary to run the code but ease it a lot.</p>
+<dl class="simple">
+<dt>In total the following different Utilities classes are provided:</dt><dd><ul class="simple">
+<li><p>Logger: this class initializes a logging instance which can be used to log all activities.</p></li>
+<li><p>Decorators: this class provides a set of different Decorators which can be used to add functionalities to functions</p></li>
+<li><p>ClassAttrHandler: this class provides some functionalities with respect to classes and their respective attributes.</p></li>
+<li><p>Dict_to_Obj: converts a dictionary to an object notation</p></li>
+</ul>
+</dd>
+</dl>
+<dl class="py class">
+<dt id="utilities.Logger">
+<em class="property">class </em><code class="sig-prename descclassname">utilities.</code><code class="sig-name descname">Logger</code><a class="reference internal" href="_modules/utilities.html#Logger"><span class="viewcode-link">[source]</span></a><a class="headerlink" href="#utilities.Logger" title="Permalink to this definition">¶</a></dt>
+<dd><p>Bases: <code class="xref py py-class docutils literal notranslate"><span class="pre">object</span></code></p>
+<p>This class adds a logging instance which can be imported in other modules and used to track code and activities.
+It consists of a single function and is only embedded in a class for giving a namespace that clarifies that is is a logging instance.
+All logs to are written to stdout. Furthermore, logs can optionally be written to a logging file
+The logging file is identified via a timestamp and written into ./logs/</p>
+<p>Usage: Import this class at the beginning of a module. You can then access the log attribute and use it as a logging instance
+Example:</p>
+<div class="highlight-default notranslate"><div class="highlight"><pre><span></span><span class="o">&gt;</span> <span class="mi">1</span> <span class="kn">from</span> <span class="nn">Utilities</span> <span class="kn">import</span> <span class="n">Logger</span>
+<span class="o">&gt;</span> <span class="mi">2</span> <span class="n">log</span> <span class="o">=</span> <span class="n">Logger</span><span class="o">.</span><span class="n">log</span><span class="p">()</span>
+<span class="o">&gt;</span> <span class="mi">3</span> <span class="n">log</span><span class="o">.</span><span class="n">info</span><span class="p">(</span><span class="s1">&#39;Control is here&#39;</span><span class="p">)</span>
+<span class="o">&gt;</span> <span class="c1"># log prints &quot;Control is here&quot;</span>
+</pre></div>
+</div>
+<dl class="py method">
+<dt id="utilities.Logger.__init__">
+<code class="sig-name descname">__init__</code><span class="sig-paren">(</span><span class="sig-paren">)</span><a class="headerlink" href="#utilities.Logger.__init__" title="Permalink to this definition">¶</a></dt>
+<dd><p>Initialize self.  See help(type(self)) for accurate signature.</p>
+</dd></dl>
+
+<dl class="py method">
+<dt id="utilities.Logger.initialize_log">
+<em class="property">static </em><code class="sig-name descname">initialize_log</code><span class="sig-paren">(</span><em class="sig-param"><span class="n">write_to_file</span><span class="o">=</span><span class="default_value">False</span></em><span class="sig-paren">)</span><a class="reference internal" href="_modules/utilities.html#Logger.initialize_log"><span class="viewcode-link">[source]</span></a><a class="headerlink" href="#utilities.Logger.initialize_log" title="Permalink to this definition">¶</a></dt>
+<dd><p>Initializes a logging instance that writes to stout. It can optionally also write to a logging file</p>
+<dl class="field-list simple">
+<dt class="field-odd">Parameters</dt>
+<dd class="field-odd"><p><strong>write_to_file</strong> (<em>bool</em>) – indicates, if a subdirectory with “logs” is  created in which a logging file is written into</p>
+</dd>
+<dt class="field-even">Returns</dt>
+<dd class="field-even"><p></p>
+</dd>
+</dl>
+</dd></dl>
+
+</dd></dl>
+
+<dl class="py class">
+<dt id="utilities.Decorators">
+<em class="property">class </em><code class="sig-prename descclassname">utilities.</code><code class="sig-name descname">Decorators</code><a class="reference internal" href="_modules/utilities.html#Decorators"><span class="viewcode-link">[source]</span></a><a class="headerlink" href="#utilities.Decorators" title="Permalink to this definition">¶</a></dt>
+<dd><p>Bases: <code class="xref py py-class docutils literal notranslate"><span class="pre">object</span></code></p>
+<p>This class provides a set of functionality with respect to decorate functions. These decorators are considered
+util as they prevent to repeat the same code, add functionality to a function on the fly, allows a lot of type
+and input checking and so on.</p>
+<p>All the functions defined inside this class take a function as an input and return a decorated function.</p>
+<dl class="py method">
+<dt id="utilities.Decorators.__init__">
+<code class="sig-name descname">__init__</code><span class="sig-paren">(</span><span class="sig-paren">)</span><a class="headerlink" href="#utilities.Decorators.__init__" title="Permalink to this definition">¶</a></dt>
+<dd><p>Initialize self.  See help(type(self)) for accurate signature.</p>
+</dd></dl>
+
+<dl class="py method">
+<dt id="utilities.Decorators.accepted_arguments_within_class_methods">
+<em class="property">static </em><code class="sig-name descname">accepted_arguments_within_class_methods</code><span class="sig-paren">(</span><em class="sig-param"><span class="n">accepted_args</span></em><span class="sig-paren">)</span><a class="reference internal" href="_modules/utilities.html#Decorators.accepted_arguments_within_class_methods"><span class="viewcode-link">[source]</span></a><a class="headerlink" href="#utilities.Decorators.accepted_arguments_within_class_methods" title="Permalink to this definition">¶</a></dt>
+<dd><p>When decorating a function with this decorator, the function’s arguments are checked against a list of valid arguments.
+If an invalid argument is encountered, the function is not executed. This decorator is basically the same as “accepted_arguments”
+decorator except that it is aimed for functions within classes (i.e. containing a “self” parameter). In these setup, the class instance
+itself is passed as the first argument. Therefore, this Decorator only checks the second till last argument for correctness.</p>
+<p>Example:</p>
+<div class="highlight-default notranslate"><div class="highlight"><pre><span></span><span class="o">&gt;</span> <span class="mi">1</span> <span class="k">class</span> <span class="nc">Foo</span><span class="p">:</span>
+<span class="o">&gt;</span> <span class="mi">2</span>   <span class="o">...</span>
+<span class="o">&gt;</span> <span class="o">...</span>
+<span class="o">&gt;</span> <span class="mi">10</span>   <span class="nd">@Decorators</span><span class="o">.</span><span class="n">accepted_arguments_within_class_methods</span><span class="p">([</span><span class="mi">0</span><span class="p">,</span><span class="mi">1</span><span class="p">])</span>
+<span class="o">&gt;</span> <span class="mi">11</span>   <span class="k">def</span> <span class="nf">bar</span><span class="p">(</span><span class="bp">self</span><span class="p">):</span>
+<span class="o">&gt;</span> <span class="mi">12</span>         <span class="o">...</span>
+<span class="o">&gt;</span> <span class="o">...</span>
+<span class="o">&gt;</span> <span class="mi">18</span> <span class="n">foo</span><span class="o">=</span><span class="n">Foo</span><span class="p">(</span><span class="mi">1</span><span class="p">)</span>
+<span class="o">&gt;</span> <span class="mi">19</span> <span class="n">foo</span><span class="o">.</span><span class="n">bar</span><span class="p">()</span>
+<span class="o">&gt;</span> <span class="c1"># console prints: Encountered a non-valid argument.</span>
+<span class="o">&gt;</span> <span class="c1"># console prints: Valid arguments are: [0,1]</span>
+</pre></div>
+</div>
+<dl class="field-list simple">
+<dt class="field-odd">Parameters</dt>
+<dd class="field-odd"><p><strong>accepted_args</strong> (<em>list</em>) – list of accepted arguments by the function</p>
+</dd>
+<dt class="field-even">Returns</dt>
+<dd class="field-even"><p>a decorated function which checks the aguments</p>
+</dd>
+</dl>
+</dd></dl>
+
+<dl class="py method">
+<dt id="utilities.Decorators.argument_in_dictionary_key">
+<em class="property">static </em><code class="sig-name descname">argument_in_dictionary_key</code><span class="sig-paren">(</span><em class="sig-param"><span class="n">dictionary</span></em><span class="sig-paren">)</span><a class="reference internal" href="_modules/utilities.html#Decorators.argument_in_dictionary_key"><span class="viewcode-link">[source]</span></a><a class="headerlink" href="#utilities.Decorators.argument_in_dictionary_key" title="Permalink to this definition">¶</a></dt>
+<dd><p>When decorating a function with this decorator, the function’s arguments are checked against a list of valid arguments.
+If an invalid argument is encoutered, the function is not executed.</p>
+<p>Example:</p>
+<div class="highlight-default notranslate"><div class="highlight"><pre><span></span><span class="o">&gt;</span> <span class="nd">@Decorators</span><span class="o">.</span><span class="n">accepted_arguments</span><span class="p">([</span><span class="mi">0</span><span class="p">,</span><span class="mi">1</span><span class="p">])</span>
+<span class="o">&gt;</span> <span class="mi">1</span> <span class="k">def</span> <span class="nf">foo</span><span class="p">(</span><span class="n">x</span><span class="p">):</span>
+<span class="o">&gt;</span>    <span class="o">...</span>
+<span class="o">&gt;</span> <span class="mi">7</span> <span class="n">foo</span><span class="p">(</span><span class="mi">10</span><span class="p">)</span>
+<span class="o">&gt;</span> <span class="c1"># console prints: Encountered a non-valid argument.</span>
+<span class="o">&gt;</span> <span class="c1"># console prints: Valid arguments are: [0,1]</span>
+</pre></div>
+</div>
+<dl class="field-list simple">
+<dt class="field-odd">Parameters</dt>
+<dd class="field-odd"><p><strong>accepted_args</strong> (<em>list</em>) – list of accepted arguments by the function</p>
+</dd>
+<dt class="field-even">Returns</dt>
+<dd class="field-even"><p>a decorated function which checks the aguments</p>
+</dd>
+</dl>
+</dd></dl>
+
+<dl class="py method">
+<dt id="utilities.Decorators.counter">
+<em class="property">static </em><code class="sig-name descname">counter</code><span class="sig-paren">(</span><em class="sig-param"><span class="n">func</span></em><span class="sig-paren">)</span><a class="reference internal" href="_modules/utilities.html#Decorators.counter"><span class="viewcode-link">[source]</span></a><a class="headerlink" href="#utilities.Decorators.counter" title="Permalink to this definition">¶</a></dt>
+<dd><p>When decorating a function with this decorator, it indicates how often the function has been called.</p>
+<p>Example:</p>
+<div class="highlight-default notranslate"><div class="highlight"><pre><span></span><span class="o">&gt;</span>   <span class="nd">@Decorators</span><span class="o">.</span><span class="n">counter</span>
+<span class="o">&gt;</span>   <span class="mi">1</span> <span class="k">def</span> <span class="nf">foo</span><span class="p">(</span><span class="n">x</span><span class="p">):</span>
+<span class="o">&gt;</span>       <span class="o">....</span>
+<span class="o">&gt;</span>   <span class="mi">10</span> <span class="n">foo</span><span class="p">(</span><span class="mi">10</span><span class="p">)</span>
+<span class="o">&gt;</span>   <span class="mi">11</span> <span class="c1">#console prints &quot;Executing &#39;foo&#39; with args 10 and &#39;&#39;&quot;</span>
+</pre></div>
+</div>
+<dl class="field-list simple">
+<dt class="field-odd">Parameters</dt>
+<dd class="field-odd"><p><strong>func</strong> – function to decorate</p>
+</dd>
+<dt class="field-even">Returns</dt>
+<dd class="field-even"><p>decorated function which indicates how often the function has been called</p>
+</dd>
+</dl>
+</dd></dl>
+
+<dl class="py method">
+<dt id="utilities.Decorators.run_time">
+<em class="property">static </em><code class="sig-name descname">run_time</code><span class="sig-paren">(</span><em class="sig-param"><span class="n">func</span></em><span class="sig-paren">)</span><a class="reference internal" href="_modules/utilities.html#Decorators.run_time"><span class="viewcode-link">[source]</span></a><a class="headerlink" href="#utilities.Decorators.run_time" title="Permalink to this definition">¶</a></dt>
+<dd><p>When decorating a function with this decorator, it indicates the function’s run time in a hh:mm:ss after
+the function returns.</p>
+<p>Example:</p>
+<div class="highlight-default notranslate"><div class="highlight"><pre><span></span><span class="o">&gt;</span> <span class="c1"># Assume the function needs exactly 1 minute, 13.534 seconds to execute</span>
+<span class="o">&gt;</span> <span class="nd">@Decorators</span><span class="o">.</span><span class="n">run_time</span>
+<span class="o">&gt;</span> <span class="mi">1</span> <span class="k">def</span> <span class="nf">foo</span><span class="p">(</span><span class="n">x</span><span class="p">):</span>
+<span class="o">&gt;</span> <span class="mi">2</span>   <span class="o">...</span>
+<span class="o">&gt;</span> <span class="o">...</span>
+<span class="o">&gt;</span> <span class="mi">7</span> <span class="n">foo</span><span class="p">(</span><span class="mi">10</span><span class="p">)</span>
+<span class="o">&gt;</span> <span class="c1">#console prints &quot;00:01:13,534&quot;</span>
+</pre></div>
+</div>
+<dl class="field-list simple">
+<dt class="field-odd">Parameters</dt>
+<dd class="field-odd"><p><strong>func</strong> – function to decorate</p>
+</dd>
+<dt class="field-even">Returns</dt>
+<dd class="field-even"><p>decorated function which indicates function run time</p>
+</dd>
+</dl>
+</dd></dl>
+
+<dl class="py method">
+<dt id="utilities.Decorators.show_args">
+<em class="property">static </em><code class="sig-name descname">show_args</code><span class="sig-paren">(</span><em class="sig-param"><span class="n">func</span></em><span class="sig-paren">)</span><a class="reference internal" href="_modules/utilities.html#Decorators.show_args"><span class="viewcode-link">[source]</span></a><a class="headerlink" href="#utilities.Decorators.show_args" title="Permalink to this definition">¶</a></dt>
+<dd><p>When decorating a function with this decorator, it indicates the arguments passed to the function.</p>
+<p>Example:</p>
+<div class="highlight-default notranslate"><div class="highlight"><pre><span></span><span class="o">&gt;</span> <span class="nd">@Decorators</span><span class="o">.</span><span class="n">show_args</span>
+<span class="o">&gt;</span> <span class="mi">1</span> <span class="k">def</span> <span class="nf">foo</span><span class="p">(</span><span class="n">x</span><span class="p">):</span>
+<span class="o">&gt;</span>       <span class="o">....</span>
+<span class="o">&gt;</span>    <span class="mi">10</span> <span class="n">foo</span><span class="p">(</span><span class="mi">10</span><span class="p">)</span>
+<span class="o">&gt;</span>    <span class="mi">11</span> <span class="c1">#console prints &quot;Executing &#39;foo&#39; with args 10 and &#39;&#39;&quot;</span>
+</pre></div>
+</div>
+<dl class="field-list simple">
+<dt class="field-odd">Parameters</dt>
+<dd class="field-odd"><p><strong>func</strong> – function to decorate</p>
+</dd>
+<dt class="field-even">Returns</dt>
+<dd class="field-even"><p>decorated function which indicates function’s arguments</p>
+</dd>
+</dl>
+</dd></dl>
+
+</dd></dl>
+
+<dl class="py class">
+<dt id="utilities.YamlParser">
+<em class="property">class </em><code class="sig-prename descclassname">utilities.</code><code class="sig-name descname">YamlParser</code><span class="sig-paren">(</span><em class="sig-param"><span class="n">yaml_file</span></em><span class="sig-paren">)</span><a class="reference internal" href="_modules/utilities.html#YamlParser"><span class="viewcode-link">[source]</span></a><a class="headerlink" href="#utilities.YamlParser" title="Permalink to this definition">¶</a></dt>
+<dd><p>Bases: <code class="xref py py-class docutils literal notranslate"><span class="pre">object</span></code></p>
+<dl class="py method">
+<dt id="utilities.YamlParser.__init__">
+<code class="sig-name descname">__init__</code><span class="sig-paren">(</span><em class="sig-param"><span class="n">yaml_file</span></em><span class="sig-paren">)</span><a class="reference internal" href="_modules/utilities.html#YamlParser.__init__"><span class="viewcode-link">[source]</span></a><a class="headerlink" href="#utilities.YamlParser.__init__" title="Permalink to this definition">¶</a></dt>
+<dd><p>Initialize self.  See help(type(self)) for accurate signature.</p>
+</dd></dl>
+
+<dl class="py method">
+<dt id="utilities.YamlParser.convert_nested_dictionary_class">
+<em class="property">static </em><code class="sig-name descname">convert_nested_dictionary_class</code><span class="sig-paren">(</span><em class="sig-param"><span class="n">d</span></em><span class="sig-paren">)</span><a class="reference internal" href="_modules/utilities.html#YamlParser.convert_nested_dictionary_class"><span class="viewcode-link">[source]</span></a><a class="headerlink" href="#utilities.YamlParser.convert_nested_dictionary_class" title="Permalink to this definition">¶</a></dt>
+<dd></dd></dl>
+
+<dl class="py method">
+<dt id="utilities.YamlParser.get_classes_by_key">
+<code class="sig-name descname">get_classes_by_key</code><span class="sig-paren">(</span><em class="sig-param"><span class="n">key</span></em><span class="sig-paren">)</span><a class="reference internal" href="_modules/utilities.html#YamlParser.get_classes_by_key"><span class="viewcode-link">[source]</span></a><a class="headerlink" href="#utilities.YamlParser.get_classes_by_key" title="Permalink to this definition">¶</a></dt>
+<dd></dd></dl>
+
+<dl class="py method">
+<dt id="utilities.YamlParser.get_file">
+<code class="sig-name descname">get_file</code><span class="sig-paren">(</span><span class="sig-paren">)</span><a class="reference internal" href="_modules/utilities.html#YamlParser.get_file"><span class="viewcode-link">[source]</span></a><a class="headerlink" href="#utilities.YamlParser.get_file" title="Permalink to this definition">¶</a></dt>
+<dd></dd></dl>
+
+<dl class="py method">
+<dt id="utilities.YamlParser.read">
+<code class="sig-name descname">read</code><span class="sig-paren">(</span><span class="sig-paren">)</span><a class="reference internal" href="_modules/utilities.html#YamlParser.read"><span class="viewcode-link">[source]</span></a><a class="headerlink" href="#utilities.YamlParser.read" title="Permalink to this definition">¶</a></dt>
+<dd></dd></dl>
+
+<dl class="py method">
+<dt id="utilities.YamlParser.str_to_class">
+<em class="property">static </em><code class="sig-name descname">str_to_class</code><span class="sig-paren">(</span><em class="sig-param"><span class="n">classname</span></em><span class="sig-paren">)</span><a class="reference internal" href="_modules/utilities.html#YamlParser.str_to_class"><span class="viewcode-link">[source]</span></a><a class="headerlink" href="#utilities.YamlParser.str_to_class" title="Permalink to this definition">¶</a></dt>
+<dd></dd></dl>
+
+</dd></dl>
+
+</div>
+</div>
+<div class="section" id="indices-and-tables">
+<h1>Indices and tables<a class="headerlink" href="#indices-and-tables" title="Permalink to this headline">¶</a></h1>
+<ul class="simple">
+<li><p><a class="reference internal" href="genindex.html"><span class="std std-ref">Index</span></a></p></li>
+<li><p><a class="reference internal" href="py-modindex.html"><span class="std std-ref">Module Index</span></a></p></li>
+<li><p><a class="reference internal" href="search.html"><span class="std std-ref">Search Page</span></a></p></li>
+</ul>
+</div>
+
+
+          </div>
+        </div>
+      </div>
+      <div class="sphinxsidebar" role="navigation" aria-label="main navigation">
+        <div class="sphinxsidebarwrapper">
+  <h3><a href="#">Table of Contents</a></h3>
+  <ul>
+<li><a class="reference internal" href="#">Welcome to Machine Learning Data Handler’s documentation!</a><ul>
+<li><a class="reference internal" href="#last-update">Last Update</a></li>
+<li><a class="reference internal" href="#context">Context</a></li>
+<li><a class="reference internal" href="#project-directory">Project Directory</a></li>
+<li><a class="reference internal" href="#usage">Usage</a></li>
+</ul>
+</li>
+<li><a class="reference internal" href="#source-code">Source Code</a><ul>
+<li><a class="reference internal" href="#module-baseattrs">Basic Attributes</a></li>
+<li><a class="reference internal" href="#module-dataframeselector">Data Selector</a></li>
+<li><a class="reference internal" href="#module-date_and_time">Data and Time</a></li>
+<li><a class="reference internal" href="#module-gis">Geoinformation System</a></li>
+<li><a class="reference internal" href="#module-explorer">Explorer</a></li>
+<li><a class="reference internal" href="#module-feature_builder">Feature Builder</a></li>
+<li><a class="reference internal" href="#module-preprocess">Data Pre Processor</a></li>
+<li><a class="reference internal" href="#module-utilities">utilities</a></li>
+</ul>
+</li>
+<li><a class="reference internal" href="#indices-and-tables">Indices and tables</a></li>
+</ul>
+
+  <div role="note" aria-label="source link">
+    <h3>This Page</h3>
+    <ul class="this-page-menu">
+      <li><a href="_sources/ML_Data_Handler.rst.txt"
+            rel="nofollow">Show Source</a></li>
+    </ul>
+   </div>
+<div id="searchbox" style="display: none" role="search">
+  <h3 id="searchlabel">Quick search</h3>
+    <div class="searchformwrapper">
+    <form class="search" action="search.html" method="get">
+      <input type="text" name="q" aria-labelledby="searchlabel" />
+      <input type="submit" value="Go" />
+    </form>
+    </div>
+</div>
+<script>$('#searchbox').show(0);</script>
+        </div>
+      </div>
+      <div class="clearer"></div>
+    </div>
+    <div class="related" role="navigation" aria-label="related navigation">
+      <h3>Navigation</h3>
+      <ul>
+        <li class="right" style="margin-right: 10px">
+          <a href="genindex.html" title="General Index"
+             >index</a></li>
+        <li class="right" >
+          <a href="py-modindex.html" title="Python Module Index"
+             >modules</a> |</li>
+        <li class="nav-item nav-item-0"><a href="#">Machine Learning Data Handler 1.2 documentation</a> &#187;</li> 
+      </ul>
+    </div>
+    <div class="footer" role="contentinfo">
+        &#169; Copyright 2020, Dominik Heinz.
+      Created using <a href="http://sphinx-doc.org/">Sphinx</a> 3.0.3.
+    </div>
+  </body>
+</html>

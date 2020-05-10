@@ -1,0 +1,752 @@
+
+<!DOCTYPE html>
+
+<html>
+  <head>
+    <meta charset="utf-8" />
+    <title>feature_builder &#8212; Machine Learning Data Handler 1.2 documentation</title>
+    <link rel="stylesheet" href="../_static/nature.css" type="text/css" />
+    <link rel="stylesheet" href="../_static/pygments.css" type="text/css" />
+    <link rel="stylesheet" type="text/css" href="../_static/graphviz.css" />
+    <script id="documentation_options" data-url_root="../" src="../_static/documentation_options.js"></script>
+    <script src="../_static/jquery.js"></script>
+    <script src="../_static/underscore.js"></script>
+    <script src="../_static/doctools.js"></script>
+    <script src="../_static/language_data.js"></script>
+    <link rel="index" title="Index" href="../genindex.html" />
+    <link rel="search" title="Search" href="../search.html" /> 
+  </head><body>
+    <div class="related" role="navigation" aria-label="related navigation">
+      <h3>Navigation</h3>
+      <ul>
+        <li class="right" style="margin-right: 10px">
+          <a href="../genindex.html" title="General Index"
+             accesskey="I">index</a></li>
+        <li class="right" >
+          <a href="../py-modindex.html" title="Python Module Index"
+             >modules</a> |</li>
+        <li class="nav-item nav-item-0"><a href="../ML_Data_Handler.html">Machine Learning Data Handler 1.2 documentation</a> &#187;</li>
+          <li class="nav-item nav-item-1"><a href="index.html" accesskey="U">Module code</a> &#187;</li> 
+      </ul>
+    </div>  
+
+    <div class="document">
+      <div class="documentwrapper">
+        <div class="bodywrapper">
+          <div class="body" role="main">
+            
+  <h1>Source code for feature_builder</h1><div class="highlight"><pre>
+<span></span><span class="sd">&quot;&quot;&quot;</span>
+<span class="sd">This module provides classes to generate a feature builder instance.</span>
+<span class="sd">It imports Feature builder classes for special data as Geo Data or Time columns. It is intended to build meaningful features out of them</span>
+<span class="sd">and return the resulting DataFrame</span>
+<span class="sd">&quot;&quot;&quot;</span>
+<span class="kn">from</span> <span class="nn">__future__</span> <span class="kn">import</span> <span class="n">annotations</span>
+<span class="kn">from</span> <span class="nn">typing</span> <span class="kn">import</span> <span class="n">Union</span><span class="p">,</span> <span class="n">Sequence</span><span class="p">,</span> <span class="n">Mapping</span><span class="p">,</span> <span class="n">List</span>
+<span class="kn">from</span> <span class="nn">collections</span> <span class="kn">import</span> <span class="n">namedtuple</span>
+<span class="kn">from</span> <span class="nn">copy</span> <span class="kn">import</span> <span class="n">deepcopy</span>
+
+<span class="kn">from</span> <span class="nn">sklearn.pipeline</span> <span class="kn">import</span> <span class="n">make_pipeline</span>
+<span class="kn">from</span> <span class="nn">sklearn.compose</span> <span class="kn">import</span> <span class="n">ColumnTransformer</span>
+<span class="kn">import</span> <span class="nn">pandas</span> <span class="k">as</span> <span class="nn">pd</span>
+
+<span class="c1"># temporary hack to enable relative imports when script is not run within package</span>
+<span class="c1"># see https://stackoverflow.com/questions/14132789/relative-imports-for-the-billionth-time?rq=1</span>
+<span class="c1"># or https://stackoverflow.com/questions/11536764/how-to-fix-attempted-relative-import-in-non-package-even-with-init-py?rq=1</span>
+<span class="k">try</span><span class="p">:</span>
+    <span class="kn">from</span> <span class="nn">baseattrs</span> <span class="kn">import</span> <span class="n">BasicDataAttributes</span>
+    <span class="kn">from</span> <span class="nn">utilities</span> <span class="kn">import</span> <span class="n">Logger</span><span class="p">,</span> <span class="n">Decorators</span>
+    <span class="kn">from</span> <span class="nn">gis</span> <span class="kn">import</span> <span class="n">GisBasicTransformer</span><span class="p">,</span> <span class="n">GisDistance</span><span class="p">,</span> <span class="n">GisCluster</span>
+    <span class="kn">from</span> <span class="nn">date_and_time</span> <span class="kn">import</span> <span class="p">(</span>
+        <span class="n">UnixTimeStampConverter</span><span class="p">,</span>
+        <span class="n">TimeDifference</span><span class="p">,</span>
+        <span class="n">TimeFeatureBasic</span><span class="p">,</span>
+        <span class="n">StringToTimeConverter</span><span class="p">,</span>
+    <span class="p">)</span>
+<span class="k">except</span> <span class="ne">ImportError</span><span class="p">:</span>
+    <span class="kn">from</span> <span class="nn">.baseattrs</span> <span class="kn">import</span> <span class="n">BasicDataAttributes</span>
+    <span class="kn">from</span> <span class="nn">.utilities</span> <span class="kn">import</span> <span class="n">Logger</span><span class="p">,</span> <span class="n">Decorators</span>
+    <span class="kn">from</span> <span class="nn">.gis</span> <span class="kn">import</span> <span class="n">GisBasicTransformer</span><span class="p">,</span> <span class="n">GisDistance</span><span class="p">,</span> <span class="n">GisCluster</span>
+    <span class="kn">from</span> <span class="nn">.date_and_time</span> <span class="kn">import</span> <span class="p">(</span>
+        <span class="n">UnixTimeStampConverter</span><span class="p">,</span>
+        <span class="n">TimeDifference</span><span class="p">,</span>
+        <span class="n">TimeFeatureBasic</span><span class="p">,</span>
+        <span class="n">StringToTimeConverter</span><span class="p">,</span>
+    <span class="p">)</span>
+
+<span class="n">log</span> <span class="o">=</span> <span class="n">Logger</span><span class="o">.</span><span class="n">initialize_log</span><span class="p">()</span>
+<span class="n">accepted_features</span> <span class="o">=</span> <span class="p">[</span><span class="s2">&quot;time&quot;</span><span class="p">,</span> <span class="s2">&quot;gis&quot;</span><span class="p">]</span>
+<span class="n">__all__</span> <span class="o">=</span> <span class="p">[</span><span class="s2">&quot;FeatureBuilder&quot;</span><span class="p">]</span>
+
+
+<span class="k">class</span> <span class="nc">_PipelineFunctions</span><span class="p">:</span>
+    <span class="sd">&quot;&quot;&quot;</span>
+<span class="sd">    A class which defines a set of pipeline functions. Other classes, which build pipelines by calling function inherit from this class and use its</span>
+<span class="sd">    functionality</span>
+<span class="sd">    &quot;&quot;&quot;</span>
+
+    <span class="k">def</span> <span class="fm">__init__</span><span class="p">(</span><span class="bp">self</span><span class="p">):</span>
+        <span class="sd">&quot;&quot;&quot;</span>
+<span class="sd">        Only an empty list with pipeline steps is provided at the beginning</span>
+<span class="sd">        &quot;&quot;&quot;</span>
+        <span class="bp">self</span><span class="o">.</span><span class="n">pipeline_steps</span> <span class="o">=</span> <span class="p">[]</span>
+
+    <span class="k">def</span> <span class="nf">reverse_pipeline</span><span class="p">(</span><span class="bp">self</span><span class="p">)</span> <span class="o">-&gt;</span> <span class="n">_PipelineFunctions</span><span class="p">:</span>
+        <span class="sd">&quot;&quot;&quot;</span>
+<span class="sd">        Reverses the items in the pipeline</span>
+
+<span class="sd">        :return: the same object whose pipeline is reversed</span>
+<span class="sd">        &quot;&quot;&quot;</span>
+        <span class="n">log</span><span class="o">.</span><span class="n">info</span><span class="p">(</span><span class="s2">&quot;Reversing pipeline&quot;</span><span class="p">)</span>
+        <span class="bp">self</span><span class="o">.</span><span class="n">pipeline_steps</span> <span class="o">=</span> <span class="bp">self</span><span class="o">.</span><span class="n">pipeline_steps</span><span class="p">[::</span><span class="o">-</span><span class="mi">1</span><span class="p">]</span>
+        <span class="k">return</span> <span class="bp">self</span>
+
+    <span class="k">def</span> <span class="nf">display_pipeline</span><span class="p">(</span><span class="bp">self</span><span class="p">)</span> <span class="o">-&gt;</span> <span class="kc">None</span><span class="p">:</span>
+        <span class="sd">&quot;&quot;&quot;</span>
+<span class="sd">        Lists all steps in the pipeline</span>
+
+<span class="sd">        &quot;&quot;&quot;</span>
+        <span class="n">log</span><span class="o">.</span><span class="n">info</span><span class="p">(</span>
+            <span class="sa">f</span><span class="s2">&quot;The current pipelines has the following steps </span><span class="si">{</span><span class="p">[</span><span class="n">step</span> <span class="k">for</span> <span class="n">step</span> <span class="ow">in</span> <span class="bp">self</span><span class="o">.</span><span class="n">pipeline_steps</span><span class="p">]</span><span class="si">}</span><span class="s2">&quot;</span>
+        <span class="p">)</span>
+
+    <span class="k">def</span> <span class="nf">flush_pipeline</span><span class="p">(</span><span class="bp">self</span><span class="p">)</span> <span class="o">-&gt;</span> <span class="n">_PipelineFunctions</span><span class="p">:</span>
+        <span class="sd">&quot;&quot;&quot;</span>
+<span class="sd">        Clears the current pipeline and drops all entries from it</span>
+
+<span class="sd">        :return: the same object whose pipeline is flushed</span>
+<span class="sd">        &quot;&quot;&quot;</span>
+        <span class="n">log</span><span class="o">.</span><span class="n">info</span><span class="p">(</span>
+            <span class="sa">f</span><span class="s2">&quot;Resetting the current pipeline with </span><span class="si">{</span><span class="nb">len</span><span class="p">(</span><span class="bp">self</span><span class="o">.</span><span class="n">pipeline_steps</span><span class="p">)</span><span class="si">}</span><span class="s2"> steps&quot;</span>
+        <span class="p">)</span>
+        <span class="bp">self</span><span class="o">.</span><span class="n">pipeline_steps</span> <span class="o">=</span> <span class="p">[]</span>
+        <span class="k">return</span> <span class="bp">self</span>
+
+    <span class="nd">@staticmethod</span>
+    <span class="k">def</span> <span class="nf">_get_pipeline_tuple</span><span class="p">(</span><span class="n">value</span><span class="p">:</span> <span class="nb">str</span><span class="p">)</span> <span class="o">-&gt;</span> <span class="n">namedtuple</span><span class="p">:</span>
+        <span class="sd">&quot;&quot;&quot;</span>
+<span class="sd">        Minor helper function which returns a namedtuple with a step and an actions entry</span>
+
+<span class="sd">        :param value: the named of the namedtuple</span>
+<span class="sd">        :type value: str</span>
+<span class="sd">        :return: a namedtuple with a step and actions entry</span>
+<span class="sd">        :rtype: namedtuple</span>
+<span class="sd">        &quot;&quot;&quot;</span>
+        <span class="k">return</span> <span class="n">namedtuple</span><span class="p">(</span><span class="n">value</span><span class="p">,</span> <span class="p">[</span><span class="s2">&quot;step&quot;</span><span class="p">,</span> <span class="s2">&quot;actions&quot;</span><span class="p">])</span>
+
+
+<span class="k">class</span> <span class="nc">_TimeFeatureAdder</span><span class="p">(</span><span class="n">_PipelineFunctions</span><span class="p">):</span>
+    <span class="sd">&quot;&quot;&quot;</span>
+<span class="sd">    Provides functionality to derive Time related features. It inherits from the _PipelineFunctions class and allows to add transformer steps</span>
+<span class="sd">    to the pipelines. The steps can be wrapped in a parent class and executed to derive time features.</span>
+<span class="sd">    &quot;&quot;&quot;</span>
+
+    <span class="k">def</span> <span class="fm">__init__</span><span class="p">(</span><span class="bp">self</span><span class="p">):</span>
+        <span class="sd">&quot;&quot;&quot;</span>
+<span class="sd">        Only an empty list with pipeline steps is provided at the beginning</span>
+<span class="sd">        &quot;&quot;&quot;</span>
+        <span class="nb">super</span><span class="p">()</span><span class="o">.</span><span class="fm">__init__</span><span class="p">()</span>
+
+    <span class="k">def</span> <span class="nf">add_unix_timestamp_converter</span><span class="p">(</span>
+        <span class="bp">self</span><span class="p">,</span> <span class="n">features</span><span class="p">:</span> <span class="n">Union</span><span class="p">[</span><span class="nb">str</span><span class="p">,</span> <span class="n">Sequence</span><span class="p">]</span>
+    <span class="p">)</span> <span class="o">-&gt;</span> <span class="n">_TimeFeatureAdder</span><span class="p">:</span>
+        <span class="sd">&quot;&quot;&quot;</span>
+<span class="sd">        Adds a UnixTimeStampConverter transformer to the current pipeline.</span>
+
+<span class="sd">        :param features: a string or list of feature names who are Unix Time stamps and shall be converted to datetime</span>
+<span class="sd">        :type features: Union[str, Sequence]</span>
+<span class="sd">        :return: the same object by adding a unix time stamp converter to the feature pipeline</span>
+<span class="sd">        &quot;&quot;&quot;</span>
+        <span class="n">log</span><span class="o">.</span><span class="n">info</span><span class="p">(</span>
+            <span class="sa">f</span><span class="s2">&quot;Adding a Unix timestamp convert for the following features </span><span class="si">{</span><span class="n">features</span><span class="si">}</span><span class="s2">&quot;</span>
+        <span class="p">)</span>
+        <span class="n">step</span> <span class="o">=</span> <span class="n">make_pipeline</span><span class="p">(</span><span class="n">UnixTimeStampConverter</span><span class="p">(</span><span class="n">features</span><span class="p">))</span>
+        <span class="n">wrapped_step</span> <span class="o">=</span> <span class="bp">self</span><span class="o">.</span><span class="n">_get_pipeline_tuple</span><span class="p">(</span><span class="s2">&quot;unix_ts&quot;</span><span class="p">)</span>
+        <span class="bp">self</span><span class="o">.</span><span class="n">pipeline_steps</span><span class="o">.</span><span class="n">append</span><span class="p">(</span><span class="n">wrapped_step</span><span class="p">(</span><span class="s2">&quot;unix_ts&quot;</span><span class="p">,</span> <span class="n">step</span><span class="p">))</span>
+        <span class="k">return</span> <span class="bp">self</span>
+
+    <span class="k">def</span> <span class="nf">add_time_diff</span><span class="p">(</span>
+        <span class="bp">self</span><span class="p">,</span>
+        <span class="n">x_time</span><span class="p">:</span> <span class="nb">str</span><span class="p">,</span>
+        <span class="n">y_time</span><span class="p">:</span> <span class="nb">str</span><span class="p">,</span>
+        <span class="n">days</span><span class="p">:</span> <span class="nb">bool</span> <span class="o">=</span> <span class="kc">True</span><span class="p">,</span>
+        <span class="n">seconds</span><span class="p">:</span> <span class="nb">bool</span> <span class="o">=</span> <span class="kc">False</span><span class="p">,</span>
+        <span class="n">microseconds</span><span class="p">:</span> <span class="nb">bool</span> <span class="o">=</span> <span class="kc">False</span><span class="p">,</span>
+        <span class="n">nanoseconds</span><span class="p">:</span> <span class="nb">bool</span> <span class="o">=</span> <span class="kc">False</span><span class="p">,</span>
+        <span class="n">components</span><span class="p">:</span> <span class="nb">bool</span> <span class="o">=</span> <span class="kc">False</span><span class="p">,</span>
+    <span class="p">)</span> <span class="o">-&gt;</span> <span class="n">_TimeFeatureAdder</span><span class="p">:</span>
+        <span class="sd">&quot;&quot;&quot;</span>
+<span class="sd">        Adds a Time difference between two column calculator to the current pipeline.</span>
+
+<span class="sd">        The following return columns can be retrieved:</span>
+
+<span class="sd">            - ``days``: the difference of days between the two columns</span>
+<span class="sd">            - ``seconds``: the difference of seconds between the two columns</span>
+<span class="sd">            - ``microseconds``: the difference of microseconds between the two columns</span>
+<span class="sd">            - `` nanoseconds``:  the difference of nanoseconds between the two columns</span>
+<span class="sd">            - ``components``: the difference expressed in date time components</span>
+
+<span class="sd">        :param x_time: first time column</span>
+<span class="sd">        :type x_time: str</span>
+<span class="sd">        :param y_time: second time column</span>
+<span class="sd">        :type y_time: str</span>
+<span class="sd">        :param days: a flag indicating if a column with the difference in ``days`` is returned</span>
+<span class="sd">        :type days: bool</span>
+<span class="sd">        :param seconds: a flag indicating if a column with the difference in ``seconds`` is returned</span>
+<span class="sd">        :type seconds: bool</span>
+<span class="sd">        :param microseconds: a flag indicating if a column with the difference in ``microseconds`` is returned</span>
+<span class="sd">        :type microseconds: bool</span>
+<span class="sd">        :param nanoseconds: a flag indicating if a column with the difference in ``nanoseconds`` is returned</span>
+<span class="sd">        :type nanoseconds: bool</span>
+<span class="sd">        :param components: a flag indicating if a column with the difference in ``datetime components`` is returned</span>
+<span class="sd">        :return: the same object by adding a time difference calculator to the feature pipeline</span>
+<span class="sd">        &quot;&quot;&quot;</span>
+        <span class="n">log</span><span class="o">.</span><span class="n">info</span><span class="p">(</span><span class="sa">f</span><span class="s2">&quot;Adding a time difference between </span><span class="si">{</span><span class="n">x_time</span><span class="si">}</span><span class="s2"> and </span><span class="si">{</span><span class="n">y_time</span><span class="si">}</span><span class="s2">.&quot;</span><span class="p">)</span>
+        <span class="c1"># TODO add in which units to the logger</span>
+        <span class="n">step</span> <span class="o">=</span> <span class="n">make_pipeline</span><span class="p">(</span>
+            <span class="n">TimeDifference</span><span class="p">(</span>
+                <span class="n">x_time</span><span class="o">=</span><span class="n">x_time</span><span class="p">,</span>
+                <span class="n">y_time</span><span class="o">=</span><span class="n">y_time</span><span class="p">,</span>
+                <span class="n">days</span><span class="o">=</span><span class="n">days</span><span class="p">,</span>
+                <span class="n">seconds</span><span class="o">=</span><span class="n">seconds</span><span class="p">,</span>
+                <span class="n">microseconds</span><span class="o">=</span><span class="n">microseconds</span><span class="p">,</span>
+                <span class="n">nanoseconds</span><span class="o">=</span><span class="n">nanoseconds</span><span class="p">,</span>
+                <span class="n">components</span><span class="o">=</span><span class="n">components</span><span class="p">,</span>
+            <span class="p">)</span>
+        <span class="p">)</span>
+        <span class="n">wrapped_step</span> <span class="o">=</span> <span class="bp">self</span><span class="o">.</span><span class="n">_get_pipeline_tuple</span><span class="p">(</span><span class="s2">&quot;time_diff&quot;</span><span class="p">)</span>
+        <span class="bp">self</span><span class="o">.</span><span class="n">pipeline_steps</span><span class="o">.</span><span class="n">append</span><span class="p">(</span><span class="n">wrapped_step</span><span class="p">(</span><span class="s2">&quot;time_diff&quot;</span><span class="p">,</span> <span class="n">step</span><span class="p">))</span>
+        <span class="k">return</span> <span class="bp">self</span>
+
+    <span class="k">def</span> <span class="nf">add_basic_features</span><span class="p">(</span>
+        <span class="bp">self</span><span class="p">,</span>
+        <span class="n">features</span><span class="p">:</span> <span class="n">Union</span><span class="p">[</span><span class="nb">str</span><span class="p">,</span> <span class="n">Sequence</span><span class="p">],</span>
+        <span class="n">delete_original_column</span><span class="p">:</span> <span class="nb">bool</span> <span class="o">=</span> <span class="kc">True</span><span class="p">,</span>
+        <span class="n">month</span><span class="p">:</span> <span class="nb">bool</span> <span class="o">=</span> <span class="kc">True</span><span class="p">,</span>
+        <span class="n">year</span><span class="p">:</span> <span class="nb">bool</span> <span class="o">=</span> <span class="kc">True</span><span class="p">,</span>
+        <span class="n">day</span><span class="p">:</span> <span class="nb">bool</span> <span class="o">=</span> <span class="kc">True</span><span class="p">,</span>
+        <span class="n">dayofweek</span><span class="p">:</span> <span class="nb">bool</span> <span class="o">=</span> <span class="kc">True</span><span class="p">,</span>
+        <span class="n">dayofyear</span><span class="p">:</span> <span class="nb">bool</span> <span class="o">=</span> <span class="kc">True</span><span class="p">,</span>
+        <span class="n">hour</span><span class="p">:</span> <span class="nb">bool</span> <span class="o">=</span> <span class="kc">True</span><span class="p">,</span>
+        <span class="n">minute</span><span class="p">:</span> <span class="nb">bool</span> <span class="o">=</span> <span class="kc">True</span><span class="p">,</span>
+        <span class="n">week</span><span class="p">:</span> <span class="nb">bool</span> <span class="o">=</span> <span class="kc">True</span><span class="p">,</span>
+        <span class="n">weekend</span><span class="p">:</span> <span class="nb">bool</span> <span class="o">=</span> <span class="kc">True</span><span class="p">,</span>
+        <span class="n">weekofyear</span><span class="p">:</span> <span class="nb">bool</span> <span class="o">=</span> <span class="kc">True</span><span class="p">,</span>
+        <span class="n">quarter</span><span class="p">:</span> <span class="nb">bool</span> <span class="o">=</span> <span class="kc">True</span><span class="p">,</span>
+        <span class="n">is_leap_year</span><span class="p">:</span> <span class="nb">bool</span> <span class="o">=</span> <span class="kc">True</span><span class="p">,</span>
+        <span class="n">is_month_end</span><span class="p">:</span> <span class="nb">bool</span> <span class="o">=</span> <span class="kc">True</span><span class="p">,</span>
+        <span class="n">is_month_start</span><span class="p">:</span> <span class="nb">bool</span> <span class="o">=</span> <span class="kc">True</span><span class="p">,</span>
+        <span class="n">is_quarter_start</span><span class="p">:</span> <span class="nb">bool</span> <span class="o">=</span> <span class="kc">True</span><span class="p">,</span>
+        <span class="n">is_quarter_end</span><span class="p">:</span> <span class="nb">bool</span> <span class="o">=</span> <span class="kc">True</span><span class="p">,</span>
+        <span class="n">is_year_start</span><span class="p">:</span> <span class="nb">bool</span> <span class="o">=</span> <span class="kc">True</span><span class="p">,</span>
+        <span class="n">is_year_end</span><span class="p">:</span> <span class="nb">bool</span> <span class="o">=</span> <span class="kc">True</span><span class="p">,</span>
+    <span class="p">)</span> <span class="o">-&gt;</span> <span class="n">_TimeFeatureAdder</span><span class="p">:</span>
+        <span class="sd">&quot;&quot;&quot;</span>
+<span class="sd">        Adds a basic time and date feature to the current pipeline</span>
+
+<span class="sd">        :param features: a set of features for which basic time and date properties are derived</span>
+<span class="sd">        :type features: Union[str, Sequence]</span>
+<span class="sd">        :param delete_original_column: a flag indicating if the original column is dropped from the resulting DataFrame</span>
+<span class="sd">        :type delete_original_column: bool</span>
+<span class="sd">        :param month: a flag indicating if the datetime&#39;s ``month`` is derived</span>
+<span class="sd">        :type month: bool</span>
+<span class="sd">        :param year: a flag indicating if the datetime&#39;s ``year`` is derived</span>
+<span class="sd">        :type year: bool</span>
+<span class="sd">        :param day: a flag indicating if the datetime&#39;s ``day`` is derived</span>
+<span class="sd">        :type day: bool</span>
+<span class="sd">        :param dayofweek: a flag indicating if the datetime&#39;s ``day of the week`` is derived</span>
+<span class="sd">        :type dayofweek: bool</span>
+<span class="sd">        :param dayofyear: a flag indicating if the datetime&#39;s ``day of the year`` is derived</span>
+<span class="sd">        :type dayofyear: bool</span>
+<span class="sd">        :param hour: a flag indicating if the datetime&#39;s ``hour`` is derived</span>
+<span class="sd">        :type hour: bool</span>
+<span class="sd">        :param minute: a flag indicating if the datetime&#39;s ``minute`` is derived</span>
+<span class="sd">        :type minute: bool</span>
+<span class="sd">        :param week: a flag indicating if the datetime&#39;s ``week`` is derived</span>
+<span class="sd">        :type week: bool</span>
+<span class="sd">        :param weekend: a flag indicating if the datetime is during a weekend</span>
+<span class="sd">        :type weekend: bool</span>
+<span class="sd">        :param weekofyear:  a flag indicating if the datetime&#39;s ``week of year` is derived</span>
+<span class="sd">        :type weekofyear: bool</span>
+<span class="sd">        :param quarter: a flag indicating if the datetime&#39;s ``quarter`` is derived</span>
+<span class="sd">        :type quarter: bool</span>
+<span class="sd">        :param is_leap_year: a flag indicating if the datetime&#39;s  derives, if it is a leap year</span>
+<span class="sd">        :type is_leap_year: bool</span>
+<span class="sd">        :param is_month_end: a flag indicating if the datetime&#39;s  derives, if it is the month&#39;s last day</span>
+<span class="sd">        :type is_month_end: bool</span>
+<span class="sd">        :param is_month_start: a flag indicating if the datetime&#39;s  derives, if it is the month&#39;s first day</span>
+<span class="sd">        :type is_quarter_start: bool</span>
+<span class="sd">        :param is_quarter_start: a flag indicating if the datetime&#39;s  derives, if it is the quarter&#39;s first day</span>
+<span class="sd">        :type is_month_start: bool</span>
+<span class="sd">        :param is_quarter_end: a flag indicating if the datetime&#39;s  derives, if it is the quarter&#39;s last day</span>
+<span class="sd">        :type is_quarter_end: bool</span>
+<span class="sd">        :param is_year_start: a flag indicating if the datetime&#39;s  derives, if it is the year&#39;s first day</span>
+<span class="sd">        :type is_year_start: bool</span>
+<span class="sd">        :param is_year_end: a flag indicating if the datetime&#39;s  derives, if it is the year&#39;s last day</span>
+<span class="sd">        :type is_year_end: bool</span>
+<span class="sd">        :return: the same object whose pipeline has an additional basic date and time feature builder step</span>
+<span class="sd">        &quot;&quot;&quot;</span>
+        <span class="n">log</span><span class="o">.</span><span class="n">info</span><span class="p">(</span><span class="sa">f</span><span class="s1">&#39;Adding basic time features for &quot;</span><span class="si">{</span><span class="n">features</span><span class="p">[</span><span class="mi">0</span><span class="p">]</span><span class="si">}</span><span class="s1">&quot;&#39;</span><span class="p">)</span> <span class="k">if</span> <span class="nb">len</span><span class="p">(</span>
+            <span class="n">features</span>
+        <span class="p">)</span> <span class="o">==</span> <span class="mi">1</span> <span class="k">else</span> <span class="n">log</span><span class="o">.</span><span class="n">info</span><span class="p">(</span>
+            <span class="sa">f</span><span class="s2">&quot;Adding basic time features for the following features: </span><span class="si">{</span><span class="n">features</span><span class="si">}</span><span class="s2">&quot;</span>
+        <span class="p">)</span>
+        <span class="k">if</span> <span class="n">delete_original_column</span><span class="p">:</span>
+            <span class="n">log</span><span class="o">.</span><span class="n">warning</span><span class="p">(</span>
+                <span class="sa">f</span><span class="s2">&quot;The column(s) </span><span class="si">{</span><span class="n">features</span><span class="si">}</span><span class="s2"> will be deleted after the transformation. Take care that it is not taken&quot;</span>
+                <span class="sa">f</span><span class="s2">&quot; in subsequent column transfer step or reverse the pipeline&quot;</span>
+            <span class="p">)</span>
+        <span class="n">step</span> <span class="o">=</span> <span class="n">make_pipeline</span><span class="p">(</span>
+            <span class="n">TimeFeatureBasic</span><span class="p">(</span>
+                <span class="n">time_features</span><span class="o">=</span><span class="n">features</span><span class="p">,</span>
+                <span class="n">delete_original_column</span><span class="o">=</span><span class="n">delete_original_column</span><span class="p">,</span>
+                <span class="n">month</span><span class="o">=</span><span class="n">month</span><span class="p">,</span>
+                <span class="n">year</span><span class="o">=</span><span class="n">year</span><span class="p">,</span>
+                <span class="n">day</span><span class="o">=</span><span class="n">day</span><span class="p">,</span>
+                <span class="n">dayofweek</span><span class="o">=</span><span class="n">dayofweek</span><span class="p">,</span>
+                <span class="n">dayofyear</span><span class="o">=</span><span class="n">dayofyear</span><span class="p">,</span>
+                <span class="n">hour</span><span class="o">=</span><span class="n">hour</span><span class="p">,</span>
+                <span class="n">minute</span><span class="o">=</span><span class="n">minute</span><span class="p">,</span>
+                <span class="n">week</span><span class="o">=</span><span class="n">week</span><span class="p">,</span>
+                <span class="n">weekend</span><span class="o">=</span><span class="n">weekend</span><span class="p">,</span>
+                <span class="n">weekofyear</span><span class="o">=</span><span class="n">weekofyear</span><span class="p">,</span>
+                <span class="n">quarter</span><span class="o">=</span><span class="n">quarter</span><span class="p">,</span>
+                <span class="n">is_leap_year</span><span class="o">=</span><span class="n">is_leap_year</span><span class="p">,</span>
+                <span class="n">is_month_end</span><span class="o">=</span><span class="n">is_month_end</span><span class="p">,</span>
+                <span class="n">is_month_start</span><span class="o">=</span><span class="n">is_month_start</span><span class="p">,</span>
+                <span class="n">is_quarter_start</span><span class="o">=</span><span class="n">is_quarter_start</span><span class="p">,</span>
+                <span class="n">is_quarter_end</span><span class="o">=</span><span class="n">is_quarter_end</span><span class="p">,</span>
+                <span class="n">is_year_start</span><span class="o">=</span><span class="n">is_year_start</span><span class="p">,</span>
+                <span class="n">is_year_end</span><span class="o">=</span><span class="n">is_year_end</span><span class="p">,</span>
+            <span class="p">)</span>
+        <span class="p">)</span>
+        <span class="n">wrapped_step</span> <span class="o">=</span> <span class="bp">self</span><span class="o">.</span><span class="n">_get_pipeline_tuple</span><span class="p">(</span><span class="s2">&quot;basic_datetime&quot;</span><span class="p">)</span>
+        <span class="bp">self</span><span class="o">.</span><span class="n">pipeline_steps</span><span class="o">.</span><span class="n">append</span><span class="p">(</span><span class="n">wrapped_step</span><span class="p">(</span><span class="s2">&quot;basic_datetime&quot;</span><span class="p">,</span> <span class="n">step</span><span class="p">))</span>
+        <span class="k">return</span> <span class="bp">self</span>
+
+    <span class="k">def</span> <span class="nf">add_str_to_time</span><span class="p">(</span>
+        <span class="bp">self</span><span class="p">,</span> <span class="n">features</span><span class="p">:</span> <span class="n">Union</span><span class="p">[</span><span class="nb">str</span><span class="p">,</span> <span class="n">Sequence</span><span class="p">],</span> <span class="n">format_string</span><span class="p">:</span> <span class="nb">str</span>
+    <span class="p">)</span> <span class="o">-&gt;</span> <span class="n">_TimeFeatureAdder</span><span class="p">:</span>
+        <span class="sd">&quot;&quot;&quot;</span>
+<span class="sd">        Adds a string to time converter to the current pipeline.</span>
+
+<span class="sd">        :param features: the feature column whose column string is to be converted</span>
+<span class="sd">        :type features:  Union[str, Sequence]</span>
+<span class="sd">        :param format_string: the string format to be converted to a datetime object</span>
+<span class="sd">        :type format_string: str</span>
+<span class="sd">        &quot;&quot;&quot;</span>
+        <span class="n">log</span><span class="o">.</span><span class="n">info</span><span class="p">(</span>
+            <span class="sa">f</span><span class="s2">&quot;Adding a string converter for feature(s) </span><span class="si">{</span><span class="n">features</span><span class="si">}</span><span class="s2"> with format string &#39;</span><span class="si">{</span><span class="n">format_string</span><span class="si">}</span><span class="s2">&#39;&quot;</span>
+        <span class="p">)</span>
+        <span class="n">step</span> <span class="o">=</span> <span class="n">make_pipeline</span><span class="p">(</span>
+            <span class="n">StringToTimeConverter</span><span class="p">(</span><span class="n">features</span><span class="o">=</span><span class="n">features</span><span class="p">,</span> <span class="n">format_string</span><span class="o">=</span><span class="n">format_string</span><span class="p">)</span>
+        <span class="p">)</span>
+        <span class="n">wrapped_step</span> <span class="o">=</span> <span class="bp">self</span><span class="o">.</span><span class="n">_get_pipeline_tuple</span><span class="p">(</span><span class="s2">&quot;str_to_time&quot;</span><span class="p">)</span>
+        <span class="bp">self</span><span class="o">.</span><span class="n">pipeline_steps</span><span class="o">.</span><span class="n">append</span><span class="p">(</span><span class="n">wrapped_step</span><span class="p">(</span><span class="s2">&quot;str_to_time&quot;</span><span class="p">,</span> <span class="n">step</span><span class="p">))</span>
+        <span class="k">return</span> <span class="bp">self</span>
+
+
+<span class="k">class</span> <span class="nc">_GisFeatureBuilder</span><span class="p">(</span><span class="n">_PipelineFunctions</span><span class="p">):</span>
+    <span class="sd">&quot;&quot;&quot;</span>
+<span class="sd">     Provides functionality to derive Geo Information System (gis) related features. It inherits from the _PipelineFunctions class and allows to add transformer steps</span>
+<span class="sd">    to the pipelines. The steps can be wrapped in a parent class and executed to derive time features.</span>
+<span class="sd">    &quot;&quot;&quot;</span>
+
+    <span class="k">def</span> <span class="fm">__init__</span><span class="p">(</span><span class="bp">self</span><span class="p">,</span> <span class="n">lat</span><span class="p">:</span> <span class="nb">str</span><span class="p">,</span> <span class="n">lon</span><span class="p">:</span> <span class="nb">str</span><span class="p">):</span>
+        <span class="sd">&quot;&quot;&quot;</span>
+<span class="sd">        Initializes a GIS Feature Builder object. It takes a lat and lon column and also inherits the pipeline steps list of its parent class</span>
+
+<span class="sd">        :param lat: the column name of the latitude feature</span>
+<span class="sd">        :type lat: str</span>
+<span class="sd">        :param lon: the column name of the longitude feature</span>
+<span class="sd">        :type: lon: str</span>
+<span class="sd">        &quot;&quot;&quot;</span>
+        <span class="nb">super</span><span class="p">()</span><span class="o">.</span><span class="fm">__init__</span><span class="p">()</span>
+        <span class="bp">self</span><span class="o">.</span><span class="n">lat</span> <span class="o">=</span> <span class="n">lat</span>
+        <span class="bp">self</span><span class="o">.</span><span class="n">lon</span> <span class="o">=</span> <span class="n">lon</span>
+        <span class="n">log</span><span class="o">.</span><span class="n">info</span><span class="p">(</span>
+            <span class="sa">f</span><span class="s2">&quot;The latitude and longitude columns are set to &#39;</span><span class="si">{</span><span class="bp">self</span><span class="o">.</span><span class="n">lat</span><span class="si">}</span><span class="s2">&#39; and &#39;</span><span class="si">{</span><span class="bp">self</span><span class="o">.</span><span class="n">lon</span><span class="si">}</span><span class="s2">&#39; upon object creation. &quot;</span>
+            <span class="s2">&quot;You need to set them using ``set_lat`` and ``set_lon`` to ease execution &quot;</span>
+        <span class="p">)</span>
+
+    <span class="k">def</span> <span class="nf">set_lat</span><span class="p">(</span><span class="bp">self</span><span class="p">,</span> <span class="n">lat</span><span class="p">:</span> <span class="nb">str</span><span class="p">)</span> <span class="o">-&gt;</span> <span class="n">_GisFeatureBuilder</span><span class="p">:</span>
+        <span class="sd">&quot;&quot;&quot;</span>
+<span class="sd">        Resets the latitude column</span>
+
+<span class="sd">        :param lat: the latitude column name</span>
+<span class="sd">        :type lat: str</span>
+<span class="sd">        :return: the object with a rest of the latitude column</span>
+<span class="sd">        &quot;&quot;&quot;</span>
+        <span class="bp">self</span><span class="o">.</span><span class="n">lat</span> <span class="o">=</span> <span class="n">lat</span>
+        <span class="k">return</span> <span class="bp">self</span>
+
+    <span class="k">def</span> <span class="nf">set_lon</span><span class="p">(</span><span class="bp">self</span><span class="p">,</span> <span class="n">lon</span><span class="p">:</span> <span class="nb">str</span><span class="p">)</span> <span class="o">-&gt;</span> <span class="n">_GisFeatureBuilder</span><span class="p">:</span>
+        <span class="sd">&quot;&quot;&quot;</span>
+<span class="sd">        Resets the longitude column</span>
+
+<span class="sd">        :param lon: the longitude column name</span>
+<span class="sd">        :type lon: str</span>
+<span class="sd">        :return: the object with a rest of the longitude column</span>
+<span class="sd">        &quot;&quot;&quot;</span>
+        <span class="bp">self</span><span class="o">.</span><span class="n">lon</span> <span class="o">=</span> <span class="n">lon</span>
+        <span class="k">return</span> <span class="bp">self</span>
+
+    <span class="k">def</span> <span class="nf">add_basic_gis</span><span class="p">(</span>
+        <span class="bp">self</span><span class="p">,</span> <span class="n">lat</span><span class="p">:</span> <span class="nb">str</span><span class="p">,</span> <span class="n">lon</span><span class="p">:</span> <span class="nb">str</span><span class="p">,</span> <span class="n">round_factor</span><span class="p">:</span> <span class="nb">int</span> <span class="o">=</span> <span class="mi">0</span><span class="p">,</span> <span class="n">radians</span><span class="p">:</span> <span class="nb">bool</span> <span class="o">=</span> <span class="kc">True</span>
+    <span class="p">)</span> <span class="o">-&gt;</span> <span class="n">_GisFeatureBuilder</span><span class="p">:</span>
+        <span class="sd">&quot;&quot;&quot;</span>
+<span class="sd">        Adds a basic gis feature builder to the current pipeline.</span>
+
+<span class="sd">        :param lat: the column name of the latitude column</span>
+<span class="sd">        :type lat: str</span>
+<span class="sd">        :param lon: the column name of the longitude column</span>
+<span class="sd">        :type lon: str</span>
+<span class="sd">        :param round_factor: if set and &gt;0, it indicate the number of digits to round the geo data.</span>
+<span class="sd">        :type round_factor: int</span>
+<span class="sd">        :param radians: a flag indicating if the radians shall be derived</span>
+<span class="sd">        :type radians: bool</span>
+<span class="sd">        :return:</span>
+<span class="sd">        &quot;&quot;&quot;</span>
+        <span class="n">log</span><span class="o">.</span><span class="n">info</span><span class="p">(</span>
+            <span class="sa">f</span><span class="s2">&quot;Adding a basic GIS feature builder for lat &#39;</span><span class="si">{</span><span class="n">lat</span><span class="si">}</span><span class="s2">&#39; and lon &#39;</span><span class="si">{</span><span class="n">lon</span><span class="si">}</span><span class="s2">&#39; including rounding to </span><span class="si">{</span><span class="nb">round</span><span class="si">}</span><span class="s2"> and radians </span><span class="si">{</span><span class="n">radians</span><span class="si">}</span><span class="s2"> &quot;</span>
+        <span class="p">)</span>
+        <span class="n">step</span> <span class="o">=</span> <span class="n">make_pipeline</span><span class="p">(</span>
+            <span class="n">GisBasicTransformer</span><span class="p">(</span>
+                <span class="n">lat</span><span class="o">=</span><span class="bp">self</span><span class="o">.</span><span class="n">lat</span><span class="p">,</span> <span class="n">lon</span><span class="o">=</span><span class="bp">self</span><span class="o">.</span><span class="n">lon</span><span class="p">,</span> <span class="n">round_factor</span><span class="o">=</span><span class="n">round_factor</span><span class="p">,</span> <span class="n">radian</span><span class="o">=</span><span class="n">radians</span>
+            <span class="p">)</span>
+        <span class="p">)</span>
+        <span class="n">wrapped_step</span> <span class="o">=</span> <span class="bp">self</span><span class="o">.</span><span class="n">_get_pipeline_tuple</span><span class="p">(</span><span class="s2">&quot;basic_gis&quot;</span><span class="p">)</span>
+        <span class="bp">self</span><span class="o">.</span><span class="n">pipeline_steps</span><span class="o">.</span><span class="n">append</span><span class="p">(</span><span class="n">wrapped_step</span><span class="p">(</span><span class="s2">&quot;basic_gis&quot;</span><span class="p">,</span> <span class="n">step</span><span class="p">))</span>
+        <span class="k">return</span> <span class="bp">self</span>
+
+    <span class="k">def</span> <span class="nf">add_distance</span><span class="p">(</span>
+        <span class="bp">self</span><span class="p">,</span> <span class="n">lat_2</span><span class="p">:</span> <span class="nb">str</span> <span class="o">=</span> <span class="s2">&quot;&quot;</span><span class="p">,</span> <span class="n">lon_2</span><span class="p">:</span> <span class="nb">str</span> <span class="o">=</span> <span class="s2">&quot;&quot;</span><span class="p">,</span> <span class="n">label</span><span class="p">:</span> <span class="nb">str</span> <span class="o">=</span> <span class="s2">&quot;distance&quot;</span>
+    <span class="p">)</span> <span class="o">-&gt;</span> <span class="n">_GisFeatureBuilder</span><span class="p">:</span>
+        <span class="sd">&quot;&quot;&quot;</span>
+<span class="sd">        Adds a distance between two points calculator to the current pipeline</span>
+
+<span class="sd">        :param lat_2: the column name of the second point&#39;s latitude column</span>
+<span class="sd">        :type lat_2: str</span>
+<span class="sd">        :param lon_2: the column name of the second point&#39;s longitude column</span>
+<span class="sd">        :type lon_2: str</span>
+<span class="sd">        :param label: the column label of the newly created column capturing the distance</span>
+<span class="sd">        :type label: str</span>
+<span class="sd">        :return:</span>
+<span class="sd">        &quot;&quot;&quot;</span>
+        <span class="n">log</span><span class="o">.</span><span class="n">info</span><span class="p">(</span>
+            <span class="sa">f</span><span class="s2">&quot;Adding a basic GIS distance builder for coordinate 1 (&#39;</span><span class="si">{</span><span class="bp">self</span><span class="o">.</span><span class="n">lat</span><span class="si">}</span><span class="s2">&#39;,&#39;</span><span class="si">{</span><span class="bp">self</span><span class="o">.</span><span class="n">lon</span><span class="si">}</span><span class="s2">&#39;) and  coordinate 2 (&#39;</span><span class="si">{</span><span class="n">lat_2</span><span class="si">}</span><span class="s2">&#39;,&#39;</span><span class="si">{</span><span class="n">lon_2</span><span class="si">}</span><span class="s2">&#39;). Saving the distance into column &#39;</span><span class="si">{</span><span class="n">label</span><span class="si">}</span><span class="s2">&#39;&quot;</span>
+        <span class="p">)</span>
+        <span class="n">step</span> <span class="o">=</span> <span class="n">make_pipeline</span><span class="p">(</span>
+            <span class="n">GisDistance</span><span class="p">(</span>
+                <span class="n">lat_1</span><span class="o">=</span><span class="bp">self</span><span class="o">.</span><span class="n">lat</span><span class="p">,</span> <span class="n">lon_1</span><span class="o">=</span><span class="bp">self</span><span class="o">.</span><span class="n">lon</span><span class="p">,</span> <span class="n">lat_2</span><span class="o">=</span><span class="n">lat_2</span><span class="p">,</span> <span class="n">lon_2</span><span class="o">=</span><span class="n">lon_2</span><span class="p">,</span> <span class="n">label</span><span class="o">=</span><span class="n">label</span>
+            <span class="p">)</span>
+        <span class="p">)</span>
+        <span class="n">wrapped_step</span> <span class="o">=</span> <span class="bp">self</span><span class="o">.</span><span class="n">_get_pipeline_tuple</span><span class="p">(</span><span class="s2">&quot;distance&quot;</span><span class="p">)</span>
+        <span class="bp">self</span><span class="o">.</span><span class="n">pipeline_steps</span><span class="o">.</span><span class="n">append</span><span class="p">(</span><span class="n">wrapped_step</span><span class="p">(</span><span class="s2">&quot;distance&quot;</span><span class="p">,</span> <span class="n">step</span><span class="p">))</span>
+        <span class="k">return</span> <span class="bp">self</span>
+
+    <span class="k">def</span> <span class="nf">add_clustering</span><span class="p">(</span>
+        <span class="bp">self</span><span class="p">,</span>
+        <span class="n">kmeans</span><span class="p">:</span> <span class="nb">bool</span> <span class="o">=</span> <span class="kc">True</span><span class="p">,</span>
+        <span class="n">kmeans_params</span><span class="p">:</span> <span class="n">Mapping</span><span class="p">[</span><span class="nb">str</span><span class="p">,</span> <span class="p">]</span> <span class="o">=</span> <span class="kc">None</span><span class="p">,</span>
+        <span class="n">dbscan</span><span class="p">:</span> <span class="nb">bool</span> <span class="o">=</span> <span class="kc">True</span><span class="p">,</span>
+        <span class="n">dbscan_params</span><span class="p">:</span> <span class="n">Mapping</span><span class="p">[</span><span class="nb">str</span><span class="p">,</span> <span class="p">]</span> <span class="o">=</span> <span class="kc">None</span><span class="p">,</span>
+        <span class="n">birch</span><span class="p">:</span> <span class="nb">bool</span> <span class="o">=</span> <span class="kc">True</span><span class="p">,</span>
+        <span class="n">birch_params</span><span class="p">:</span> <span class="n">Mapping</span><span class="p">[</span><span class="nb">str</span><span class="p">,</span> <span class="p">]</span> <span class="o">=</span> <span class="kc">None</span><span class="p">,</span>
+        <span class="n">hdbscan</span><span class="p">:</span> <span class="nb">bool</span> <span class="o">=</span> <span class="kc">True</span><span class="p">,</span>
+        <span class="n">hdbscan_params</span><span class="p">:</span> <span class="n">Mapping</span><span class="p">[</span><span class="nb">str</span><span class="p">,</span> <span class="p">]</span> <span class="o">=</span> <span class="kc">None</span><span class="p">,</span>
+        <span class="n">agglomerative</span><span class="p">:</span> <span class="nb">bool</span> <span class="o">=</span> <span class="kc">True</span><span class="p">,</span>
+        <span class="n">agglomerative_params</span><span class="p">:</span> <span class="n">Mapping</span><span class="p">[</span><span class="nb">str</span><span class="p">,</span> <span class="p">]</span> <span class="o">=</span> <span class="kc">None</span><span class="p">,</span>
+    <span class="p">)</span> <span class="o">-&gt;</span> <span class="n">_GisFeatureBuilder</span><span class="p">:</span>
+        <span class="sd">&quot;&quot;&quot;</span>
+
+<span class="sd">        :param kmeans: a flag indicating if the k-means clustering algorithm is applied</span>
+<span class="sd">        :type kmeans: bool</span>
+<span class="sd">        :param kmeans_params: indicates k-means clustering hyper parameters</span>
+<span class="sd">        :type kmeans_params: dict</span>
+<span class="sd">        :param dbscan:  a flag indicating if the DBSCAN clustering algorithm is applied</span>
+<span class="sd">        :type dbscan: bool</span>
+<span class="sd">        :param dbscan_params: indicates DBSCAN clustering hyper parameters</span>
+<span class="sd">        :type dbscan_params: dict</span>
+<span class="sd">        :param birch: a flag indicating if the BIRCH clustering algorithm is applied</span>
+<span class="sd">        :type birch:  bool</span>
+<span class="sd">        :param birch_params: indicates BIRCH clustering hyper parameters</span>
+<span class="sd">        :type birch_params: dict</span>
+<span class="sd">        :param hdbscan: a flag indicating if the HDBSCAN clustering algorithm is applied</span>
+<span class="sd">        :type hdbscan:  bool</span>
+<span class="sd">        :param hdbscan_params: indicates HDBSCAN clustering hyper parameters</span>
+<span class="sd">        :type hdbscan_params: dict</span>
+<span class="sd">        :param agglomerative: a flag indicating if the Agglomerative clustering algorithm is applied</span>
+<span class="sd">        :type agglomerative:  bool</span>
+<span class="sd">        :param agglomerative_params: indicates Agglomerative clustering hyper parameters</span>
+<span class="sd">        :type agglomerative_params: dict</span>
+<span class="sd">        :return:</span>
+<span class="sd">        &quot;&quot;&quot;</span>
+        <span class="n">log</span><span class="o">.</span><span class="n">info</span><span class="p">(</span><span class="sa">f</span><span class="s2">&quot;Adding a set of Geo cluster algorithm &quot;</span><span class="p">)</span>
+        <span class="n">step</span> <span class="o">=</span> <span class="n">make_pipeline</span><span class="p">(</span>
+            <span class="n">GisCluster</span><span class="p">(</span>
+                <span class="n">lat</span><span class="o">=</span><span class="bp">self</span><span class="o">.</span><span class="n">lat</span><span class="p">,</span>
+                <span class="n">lon</span><span class="o">=</span><span class="bp">self</span><span class="o">.</span><span class="n">lon</span><span class="p">,</span>
+                <span class="n">kmeans</span><span class="o">=</span><span class="n">kmeans</span><span class="p">,</span>
+                <span class="n">kmeans_params</span><span class="o">=</span><span class="n">kmeans_params</span><span class="p">,</span>
+                <span class="n">dbscan</span><span class="o">=</span><span class="n">dbscan</span><span class="p">,</span>
+                <span class="n">dbscan_params</span><span class="o">=</span><span class="n">dbscan_params</span><span class="p">,</span>
+                <span class="n">birch</span><span class="o">=</span><span class="n">birch</span><span class="p">,</span>
+                <span class="n">birch_params</span><span class="o">=</span><span class="n">birch_params</span><span class="p">,</span>
+                <span class="n">hdbscan</span><span class="o">=</span><span class="n">hdbscan</span><span class="p">,</span>
+                <span class="n">hdbscan_params</span><span class="o">=</span><span class="n">hdbscan_params</span><span class="p">,</span>
+                <span class="n">agglomerative</span><span class="o">=</span><span class="n">agglomerative</span><span class="p">,</span>
+                <span class="n">agglomerative_params</span><span class="o">=</span><span class="n">agglomerative_params</span><span class="p">,</span>
+            <span class="p">)</span>
+        <span class="p">)</span>
+        <span class="n">wrapped_step</span> <span class="o">=</span> <span class="bp">self</span><span class="o">.</span><span class="n">_get_pipeline_tuple</span><span class="p">(</span><span class="s2">&quot;distance&quot;</span><span class="p">)</span>
+        <span class="bp">self</span><span class="o">.</span><span class="n">pipeline_steps</span><span class="o">.</span><span class="n">append</span><span class="p">(</span><span class="n">wrapped_step</span><span class="p">(</span><span class="s2">&quot;distance&quot;</span><span class="p">,</span> <span class="n">step</span><span class="p">))</span>
+        <span class="k">return</span> <span class="bp">self</span>
+
+
+<div class="viewcode-block" id="FeatureBuilder"><a class="viewcode-back" href="../ML_Data_Handler.html#feature_builder.FeatureBuilder">[docs]</a><span class="k">class</span> <span class="nc">FeatureBuilder</span><span class="p">(</span><span class="n">BasicDataAttributes</span><span class="p">):</span>
+    <span class="sd">&quot;&quot;&quot;</span>
+<span class="sd">    Main class to generate a feature builder. It has methods to apply the classes defined in the module. It is intended</span>
+<span class="sd">    to generate feature of special data type. At the moment, following feature classes are implemented:</span>
+
+<span class="sd">        - time</span>
+<span class="sd">        - gis</span>
+
+<span class="sd">    In future version, other classes as text is going to be implemented</span>
+
+<span class="sd">        Usage: the idea of this class is to have pipelines generator for the above-mentioned data types.</span>
+<span class="sd">        In order to add and convert time features, the following implementation is used:</span>
+
+<span class="sd">        # Initialize a feature builder &quot;builder&quot;</span>
+<span class="sd">        # adding two generic time features</span>
+<span class="sd">        &gt; builder.Time.add_...</span>
+<span class="sd">        &gt; builder.Time.add_..</span>
+<span class="sd">        # and then wrap the pipeline and rut it via</span>
+<span class="sd">        &gt; builder.wrap_and_run_current_pipeline()</span>
+<span class="sd">    &quot;&quot;&quot;</span>
+
+    <span class="c1"># Implement a set features and operate on object attributes</span>
+<div class="viewcode-block" id="FeatureBuilder.__init__"><a class="viewcode-back" href="../ML_Data_Handler.html#feature_builder.FeatureBuilder.__init__">[docs]</a>    <span class="k">def</span> <span class="fm">__init__</span><span class="p">(</span>
+        <span class="bp">self</span><span class="p">,</span> <span class="n">data_source</span><span class="p">:</span> <span class="n">Union</span><span class="p">[</span><span class="nb">str</span><span class="p">,</span> <span class="n">pd</span><span class="o">.</span><span class="n">DataFrame</span><span class="p">],</span>
+    <span class="p">):</span>
+        <span class="sd">&quot;&quot;&quot;</span>
+<span class="sd">        Initializes a feature builder object. As its parent classes, only a pointer to a file or a pandas DataFrame is required for initialization</span>
+
+<span class="sd">        Other attributes are as follows:</span>
+
+<span class="sd">            The main feature builder classes:</span>
+<span class="sd">            - ``Time``: is an attribute which allows to build pipeline for creating time related features</span>
+<span class="sd">            - ``GIS``: is an attribute which allows to build pipeline for creating gis related features</span>
+
+<span class="sd">            After applying feature transformation:</span>
+<span class="sd">            - ``transformed_input``: is pandas DataFrame containing the derived features</span>
+<span class="sd">            - ``transformed_features``: are all new columns derived within the feature creation</span>
+
+<span class="sd">            Pipeline information:</span>
+<span class="sd">            - wrapped_pipeline: is an attribute, which contains all information when a pipeline of ``Time`` or ``GIS`` has been wrapped</span>
+<span class="sd">            - _current_feature_family_in_pipeline: gives information, to which feature class the current pipeline belongs to. Only time and gis is allowed at the moment</span>
+
+<span class="sd">        :param data_source: the source of the data</span>
+<span class="sd">        :type data_source: Union[str, pd.DataFrame]</span>
+<span class="sd">        &quot;&quot;&quot;</span>
+        <span class="nb">super</span><span class="p">()</span><span class="o">.</span><span class="fm">__init__</span><span class="p">(</span><span class="n">data_source</span><span class="p">)</span>
+        <span class="bp">self</span><span class="o">.</span><span class="n">Time</span> <span class="o">=</span> <span class="n">_TimeFeatureAdder</span><span class="p">()</span>
+        <span class="bp">self</span><span class="o">.</span><span class="n">GIS</span> <span class="o">=</span> <span class="n">_GisFeatureBuilder</span><span class="p">(</span><span class="s2">&quot;lat&quot;</span><span class="p">,</span> <span class="s2">&quot;lon&quot;</span><span class="p">)</span>
+        <span class="bp">self</span><span class="o">.</span><span class="n">transformed_input</span> <span class="o">=</span> <span class="kc">None</span>
+        <span class="bp">self</span><span class="o">.</span><span class="n">transformed_features</span> <span class="o">=</span> <span class="kc">None</span>
+        <span class="bp">self</span><span class="o">.</span><span class="n">wrapped_pipeline</span> <span class="o">=</span> <span class="kc">None</span>
+        <span class="bp">self</span><span class="o">.</span><span class="n">_current_feature_family_in_pipeline</span> <span class="o">=</span> <span class="s2">&quot;time&quot;</span>
+        <span class="bp">self</span><span class="o">.</span><span class="n">__current_feature_mapping</span> <span class="o">=</span> <span class="p">{</span><span class="s2">&quot;time&quot;</span><span class="p">:</span> <span class="bp">self</span><span class="o">.</span><span class="n">Time</span><span class="p">,</span> <span class="s2">&quot;gis&quot;</span><span class="p">:</span> <span class="bp">self</span><span class="o">.</span><span class="n">GIS</span><span class="p">}</span>
+        <span class="n">log</span><span class="o">.</span><span class="n">info</span><span class="p">(</span>
+            <span class="sa">f</span><span class="s2">&quot;Initialized a FeatureBuilder Object. The current feature family in the pipeline is set to &quot;</span>
+            <span class="sa">f</span><span class="s2">&quot;</span><span class="si">{</span><span class="bp">self</span><span class="o">.</span><span class="n">_current_feature_family_in_pipeline</span><span class="si">}</span><span class="s2">. Use ``set_current_pipeline_feature_family`` to reset it.&quot;</span>
+            <span class="sa">f</span><span class="s2">&quot; Allowed arguments are </span><span class="si">{</span><span class="n">accepted_features</span><span class="si">}</span><span class="s2"> &quot;</span>
+        <span class="p">)</span></div>
+
+<div class="viewcode-block" id="FeatureBuilder.set_current_pipeline_feature_family"><a class="viewcode-back" href="../ML_Data_Handler.html#feature_builder.FeatureBuilder.set_current_pipeline_feature_family">[docs]</a>    <span class="nd">@Decorators</span><span class="o">.</span><span class="n">accepted_arguments_within_class_methods</span><span class="p">(</span><span class="n">accepted_features</span><span class="p">)</span>
+    <span class="k">def</span> <span class="nf">set_current_pipeline_feature_family</span><span class="p">(</span><span class="bp">self</span><span class="p">,</span> <span class="n">value</span><span class="p">:</span> <span class="nb">str</span><span class="p">)</span> <span class="o">-&gt;</span> <span class="n">FeatureBuilder</span><span class="p">:</span>
+        <span class="sd">&quot;&quot;&quot;</span>
+<span class="sd">        Resets the features of the current pipeline. Use this function to switch between different pipeline generators and wrap and run them</span>
+
+<span class="sd">        :param value: a feature family</span>
+<span class="sd">        :type value: str</span>
+<span class="sd">        :return:</span>
+<span class="sd">        &quot;&quot;&quot;</span>
+        <span class="n">log</span><span class="o">.</span><span class="n">info</span><span class="p">(</span><span class="sa">f</span><span class="s1">&#39;Setting current feature in_wrapped pipeline to &quot;</span><span class="si">{</span><span class="n">value</span><span class="si">}</span><span class="s1">&quot;&#39;</span><span class="p">)</span>
+        <span class="bp">self</span><span class="o">.</span><span class="n">_current_feature_family_in_pipeline</span> <span class="o">=</span> <span class="n">value</span>
+        <span class="k">return</span> <span class="bp">self</span></div>
+
+<div class="viewcode-block" id="FeatureBuilder.get_transformer_feature_names"><a class="viewcode-back" href="../ML_Data_Handler.html#feature_builder.FeatureBuilder.get_transformer_feature_names">[docs]</a>    <span class="nd">@staticmethod</span>
+    <span class="k">def</span> <span class="nf">get_transformer_feature_names</span><span class="p">(</span>
+        <span class="n">column_transformer</span><span class="p">:</span> <span class="n">ColumnTransformer</span><span class="p">,</span>
+    <span class="p">)</span> <span class="o">-&gt;</span> <span class="n">List</span><span class="p">[</span><span class="nb">str</span><span class="p">]:</span>
+        <span class="sd">&quot;&quot;&quot;</span>
+<span class="sd">        Gets all generated feature names of a feature transformer column after column transformation</span>
+
+<span class="sd">        :param column_transformer: a transformer of a column transformer pipeline</span>
+<span class="sd">        :type column_transformer: ColumnTransformer</span>
+<span class="sd">        :return: all feature names of the newly generated DataFrame:</span>
+<span class="sd">        :rtype: list</span>
+<span class="sd">        &quot;&quot;&quot;</span>
+        <span class="n">output_features</span> <span class="o">=</span> <span class="p">[]</span>
+        <span class="k">for</span> <span class="n">name</span><span class="p">,</span> <span class="n">pipe</span><span class="p">,</span> <span class="n">features</span> <span class="ow">in</span> <span class="n">column_transformer</span><span class="o">.</span><span class="n">transformers_</span><span class="p">:</span>
+            <span class="k">if</span> <span class="n">name</span> <span class="o">!=</span> <span class="s2">&quot;remainder&quot;</span><span class="p">:</span>
+                <span class="k">for</span> <span class="n">i</span> <span class="ow">in</span> <span class="n">pipe</span><span class="p">:</span>
+                    <span class="n">trans_features</span> <span class="o">=</span> <span class="p">[]</span>
+                    <span class="k">if</span> <span class="nb">hasattr</span><span class="p">(</span><span class="n">i</span><span class="p">,</span> <span class="s2">&quot;categories_&quot;</span><span class="p">):</span>
+                        <span class="n">trans_features</span><span class="o">.</span><span class="n">extend</span><span class="p">(</span><span class="n">i</span><span class="o">.</span><span class="n">get_feature_names</span><span class="p">(</span><span class="n">features</span><span class="p">))</span>
+                    <span class="k">elif</span> <span class="nb">hasattr</span><span class="p">(</span><span class="n">i</span><span class="p">,</span> <span class="s2">&quot;feature_names&quot;</span><span class="p">):</span>
+                        <span class="n">trans_features</span><span class="o">.</span><span class="n">extend</span><span class="p">(</span><span class="n">i</span><span class="o">.</span><span class="n">feature_names</span><span class="p">)</span>
+                    <span class="k">else</span><span class="p">:</span>
+                        <span class="n">trans_features</span> <span class="o">=</span> <span class="n">features</span>
+                <span class="n">output_features</span><span class="o">.</span><span class="n">extend</span><span class="p">(</span><span class="n">trans_features</span><span class="p">)</span>
+
+        <span class="k">return</span> <span class="n">output_features</span></div>
+
+<div class="viewcode-block" id="FeatureBuilder.wrap_pip"><a class="viewcode-back" href="../ML_Data_Handler.html#feature_builder.FeatureBuilder.wrap_pip">[docs]</a>    <span class="k">def</span> <span class="nf">wrap_pip</span><span class="p">(</span><span class="bp">self</span><span class="p">)</span> <span class="o">-&gt;</span> <span class="n">FeatureBuilder</span><span class="p">:</span>
+        <span class="sd">&quot;&quot;&quot;</span>
+<span class="sd">        Wraps the pipeline of the feature whose value is currently set in the ``_current_feature_family_in_pipeline`` and wraps it into the</span>
+<span class="sd">        wrapped pipeline attribute as a ColumnTransformer object</span>
+
+<span class="sd">        :return:</span>
+<span class="sd">        &quot;&quot;&quot;</span>
+        <span class="n">feature_dim</span> <span class="o">=</span> <span class="bp">self</span><span class="o">.</span><span class="n">__current_feature_mapping</span><span class="p">[</span>
+            <span class="bp">self</span><span class="o">.</span><span class="n">_current_feature_family_in_pipeline</span>
+        <span class="p">]</span>
+        <span class="n">log</span><span class="o">.</span><span class="n">info</span><span class="p">(</span>
+            <span class="sa">f</span><span class="s1">&#39;Wrapping all steps in the &quot;</span><span class="si">{</span><span class="bp">self</span><span class="o">.</span><span class="n">_current_feature_family_in_pipeline</span><span class="si">}</span><span class="s1">&quot; pipeline to a transformer list.&#39;</span>
+            <span class="sa">f</span><span class="s2">&quot; The result is saved into the ``.wrapped_pipeline`` attribute&quot;</span>
+        <span class="p">)</span>
+        <span class="k">if</span> <span class="n">feature_dim</span><span class="o">.</span><span class="n">pipeline_steps</span><span class="p">:</span>
+            <span class="n">transformer_list</span> <span class="o">=</span> <span class="p">[</span>
+                <span class="p">(</span><span class="n">pip</span><span class="o">.</span><span class="n">step</span><span class="p">,</span> <span class="n">pip</span><span class="o">.</span><span class="n">actions</span><span class="p">,</span> <span class="bp">self</span><span class="o">.</span><span class="n">all_feature_columns</span><span class="p">)</span>
+                <span class="k">for</span> <span class="n">pip</span> <span class="ow">in</span> <span class="n">feature_dim</span><span class="o">.</span><span class="n">pipeline_steps</span>
+            <span class="p">]</span>
+            <span class="bp">self</span><span class="o">.</span><span class="n">wrapped_pipeline</span> <span class="o">=</span> <span class="n">ColumnTransformer</span><span class="p">(</span><span class="n">transformer_list</span><span class="p">)</span>
+            <span class="n">feature_dim</span><span class="o">.</span><span class="n">flush_pipeline</span><span class="p">()</span>
+            <span class="k">return</span> <span class="bp">self</span></div>
+
+<div class="viewcode-block" id="FeatureBuilder.run_wrapped_pipeline"><a class="viewcode-back" href="../ML_Data_Handler.html#feature_builder.FeatureBuilder.run_wrapped_pipeline">[docs]</a>    <span class="k">def</span> <span class="nf">run_wrapped_pipeline</span><span class="p">(</span><span class="bp">self</span><span class="p">)</span> <span class="o">-&gt;</span> <span class="n">Union</span><span class="p">[</span><span class="n">FeatureBuilder</span><span class="p">,</span> <span class="kc">None</span><span class="p">]:</span>
+        <span class="sd">&quot;&quot;&quot;</span>
+<span class="sd">        If a pipeline has been wrapped and saved into the wrapped_pipeline attribute, it takes this wrapped pipeline and executes it. It then returns</span>
+<span class="sd">        a DataFrame after all transformation steps have been applied</span>
+
+<span class="sd">        Caution: Temporary results are not saved within this pipeline. For instance, if two pipeline steps transform a given column and the</span>
+<span class="sd">        second transformation steps depends on the transformation results of the first step, the steps might fall.</span>
+
+<span class="sd">            Example:</span>
+<span class="sd">            # A first transformer converts a date in a string format to date format</span>
+<span class="sd">            &gt; builder.Time.add_str_to_time(&#39;Month&#39;, &quot;%Y-%m&quot;)</span>
+<span class="sd">            # A second transformer derives basic features of a datetime column. It therefore expects the column to be in a datetime format:</span>
+<span class="sd">            &gt; builder.Time.add_basic_features(&#39;Month&#39;)</span>
+<span class="sd">            # Setting the wrapper to the Time feature, wrapping and running will result in an error</span>
+<span class="sd">            &gt; builder.set_current_feature_dimension(&#39;time&#39;)</span>
+<span class="sd">            &gt; builder.wrap_pip()</span>
+<span class="sd">            &gt; builder.run_wrapped_pipeline()</span>
+
+<span class="sd">            This happens because the result of the first transformer (changing the data type) is not taken into account by the second transformer</span>
+
+<span class="sd">            In order to evade the error, the pipeline needs to be wrapped and run separately as follows:</span>
+<span class="sd">            &gt; builder.Time.add_str_to_time(&#39;Month&#39;, &quot;%Y-%m&quot;)</span>
+<span class="sd">            &gt; builder.wrap_pip().run_wrapped_pipeline()</span>
+<span class="sd">            &gt; builder.Time.add_basic_features(&#39;Month&#39;)</span>
+<span class="sd">            &gt; builder.wrap_pip().run_wrapped_pipeline()</span>
+
+<span class="sd">        :return:</span>
+<span class="sd">        &quot;&quot;&quot;</span>
+        <span class="k">if</span> <span class="bp">self</span><span class="o">.</span><span class="n">wrapped_pipeline</span><span class="p">:</span>
+            <span class="n">log</span><span class="o">.</span><span class="n">info</span><span class="p">(</span>
+                <span class="s2">&quot;Running a pipeline without saving temporary results. Applying the pipeline on the input data&quot;</span>
+            <span class="p">)</span>
+            <span class="n">orig_data</span><span class="p">,</span> <span class="n">src</span> <span class="o">=</span> <span class="p">(</span>
+                <span class="p">(</span><span class="bp">self</span><span class="o">.</span><span class="n">transformed_input</span><span class="p">,</span> <span class="s2">&quot;transformed_input&quot;</span><span class="p">)</span>
+                <span class="k">if</span> <span class="bp">self</span><span class="o">.</span><span class="n">transformed_input</span> <span class="ow">is</span> <span class="ow">not</span> <span class="kc">None</span>
+                <span class="k">else</span> <span class="p">(</span><span class="bp">self</span><span class="o">.</span><span class="n">input</span><span class="p">,</span> <span class="s2">&quot;input&quot;</span><span class="p">)</span>
+            <span class="p">)</span>
+            <span class="n">log</span><span class="o">.</span><span class="n">info</span><span class="p">(</span><span class="sa">f</span><span class="s1">&#39;The data source for the transformation is in attribute &quot;</span><span class="si">{</span><span class="n">src</span><span class="si">}</span><span class="s1">&quot;&#39;</span><span class="p">)</span>
+            <span class="n">transformed_data</span> <span class="o">=</span> <span class="bp">self</span><span class="o">.</span><span class="n">wrapped_pipeline</span><span class="o">.</span><span class="n">fit_transform</span><span class="p">(</span><span class="n">orig_data</span><span class="p">)</span>
+            <span class="bp">self</span><span class="o">.</span><span class="n">transformed_features</span> <span class="o">=</span> <span class="bp">self</span><span class="o">.</span><span class="n">get_transformer_feature_names</span><span class="p">(</span>
+                <span class="bp">self</span><span class="o">.</span><span class="n">wrapped_pipeline</span>
+            <span class="p">)</span>
+            <span class="n">log</span><span class="o">.</span><span class="n">info</span><span class="p">(</span><span class="sa">f</span><span class="s2">&quot;The derives feature columns are: </span><span class="si">{</span><span class="bp">self</span><span class="o">.</span><span class="n">transformed_features</span><span class="si">}</span><span class="s2">&quot;</span><span class="p">)</span>
+            <span class="n">log</span><span class="o">.</span><span class="n">info</span><span class="p">(</span><span class="sa">f</span><span class="s2">&quot;Transformed_Data shape is </span><span class="si">{</span><span class="n">transformed_data</span><span class="o">.</span><span class="n">shape</span><span class="si">}</span><span class="s2">&quot;</span><span class="p">)</span>
+            <span class="n">log</span><span class="o">.</span><span class="n">info</span><span class="p">(</span>
+                <span class="s2">&quot;Saving the transformed data into ``.transformed_input`` and the features into ``.transformed_features``&quot;</span>
+            <span class="p">)</span>
+            <span class="bp">self</span><span class="o">.</span><span class="n">transformed_input</span> <span class="o">=</span> <span class="n">pd</span><span class="o">.</span><span class="n">DataFrame</span><span class="p">(</span>
+                <span class="n">transformed_data</span><span class="p">,</span>
+                <span class="n">columns</span><span class="o">=</span><span class="bp">self</span><span class="o">.</span><span class="n">get_transformer_feature_names</span><span class="p">(</span><span class="bp">self</span><span class="o">.</span><span class="n">wrapped_pipeline</span><span class="p">),</span>
+            <span class="p">)</span>
+            <span class="k">return</span> <span class="bp">self</span>
+        <span class="k">else</span><span class="p">:</span>
+            <span class="n">log</span><span class="o">.</span><span class="n">warning</span><span class="p">(</span>
+                <span class="s2">&quot;The wrapped Pipeline is empty. You first need&quot;</span>
+                <span class="s2">&quot; to add processing step to the pipeline and wrap the pipeline using the ``wrap_pip`` method&quot;</span>
+            <span class="p">)</span>
+            <span class="k">return</span></div>
+
+<div class="viewcode-block" id="FeatureBuilder.wrap_and_run_current_pipeline"><a class="viewcode-back" href="../ML_Data_Handler.html#feature_builder.FeatureBuilder.wrap_and_run_current_pipeline">[docs]</a>    <span class="k">def</span> <span class="nf">wrap_and_run_current_pipeline</span><span class="p">(</span><span class="bp">self</span><span class="p">):</span>
+        <span class="sd">&quot;&quot;&quot;</span>
+<span class="sd">        Wraps the current pipeline steps and executes all steps.</span>
+
+<span class="sd">        This function is saver to use as temporary results are saved and the following operations are performed on the temporary data.</span>
+<span class="sd">        Therefore, two chaining transformations where one depends on the other will run through.</span>
+
+<span class="sd">        This function is the recommend approach to run a pipeline in order to guarantee that all temporary results are saved in a tmp file taken into account.</span>
+
+<span class="sd">        :return:</span>
+<span class="sd">        &quot;&quot;&quot;</span>
+        <span class="n">feature_dim</span> <span class="o">=</span> <span class="bp">self</span><span class="o">.</span><span class="n">__current_feature_mapping</span><span class="p">[</span>
+            <span class="bp">self</span><span class="o">.</span><span class="n">_current_feature_family_in_pipeline</span>
+        <span class="p">]</span>
+        <span class="n">steps</span> <span class="o">=</span> <span class="n">deepcopy</span><span class="p">(</span><span class="n">feature_dim</span><span class="o">.</span><span class="n">pipeline_steps</span><span class="p">)</span>
+        <span class="k">if</span> <span class="n">steps</span><span class="p">:</span>
+            <span class="k">for</span> <span class="n">pipe</span> <span class="ow">in</span> <span class="n">steps</span><span class="p">:</span>
+                <span class="n">feature_dim</span><span class="o">.</span><span class="n">flush_pipeline</span><span class="p">()</span>
+                <span class="n">feature_dim</span><span class="o">.</span><span class="n">pipeline_steps</span><span class="o">.</span><span class="n">append</span><span class="p">(</span><span class="n">pipe</span><span class="p">)</span>
+                <span class="bp">self</span><span class="o">.</span><span class="n">wrap_pip</span><span class="p">()</span>
+                <span class="bp">self</span><span class="o">.</span><span class="n">run_wrapped_pipeline</span><span class="p">()</span>
+        <span class="k">else</span><span class="p">:</span>
+            <span class="n">log</span><span class="o">.</span><span class="n">warning</span><span class="p">(</span>
+                <span class="sa">f</span><span class="s2">&quot;The current pipeline of feature dimension </span><span class="si">{</span><span class="bp">self</span><span class="o">.</span><span class="n">_current_feature_family_in_pipeline</span><span class="si">}</span><span class="s2">&quot;</span>
+            <span class="p">)</span></div></div>
+</pre></div>
+
+          </div>
+        </div>
+      </div>
+      <div class="sphinxsidebar" role="navigation" aria-label="main navigation">
+        <div class="sphinxsidebarwrapper">
+<div id="searchbox" style="display: none" role="search">
+  <h3 id="searchlabel">Quick search</h3>
+    <div class="searchformwrapper">
+    <form class="search" action="../search.html" method="get">
+      <input type="text" name="q" aria-labelledby="searchlabel" />
+      <input type="submit" value="Go" />
+    </form>
+    </div>
+</div>
+<script>$('#searchbox').show(0);</script>
+        </div>
+      </div>
+      <div class="clearer"></div>
+    </div>
+    <div class="related" role="navigation" aria-label="related navigation">
+      <h3>Navigation</h3>
+      <ul>
+        <li class="right" style="margin-right: 10px">
+          <a href="../genindex.html" title="General Index"
+             >index</a></li>
+        <li class="right" >
+          <a href="../py-modindex.html" title="Python Module Index"
+             >modules</a> |</li>
+        <li class="nav-item nav-item-0"><a href="../ML_Data_Handler.html">Machine Learning Data Handler 1.2 documentation</a> &#187;</li>
+          <li class="nav-item nav-item-1"><a href="index.html" >Module code</a> &#187;</li> 
+      </ul>
+    </div>
+    <div class="footer" role="contentinfo">
+        &#169; Copyright 2020, Dominik Heinz.
+      Created using <a href="http://sphinx-doc.org/">Sphinx</a> 3.0.3.
+    </div>
+  </body>
+</html>

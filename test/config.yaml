@@ -1,0 +1,18 @@
+mapping:
+    scaler: 
+            'minmax': MinMaxScaler
+            'standard': StandardScaler
+    encoder:
+            'onehot': OneHotEncoder
+            'label': LabelEncoder
+            'binarize': Binarizer
+    categorical_encoder:
+            'onehot': OneHotEncoder
+            'label': LabelEncoder
+            'binarize': Binarizer         
+    subset_selector:
+            'name' : NameSelector
+            'type' : TypeSelector
+    imputer:
+            simple : SimpleImputer
+            knn : KNNImputer

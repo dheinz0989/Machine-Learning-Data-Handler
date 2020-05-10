@@ -1,0 +1,568 @@
+
+<!DOCTYPE html>
+
+<html>
+  <head>
+    <meta charset="utf-8" />
+    <title>preprocess &#8212; Machine Learning Data Handler 1.2 documentation</title>
+    <link rel="stylesheet" href="../_static/nature.css" type="text/css" />
+    <link rel="stylesheet" href="../_static/pygments.css" type="text/css" />
+    <link rel="stylesheet" type="text/css" href="../_static/graphviz.css" />
+    <script id="documentation_options" data-url_root="../" src="../_static/documentation_options.js"></script>
+    <script src="../_static/jquery.js"></script>
+    <script src="../_static/underscore.js"></script>
+    <script src="../_static/doctools.js"></script>
+    <script src="../_static/language_data.js"></script>
+    <link rel="index" title="Index" href="../genindex.html" />
+    <link rel="search" title="Search" href="../search.html" /> 
+  </head><body>
+    <div class="related" role="navigation" aria-label="related navigation">
+      <h3>Navigation</h3>
+      <ul>
+        <li class="right" style="margin-right: 10px">
+          <a href="../genindex.html" title="General Index"
+             accesskey="I">index</a></li>
+        <li class="right" >
+          <a href="../py-modindex.html" title="Python Module Index"
+             >modules</a> |</li>
+        <li class="nav-item nav-item-0"><a href="../ML_Data_Handler.html">Machine Learning Data Handler 1.2 documentation</a> &#187;</li>
+          <li class="nav-item nav-item-1"><a href="index.html" accesskey="U">Module code</a> &#187;</li> 
+      </ul>
+    </div>  
+
+    <div class="document">
+      <div class="documentwrapper">
+        <div class="bodywrapper">
+          <div class="body" role="main">
+            
+  <h1>Source code for preprocess</h1><div class="highlight"><pre>
+<span></span><span class="sd">&quot;&quot;&quot;</span>
+<span class="sd">This module provides a data class which can be used to perform standard pre_processing steps</span>
+<span class="sd">It inherits data attributes from the BasicDataAttributes class and extends them by adding</span>
+<span class="sd">Preprocessing methods, attributes and properties.</span>
+<span class="sd">It requires a config file in yaml format which adds a mapping for dictionary keywords and corresponding pre processor classes</span>
+
+<span class="sd">&quot;&quot;&quot;</span>
+<span class="c1">#import sys</span>
+<span class="c1">#sys.path.append(&quot;..&quot;)</span>
+<span class="kn">import</span> <span class="nn">numpy</span> <span class="k">as</span> <span class="nn">np</span>
+<span class="kn">import</span> <span class="nn">pandas</span> <span class="k">as</span> <span class="nn">pd</span>
+<span class="kn">from</span> <span class="nn">collections</span> <span class="kn">import</span> <span class="n">namedtuple</span>
+
+<span class="kn">from</span> <span class="nn">sklearn.model_selection</span> <span class="kn">import</span> <span class="n">train_test_split</span>
+<span class="kn">from</span> <span class="nn">sklearn.pipeline</span> <span class="kn">import</span> <span class="n">Pipeline</span><span class="p">,</span> <span class="n">FeatureUnion</span>
+<span class="kn">from</span> <span class="nn">sklearn.compose</span> <span class="kn">import</span> <span class="n">ColumnTransformer</span>
+<span class="kn">from</span> <span class="nn">sklearn.base</span> <span class="kn">import</span> <span class="n">BaseEstimator</span><span class="p">,</span> <span class="n">TransformerMixin</span>
+
+<span class="c1"># temporary hack to enable relative imports when script is not run within package</span>
+<span class="c1"># see https://stackoverflow.com/questions/14132789/relative-imports-for-the-billionth-time?rq=1</span>
+<span class="c1"># or https://stackoverflow.com/questions/11536764/how-to-fix-attempted-relative-import-in-non-package-even-with-init-py?rq=1</span>
+<span class="k">try</span><span class="p">:</span>
+    <span class="kn">from</span> <span class="nn">utilities</span> <span class="kn">import</span> <span class="n">Logger</span>
+    <span class="kn">from</span> <span class="nn">baseattrs</span> <span class="kn">import</span> <span class="n">BasicDataAttributes</span>
+<span class="k">except</span> <span class="ne">ImportError</span><span class="p">:</span>
+    <span class="kn">from</span> <span class="nn">.utilities</span> <span class="kn">import</span> <span class="n">Logger</span>
+    <span class="kn">from</span> <span class="nn">.baseattrs</span> <span class="kn">import</span> <span class="n">BasicDataAttributes</span>
+
+<span class="n">log</span> <span class="o">=</span> <span class="n">Logger</span><span class="o">.</span><span class="n">initialize_log</span><span class="p">()</span>
+
+
+<div class="viewcode-block" id="DataPreProcessor"><a class="viewcode-back" href="../ML_Data_Handler.html#preprocess.DataPreProcessor">[docs]</a><span class="k">class</span> <span class="nc">DataPreProcessor</span><span class="p">(</span><span class="n">BasicDataAttributes</span><span class="p">):</span>
+    <span class="sd">&quot;&quot;&quot;</span>
+<span class="sd">    A class used to perform pre-processing steps to the input data.</span>
+<span class="sd">    &quot;&quot;&quot;</span>
+
+<div class="viewcode-block" id="DataPreProcessor.__init__"><a class="viewcode-back" href="../ML_Data_Handler.html#preprocess.DataPreProcessor.__init__">[docs]</a>    <span class="k">def</span> <span class="fm">__init__</span><span class="p">(</span>
+        <span class="bp">self</span><span class="p">,</span> <span class="n">data_source</span><span class="p">,</span> <span class="n">target_name</span><span class="p">,</span> <span class="n">config</span><span class="p">,</span> <span class="n">features</span><span class="o">=</span><span class="kc">None</span><span class="p">,</span>
+    <span class="p">):</span>
+        <span class="sd">&quot;&quot;&quot;</span>
+<span class="sd">        Initializes a Data Preprocessor object. It requires a data source which can either be a string to a file or a pandas DataFrame.</span>
+<span class="sd">        Furthermore, it requires a target name for the target to predict.</span>
+
+<span class="sd">        The last parameters is a dictionary containing a mapping to preprocessor class. The recommend way is to read a config.yaml file and pass the return value as a parameter</span>
+<span class="sd">        to this object. The mapping file necessarily requires the following keywords:</span>
+
+<span class="sd">            &gt;&gt; &quot;mapping&quot; must be a primary key.</span>
+<span class="sd">        Withing the mapping dictionary, the following second level keywords are mandatory:</span>
+<span class="sd">            &gt;&gt; &quot;imputer&quot;</span>
+<span class="sd">            &gt;&gt; &quot;encoder&quot;</span>
+<span class="sd">            &gt;&gt; &quot;scaler&quot;</span>
+<span class="sd">            &gt;&gt; &quot;subset_selector&quot;</span>
+<span class="sd">            &gt;&gt; &quot;categorical_encoder&quot;</span>
+
+<span class="sd">        The values obtained by the second level keywords are pointer to the corresponding preprocessor class.</span>
+
+<span class="sd">            Example of a yaml mapping:</span>
+
+<span class="sd">            &gt;&gt; mapping:</span>
+<span class="sd">            &gt;&gt;     scaler:</span>
+<span class="sd">            &gt;&gt;           &#39;minmax&#39;: MinMaxScaler</span>
+<span class="sd">            &gt;&gt;             &#39;standard&#39;: StandardScaler</span>
+<span class="sd">            &gt;&gt;     encoder:</span>
+<span class="sd">            &gt;&gt;             &#39;onehot&#39;: OneHotEncoder</span>
+<span class="sd">            &gt;&gt;             &#39;label&#39;: LabelEncoder</span>
+<span class="sd">            &gt;&gt;             &#39;binarize&#39;: Binarizer</span>
+<span class="sd">            &gt;&gt;     categorical_encoder:</span>
+<span class="sd">            &gt;&gt;             &#39;onehot&#39;: OneHotEncoder</span>
+<span class="sd">            &gt;&gt;             &#39;label&#39;: LabelEncoder</span>
+<span class="sd">            &gt;&gt;             &#39;binarize&#39;: Binarizer</span>
+<span class="sd">            &gt;&gt;     subset_selector:</span>
+<span class="sd">            &gt;&gt;             &#39;name&#39; : NameSelector</span>
+<span class="sd">            &gt;&gt;             &#39;type&#39; : TypeSelector</span>
+<span class="sd">            &gt;&gt;     imputer:</span>
+<span class="sd">            &gt;&gt;             simple : SimpleImputer</span>
+<span class="sd">            &gt;&gt;             knn : KNNImputer</span>
+
+
+<span class="sd">        :param data_source: provides a string to a file to be read or a plain pandas DataFrame</span>
+<span class="sd">        :param target_name: the label of the target to be analyzed</span>
+<span class="sd">        :param config: a config file containing mappings for preprocessor classes</span>
+<span class="sd">        :param features: optionally, the feature of interest can be defined here</span>
+<span class="sd">        # TODO make keys optionals</span>
+<span class="sd">        &quot;&quot;&quot;</span>
+        <span class="nb">super</span><span class="p">()</span><span class="o">.</span><span class="fm">__init__</span><span class="p">(</span>
+            <span class="n">data_source</span><span class="o">=</span><span class="n">data_source</span><span class="p">,</span> <span class="n">target_name</span><span class="o">=</span><span class="n">target_name</span><span class="p">,</span> <span class="n">features</span><span class="o">=</span><span class="n">features</span>
+        <span class="p">)</span>
+        <span class="bp">self</span><span class="o">.</span><span class="n">features</span> <span class="o">=</span> <span class="n">features</span>
+        <span class="bp">self</span><span class="o">.</span><span class="n">_Config</span> <span class="o">=</span> <span class="n">config</span>
+        <span class="c1"># The General mapping provided by the &quot;mapping&quot; key</span>
+        <span class="bp">self</span><span class="o">.</span><span class="n">_Mappings</span> <span class="o">=</span> <span class="bp">self</span><span class="o">.</span><span class="n">get_config_classes_by_key</span><span class="p">(</span><span class="s2">&quot;mapping&quot;</span><span class="p">)</span>
+        <span class="c1"># Standard Initialization of an Imputer</span>
+        <span class="bp">self</span><span class="o">.</span><span class="n">_Imputer</span> <span class="o">=</span> <span class="bp">self</span><span class="o">.</span><span class="n">_Mappings</span><span class="p">[</span><span class="s2">&quot;imputer&quot;</span><span class="p">][</span><span class="s2">&quot;simple&quot;</span><span class="p">](</span>
+            <span class="o">**</span><span class="p">{</span><span class="s2">&quot;missing_values&quot;</span><span class="p">:</span> <span class="n">np</span><span class="o">.</span><span class="n">nan</span><span class="p">,</span> <span class="s2">&quot;strategy&quot;</span><span class="p">:</span> <span class="s2">&quot;mean&quot;</span><span class="p">}</span>
+        <span class="p">)</span>
+        <span class="c1"># Standard Initialization of an Encoder</span>
+        <span class="bp">self</span><span class="o">.</span><span class="n">_Encoder</span> <span class="o">=</span> <span class="bp">self</span><span class="o">.</span><span class="n">_Mappings</span><span class="p">[</span><span class="s2">&quot;encoder&quot;</span><span class="p">][</span><span class="s2">&quot;label&quot;</span><span class="p">]()</span>
+        <span class="c1"># Standard Initialization of a Scaler</span>
+        <span class="bp">self</span><span class="o">.</span><span class="n">_Scaler</span> <span class="o">=</span> <span class="bp">self</span><span class="o">.</span><span class="n">_Mappings</span><span class="p">[</span><span class="s2">&quot;scaler&quot;</span><span class="p">][</span><span class="s2">&quot;minmax&quot;</span><span class="p">]()</span>
+        <span class="c1"># Standard Initialization of a Subset Selector</span>
+        <span class="bp">self</span><span class="o">.</span><span class="n">_SubSetSelector</span> <span class="o">=</span> <span class="bp">self</span><span class="o">.</span><span class="n">_Mappings</span><span class="p">[</span><span class="s2">&quot;subset_selector&quot;</span><span class="p">][</span><span class="s2">&quot;type&quot;</span><span class="p">]</span>
+        <span class="c1"># Standard Initialization of a Categorical Encoder</span>
+        <span class="bp">self</span><span class="o">.</span><span class="n">_Categorical_Encoder</span> <span class="o">=</span> <span class="bp">self</span><span class="o">.</span><span class="n">_Mappings</span><span class="p">[</span><span class="s2">&quot;categorical_encoder&quot;</span><span class="p">][</span><span class="s2">&quot;binarize&quot;</span><span class="p">]()</span></div>
+
+    <span class="nd">@property</span>
+    <span class="k">def</span> <span class="nf">SubSetSelector</span><span class="p">(</span><span class="bp">self</span><span class="p">):</span>
+        <span class="sd">&quot;&quot;&quot;</span>
+<span class="sd">        A property which returns the pandas DataFrame subset selector</span>
+
+<span class="sd">        :return: the SubSetSelector attribute</span>
+<span class="sd">        &quot;&quot;&quot;</span>
+        <span class="k">return</span> <span class="bp">self</span><span class="o">.</span><span class="n">_SubSetSelector</span>
+
+    <span class="nd">@SubSetSelector</span><span class="o">.</span><span class="n">setter</span>
+    <span class="k">def</span> <span class="nf">SubSetSelector</span><span class="p">(</span><span class="bp">self</span><span class="p">,</span> <span class="n">value</span><span class="p">):</span>
+        <span class="sd">&quot;&quot;&quot;</span>
+<span class="sd">        A setter method use to reset the SubSet Selector property. It does so by accessing the ``subset_selector`` key of the Mapping configuration</span>
+<span class="sd">        The value to reset must be a dictionary key in the ``subset_selector`` dictionary</span>
+
+<span class="sd">            Example:</span>
+<span class="sd">            Given the following configuration file entries:</span>
+
+<span class="sd">            &gt;&gt; mapping:</span>
+<span class="sd">            &gt;&gt;    subset_selector:</span>
+<span class="sd">            &gt;&gt;            &#39;name&#39; : NameSelector</span>
+<span class="sd">            &gt;&gt;            &#39;type&#39; : TypeSelector</span>
+
+<span class="sd">            and an DataPreProcessor object:</span>
+<span class="sd">            &gt;&gt; preprocessor = DataPreProcessor(data)</span>
+<span class="sd">            &gt;&gt; preprocessor.ingest()</span>
+
+<span class="sd">            The SubSetSelector property can be set using:</span>
+
+<span class="sd">            &gt;&gt; preprocessor.SubSetSelector = &quot;name&quot;  # sets the ``NameSelector`` as SubSetSelector</span>
+<span class="sd">            &gt;&gt; preprocessor.SubSetSelector = &quot;type&quot;  # sets the ``TypeSelector`` as SubSetSelector</span>
+
+<span class="sd">        :param value: a dictionary mapping key which points to SubSetSelector class</span>
+<span class="sd">        :return: the object whose SubSetSelector property was reset</span>
+<span class="sd">        &quot;&quot;&quot;</span>
+        <span class="bp">self</span><span class="o">.</span><span class="n">_SubSetSelector</span> <span class="o">=</span> <span class="bp">self</span><span class="o">.</span><span class="n">_Mappings</span><span class="p">[</span><span class="s2">&quot;subset_selector&quot;</span><span class="p">][</span><span class="n">value</span><span class="p">]</span>
+
+    <span class="nd">@property</span>
+    <span class="k">def</span> <span class="nf">Scaler</span><span class="p">(</span><span class="bp">self</span><span class="p">):</span>
+        <span class="sd">&quot;&quot;&quot;</span>
+<span class="sd">        A property which returns a Scaler instance for numerical data</span>
+
+<span class="sd">        :return: the Scaler attribute</span>
+<span class="sd">        &quot;&quot;&quot;</span>
+        <span class="k">return</span> <span class="bp">self</span><span class="o">.</span><span class="n">_Scaler</span>
+
+    <span class="nd">@Scaler</span><span class="o">.</span><span class="n">setter</span>
+    <span class="k">def</span> <span class="nf">Scaler</span><span class="p">(</span><span class="bp">self</span><span class="p">,</span> <span class="n">value</span><span class="p">):</span>
+        <span class="sd">&quot;&quot;&quot;</span>
+<span class="sd">        A setter method use to reset the Scaler property. It does so by accessing the ``scaler`` key of the Mapping configuration</span>
+<span class="sd">        The value to reset must be a dictionary key in the ``scaler`` dictionary.</span>
+
+<span class="sd">        Note that this property either receives a single string which is found in the ``scaler`` dictionary or receives a tuple</span>
+<span class="sd">        where the first entry is a plain string which is found in the ``scaler`` dictionary and the second entry are class&#39;s options</span>
+<span class="sd">        using a dictionary with function arguments as a string as keys and the option value as value. If the input is a single string, standard</span>
+<span class="sd">        initialization parameters are used.</span>
+
+<span class="sd">            Example:</span>
+<span class="sd">            Given the following configuration file entries:</span>
+
+<span class="sd">            &gt;&gt; mapping:</span>
+<span class="sd">            &gt;&gt;    scaler:</span>
+<span class="sd">            &gt;&gt;            &#39;minmax&#39; : MinMaxScaler</span>
+<span class="sd">            &gt;&gt;            &#39;standard&#39; : StandardScaler</span>
+
+<span class="sd">            and an DataPreProcessor object:</span>
+<span class="sd">            &gt;&gt; preprocessor = DataPreProcessor(data)</span>
+<span class="sd">            &gt;&gt; preprocessor.ingest()</span>
+
+<span class="sd">            The Scaler property can be set using:</span>
+
+<span class="sd">            &gt;&gt; preprocessor.Scaler = &quot;standard&quot;  # sets the ``StandardScaler`` as Scaler</span>
+
+<span class="sd">            Use a tuple to set options within initialization. A StandardScaler with the option ``with_mean`` as False:</span>
+
+<span class="sd">            &gt;&gt; preprocessor.Scaler = &quot;standard&quot; , {&quot;with_mean&quot;: False} # sets the ``TypeSelector`` as SubSetSelector</span>
+
+<span class="sd">        :param value: a dictionary mapping key which points to a Scaler class</span>
+<span class="sd">        :return: the object whose Scaler property was reset</span>
+<span class="sd">        &quot;&quot;&quot;</span>
+        <span class="k">if</span> <span class="nb">isinstance</span><span class="p">(</span><span class="n">value</span><span class="p">,</span> <span class="nb">str</span><span class="p">):</span>
+            <span class="n">log</span><span class="o">.</span><span class="n">info</span><span class="p">(</span><span class="sa">f</span><span class="s2">&quot;Setting Scaler to </span><span class="si">{</span><span class="n">value</span><span class="si">}</span><span class="s2"> with standard arguments&quot;</span><span class="p">)</span>
+            <span class="bp">self</span><span class="o">.</span><span class="n">_Scaler</span> <span class="o">=</span> <span class="bp">self</span><span class="o">.</span><span class="n">_Mappings</span><span class="p">[</span><span class="s2">&quot;scaler&quot;</span><span class="p">][</span><span class="n">value</span><span class="p">]()</span>
+        <span class="k">elif</span> <span class="nb">isinstance</span><span class="p">(</span><span class="n">value</span><span class="p">,</span> <span class="nb">tuple</span><span class="p">):</span>
+            <span class="n">log</span><span class="o">.</span><span class="n">info</span><span class="p">(</span><span class="sa">f</span><span class="s2">&quot;Setting Scaler to </span><span class="si">{</span><span class="n">value</span><span class="p">[</span><span class="mi">0</span><span class="p">]</span><span class="si">}</span><span class="s2"> with arguments </span><span class="si">{</span><span class="n">value</span><span class="p">[</span><span class="mi">1</span><span class="p">]</span><span class="si">}</span><span class="s2">&quot;</span><span class="p">)</span>
+            <span class="bp">self</span><span class="o">.</span><span class="n">_Scaler</span> <span class="o">=</span> <span class="bp">self</span><span class="o">.</span><span class="n">_Mappings</span><span class="p">[</span><span class="s2">&quot;scaler&quot;</span><span class="p">][</span><span class="n">value</span><span class="p">[</span><span class="mi">0</span><span class="p">]](</span><span class="o">**</span><span class="n">value</span><span class="p">[</span><span class="mi">1</span><span class="p">])</span>
+        <span class="k">else</span><span class="p">:</span>
+            <span class="k">raise</span> <span class="ne">NotImplementedError</span><span class="p">(</span>
+                <span class="s2">&quot;The Scaler property setter only accepts a string or a tuple as input&quot;</span>
+            <span class="p">)</span>
+
+    <span class="nd">@property</span>
+    <span class="k">def</span> <span class="nf">Imputer</span><span class="p">(</span><span class="bp">self</span><span class="p">):</span>
+        <span class="sd">&quot;&quot;&quot;</span>
+<span class="sd">        A property which returns a Imputer instance which replaces missing values.</span>
+
+<span class="sd">        :return: the Imputer attribute</span>
+<span class="sd">        &quot;&quot;&quot;</span>
+        <span class="k">return</span> <span class="bp">self</span><span class="o">.</span><span class="n">_Imputer</span>
+
+    <span class="nd">@Imputer</span><span class="o">.</span><span class="n">setter</span>
+    <span class="k">def</span> <span class="nf">Imputer</span><span class="p">(</span><span class="bp">self</span><span class="p">,</span> <span class="n">value</span><span class="p">):</span>
+        <span class="sd">&quot;&quot;&quot;</span>
+<span class="sd">        A setter method use to reset the Imputer property. It does so by accessing the ``imputer`` key of the Mapping configuration</span>
+<span class="sd">        The value to reset must be a dictionary key in the ``imputer`` dictionary.</span>
+
+<span class="sd">        Note that this property either receives a single string which is found in the ``imputer`` dictionary or receives a tuple</span>
+<span class="sd">        where the first entry is a plain string which is found in the ``imputer`` dictionary and the second entry are class&#39;s options</span>
+<span class="sd">        using a dictionary with function arguments as a string as keys and the option value as value. If the input is a single string, standard</span>
+<span class="sd">        initialization parameters are used.</span>
+
+<span class="sd">            Example:</span>
+<span class="sd">            Given the following configuration file entries:</span>
+
+<span class="sd">            &gt;&gt; mapping:</span>
+<span class="sd">            &gt;&gt;      imputer:</span>
+<span class="sd">            &gt;&gt;            &#39;simple&#39; : SimpleImputer</span>
+<span class="sd">            &gt;&gt;            &#39;knn&#39; : KNNImputer</span>
+
+<span class="sd">            and an DataPreProcessor object:</span>
+<span class="sd">            &gt;&gt; preprocessor = DataPreProcessor(data)</span>
+<span class="sd">            &gt;&gt; preprocessor.ingest()</span>
+
+<span class="sd">            The Imputer property can be set using:</span>
+
+<span class="sd">            &gt;&gt; preprocessor.Imputer = &quot;knn&quot;  # sets the ``KNNImputer`` as Imputer</span>
+
+<span class="sd">            Use a tuple to set options within initialization. A KNNImputer with the option ``n_neighbors`` as 12:</span>
+
+<span class="sd">            &gt;&gt; preprocessor.Imputer = &quot;knn&quot; , {&quot;n_neighbors&quot;: 12} # sets the ``KNNImputer`` as Imputer</span>
+
+<span class="sd">        :param value: a dictionary mapping key which points to a Imputer class</span>
+<span class="sd">        :return: the object whose Imputer property was reset</span>
+<span class="sd">        &quot;&quot;&quot;</span>
+        <span class="k">if</span> <span class="nb">isinstance</span><span class="p">(</span><span class="n">value</span><span class="p">,</span> <span class="nb">str</span><span class="p">):</span>
+            <span class="n">log</span><span class="o">.</span><span class="n">info</span><span class="p">(</span><span class="sa">f</span><span class="s2">&quot;Setting Imputer to </span><span class="si">{</span><span class="n">value</span><span class="si">}</span><span class="s2"> with standard arguments&quot;</span><span class="p">)</span>
+            <span class="bp">self</span><span class="o">.</span><span class="n">_Imputer</span> <span class="o">=</span> <span class="bp">self</span><span class="o">.</span><span class="n">_Mappings</span><span class="p">[</span><span class="s2">&quot;imputer&quot;</span><span class="p">][</span><span class="n">value</span><span class="p">]()</span>
+        <span class="k">elif</span> <span class="nb">isinstance</span><span class="p">(</span><span class="n">value</span><span class="p">,</span> <span class="nb">tuple</span><span class="p">):</span>
+            <span class="n">log</span><span class="o">.</span><span class="n">info</span><span class="p">(</span><span class="sa">f</span><span class="s2">&quot;Setting Imputer to </span><span class="si">{</span><span class="n">value</span><span class="p">[</span><span class="mi">0</span><span class="p">]</span><span class="si">}</span><span class="s2"> with arguments </span><span class="si">{</span><span class="n">value</span><span class="p">[</span><span class="mi">1</span><span class="p">]</span><span class="si">}</span><span class="s2">&quot;</span><span class="p">)</span>
+            <span class="bp">self</span><span class="o">.</span><span class="n">_Imputer</span> <span class="o">=</span> <span class="bp">self</span><span class="o">.</span><span class="n">_Mappings</span><span class="p">[</span><span class="s2">&quot;imputer&quot;</span><span class="p">][</span><span class="n">value</span><span class="p">[</span><span class="mi">0</span><span class="p">]](</span><span class="o">**</span><span class="n">value</span><span class="p">[</span><span class="mi">1</span><span class="p">])</span>
+        <span class="k">else</span><span class="p">:</span>
+            <span class="k">raise</span> <span class="ne">NotImplementedError</span><span class="p">(</span>
+                <span class="s2">&quot;The Imputer property setter only accepts a string or a tuple as input&quot;</span>
+            <span class="p">)</span>
+
+    <span class="nd">@property</span>
+    <span class="k">def</span> <span class="nf">Encoder</span><span class="p">(</span><span class="bp">self</span><span class="p">):</span>
+        <span class="sd">&quot;&quot;&quot;</span>
+<span class="sd">        A property which returns a Encoder instance which encodes string values</span>
+
+<span class="sd">        :return: the Encoder attribute</span>
+<span class="sd">        &quot;&quot;&quot;</span>
+        <span class="k">return</span> <span class="bp">self</span><span class="o">.</span><span class="n">_Encoder</span>
+
+    <span class="nd">@Encoder</span><span class="o">.</span><span class="n">setter</span>
+    <span class="k">def</span> <span class="nf">Encoder</span><span class="p">(</span><span class="bp">self</span><span class="p">,</span> <span class="n">value</span><span class="p">):</span>
+        <span class="sd">&quot;&quot;&quot;</span>
+<span class="sd">        A setter method use to reset the Encoder property. It does so by accessing the ``encoder`` key of the Mapping configuration</span>
+<span class="sd">        The value to reset must be a dictionary key in the ``encoder`` dictionary.</span>
+
+<span class="sd">        Note that this property either receives a single string which is found in the ``encoder`` dictionary or receives a tuple</span>
+<span class="sd">        where the first entry is a plain string which is found in the ``encoder`` dictionary and the second entry are class&#39;s options</span>
+<span class="sd">        using a dictionary with function arguments as a string as keys and the option value as value. If the input is a single string, standard</span>
+<span class="sd">        initialization parameters are used.</span>
+
+<span class="sd">            Example:</span>
+<span class="sd">            Given the following configuration file entries:</span>
+
+<span class="sd">            &gt;&gt; mapping:</span>
+<span class="sd">            &gt;&gt;      encoder:</span>
+<span class="sd">            &gt;&gt;            &#39;onehot&#39;: OneHotEncoder</span>
+<span class="sd">            &gt;&gt;            &#39;label&#39;: LabelEncoder</span>
+<span class="sd">            &gt;&gt;            &#39;binarize&#39;: Binarizer</span>
+
+<span class="sd">            and an DataPreProcessor object:</span>
+<span class="sd">            &gt;&gt; preprocessor = DataPreProcessor(data)</span>
+<span class="sd">            &gt;&gt; preprocessor.ingest()</span>
+
+<span class="sd">            The Encoder property can be set using:</span>
+
+<span class="sd">            &gt;&gt; preprocessor.Encoder = &quot;binarize&quot;  # sets the ``Binarizer`` as Encoder</span>
+
+<span class="sd">            Use a tuple to set options within initialization. A Binarizer with the option ``threshold`` as 0.1:</span>
+
+<span class="sd">            &gt;&gt; preprocessor.Encoder = &quot;binarize&quot; , {&quot;threshold&quot;: 0.1} # sets the ``Binarizer`` as Encoder</span>
+
+<span class="sd">        :param value: a dictionary mapping key which points to an Encoder class</span>
+<span class="sd">        :return: the object whose Encoder property was reset</span>
+<span class="sd">        &quot;&quot;&quot;</span>
+        <span class="k">if</span> <span class="nb">isinstance</span><span class="p">(</span><span class="n">value</span><span class="p">,</span> <span class="nb">str</span><span class="p">):</span>
+            <span class="n">log</span><span class="o">.</span><span class="n">info</span><span class="p">(</span><span class="sa">f</span><span class="s2">&quot;Setting String Encoder to </span><span class="si">{</span><span class="n">value</span><span class="si">}</span><span class="s2"> with standard arguments&quot;</span><span class="p">)</span>
+            <span class="bp">self</span><span class="o">.</span><span class="n">_Encoder</span> <span class="o">=</span> <span class="bp">self</span><span class="o">.</span><span class="n">_Mappings</span><span class="p">[</span><span class="s2">&quot;encoder&quot;</span><span class="p">][</span><span class="n">value</span><span class="p">]()</span>
+        <span class="k">elif</span> <span class="nb">isinstance</span><span class="p">(</span><span class="n">value</span><span class="p">,</span> <span class="nb">tuple</span><span class="p">):</span>
+            <span class="n">log</span><span class="o">.</span><span class="n">info</span><span class="p">(</span><span class="sa">f</span><span class="s2">&quot;Setting String Encoder to </span><span class="si">{</span><span class="n">value</span><span class="p">[</span><span class="mi">0</span><span class="p">]</span><span class="si">}</span><span class="s2"> with arguments </span><span class="si">{</span><span class="n">value</span><span class="p">[</span><span class="mi">1</span><span class="p">]</span><span class="si">}</span><span class="s2">&quot;</span><span class="p">)</span>
+            <span class="bp">self</span><span class="o">.</span><span class="n">_Encoder</span> <span class="o">=</span> <span class="bp">self</span><span class="o">.</span><span class="n">_Mappings</span><span class="p">[</span><span class="s2">&quot;encoder&quot;</span><span class="p">][</span><span class="n">value</span><span class="p">[</span><span class="mi">0</span><span class="p">]](</span><span class="o">**</span><span class="n">value</span><span class="p">[</span><span class="mi">1</span><span class="p">])</span>
+        <span class="k">else</span><span class="p">:</span>
+            <span class="k">raise</span> <span class="ne">NotImplementedError</span><span class="p">(</span><span class="s2">&quot;A function to set the imp&quot;</span><span class="p">)</span>
+
+    <span class="nd">@property</span>
+    <span class="k">def</span> <span class="nf">Categorical_Encoder</span><span class="p">(</span><span class="bp">self</span><span class="p">):</span>
+        <span class="sd">&quot;&quot;&quot;</span>
+<span class="sd">        A property which returns a Categorical_Encoder instance which encodes categorical values</span>
+
+<span class="sd">        :return: the Categorical_Encoder attribute</span>
+<span class="sd">        &quot;&quot;&quot;</span>
+        <span class="k">return</span> <span class="bp">self</span><span class="o">.</span><span class="n">_Categorical_Encoder</span>
+
+    <span class="nd">@Categorical_Encoder</span><span class="o">.</span><span class="n">setter</span>
+    <span class="k">def</span> <span class="nf">Categorical_Encoder</span><span class="p">(</span><span class="bp">self</span><span class="p">,</span> <span class="n">value</span><span class="p">):</span>
+        <span class="sd">&quot;&quot;&quot;</span>
+<span class="sd">         A setter method use to reset the Categorical_Encoder property. It does so by accessing the ``categorical_encoder`` key of the Mapping configuration</span>
+<span class="sd">        The value to reset must be a dictionary key in the ``categorical_encoder`` dictionary.</span>
+
+<span class="sd">        Note that this property either receives a single string which is found in the ``categorical_encoder`` dictionary or receives a tuple</span>
+<span class="sd">        where the first entry is a plain string which is found in the ``categorical_encoder`` dictionary and the second entry are class&#39;s options</span>
+<span class="sd">        using a dictionary with function arguments as a string as keys and the option value as value. If the input is a single string, standard</span>
+<span class="sd">        initialization parameters are used.</span>
+
+<span class="sd">            Example:</span>
+<span class="sd">            Given the following configuration file entries:</span>
+
+<span class="sd">            &gt;&gt; mapping:</span>
+<span class="sd">            &gt;&gt;      categorical_encoder:</span>
+<span class="sd">            &gt;&gt;            &#39;onehot&#39;: OneHotEncoder</span>
+<span class="sd">            &gt;&gt;            &#39;label&#39;: LabelEncoder</span>
+<span class="sd">            &gt;&gt;            &#39;binarize&#39;: Binarizer</span>
+
+<span class="sd">            and an DataPreProcessor object:</span>
+<span class="sd">            &gt;&gt; preprocessor = DataPreProcessor(data)</span>
+<span class="sd">            &gt;&gt; preprocessor.ingest()</span>
+
+<span class="sd">            The Encoder property can be set using:</span>
+
+<span class="sd">            &gt;&gt; preprocessor.Categorical_Encoder = &quot;binarize&quot;  # sets the ``Binarizer`` as Categorical_Encoder</span>
+
+<span class="sd">            Use a tuple to set options within initialization. A Binarizer with the option ``threshold`` as 0.1:</span>
+
+<span class="sd">            &gt;&gt; preprocessor.Categorical_Encoder = &quot;binarize&quot; , {&quot;threshold&quot;: 0.1} # sets the ``Binarizer`` as Categorical_Encoder</span>
+
+<span class="sd">        :param value: a dictionary mapping key which points to an Categorical_Encoder class</span>
+<span class="sd">        :return: the object whose Categorical_Encoder property was reset</span>
+<span class="sd">        &quot;&quot;&quot;</span>
+        <span class="k">if</span> <span class="nb">isinstance</span><span class="p">(</span><span class="n">value</span><span class="p">,</span> <span class="nb">str</span><span class="p">):</span>
+            <span class="n">log</span><span class="o">.</span><span class="n">info</span><span class="p">(</span><span class="sa">f</span><span class="s2">&quot;Setting Categorical Encoder to </span><span class="si">{</span><span class="n">value</span><span class="si">}</span><span class="s2"> with standard arguments&quot;</span><span class="p">)</span>
+            <span class="bp">self</span><span class="o">.</span><span class="n">_Categorical_Encoder</span> <span class="o">=</span> <span class="bp">self</span><span class="o">.</span><span class="n">_Mappings</span><span class="p">[</span><span class="s2">&quot;categorical_encoder&quot;</span><span class="p">][</span><span class="n">value</span><span class="p">]()</span>
+        <span class="k">elif</span> <span class="nb">isinstance</span><span class="p">(</span><span class="n">value</span><span class="p">,</span> <span class="nb">tuple</span><span class="p">):</span>
+            <span class="n">log</span><span class="o">.</span><span class="n">info</span><span class="p">(</span>
+                <span class="sa">f</span><span class="s2">&quot;Setting Categorical Encoder to </span><span class="si">{</span><span class="n">value</span><span class="p">[</span><span class="mi">0</span><span class="p">]</span><span class="si">}</span><span class="s2"> with arguments </span><span class="si">{</span><span class="n">value</span><span class="p">[</span><span class="mi">1</span><span class="p">]</span><span class="si">}</span><span class="s2">&quot;</span>
+            <span class="p">)</span>
+            <span class="bp">self</span><span class="o">.</span><span class="n">_Categorical_Encoder</span> <span class="o">=</span> <span class="bp">self</span><span class="o">.</span><span class="n">_Mappings</span><span class="p">[</span><span class="s2">&quot;categorical_encoder&quot;</span><span class="p">][</span><span class="n">value</span><span class="p">[</span><span class="mi">0</span><span class="p">]](</span>
+                <span class="o">**</span><span class="n">value</span><span class="p">[</span><span class="mi">1</span><span class="p">]</span>
+            <span class="p">)</span>
+        <span class="k">else</span><span class="p">:</span>
+            <span class="k">raise</span> <span class="ne">NotImplementedError</span><span class="p">(</span><span class="s2">&quot;A function to set the imp&quot;</span><span class="p">)</span>
+
+<div class="viewcode-block" id="DataPreProcessor.get_config_classes_by_key"><a class="viewcode-back" href="../ML_Data_Handler.html#preprocess.DataPreProcessor.get_config_classes_by_key">[docs]</a>    <span class="k">def</span> <span class="nf">get_config_classes_by_key</span><span class="p">(</span><span class="bp">self</span><span class="p">,</span> <span class="n">key</span><span class="p">):</span>
+        <span class="sd">&quot;&quot;&quot;</span>
+<span class="sd">        Takes a dictionary keys that points to Preprocessor classes as a raw string and converts the raw string to the</span>
+<span class="sd">        corresponding Python classes</span>
+
+<span class="sd">        :param key: a dictionary key which points to a PreProcessor classes as a raw string</span>
+<span class="sd">        :type key: str</span>
+<span class="sd">        :return: the converted dictionary</span>
+<span class="sd">        :rtype: dict</span>
+<span class="sd">        &quot;&quot;&quot;</span>
+        <span class="k">return</span> <span class="bp">self</span><span class="o">.</span><span class="n">convert_nested_dictionary_class</span><span class="p">(</span><span class="bp">self</span><span class="o">.</span><span class="n">_Config</span><span class="p">[</span><span class="n">key</span><span class="p">])</span></div>
+
+<div class="viewcode-block" id="DataPreProcessor.create_pipeline"><a class="viewcode-back" href="../ML_Data_Handler.html#preprocess.DataPreProcessor.create_pipeline">[docs]</a>    <span class="k">def</span> <span class="nf">create_pipeline</span><span class="p">(</span><span class="bp">self</span><span class="p">):</span>
+        <span class="sd">&quot;&quot;&quot;</span>
+<span class="sd">        Creates a data pre processing pipelines. For each data type, assembles the different data pre processing steps in a list.</span>
+<span class="sd">        It then checks, which data type is non empty. If it is non-empty the pipeline step is added to the processing pipeline.</span>
+<span class="sd">        It then returns the fully assembled pipeline.</span>
+
+<span class="sd">        The current version of this function operates on the TypeSelector</span>
+<span class="sd">        # TODO add a version for naming based pre processors</span>
+
+<span class="sd">        :return: a pipeline which can be used to fit_transform the original data</span>
+<span class="sd">        :rtype: Pipeline</span>
+<span class="sd">        &quot;&quot;&quot;</span>
+        <span class="n">log</span><span class="o">.</span><span class="n">info</span><span class="p">(</span><span class="s2">&quot;Generating a data processing pipeline&quot;</span><span class="p">)</span>
+        <span class="n">pipe_num</span> <span class="o">=</span> <span class="p">(</span>
+            <span class="s2">&quot;Numerical&quot;</span><span class="p">,</span>
+            <span class="n">Pipeline</span><span class="p">(</span>
+                <span class="p">[</span>
+                    <span class="p">(</span><span class="s2">&quot;selector&quot;</span><span class="p">,</span> <span class="bp">self</span><span class="o">.</span><span class="n">SubSetSelector</span><span class="p">(</span><span class="bp">self</span><span class="o">.</span><span class="n">dtype_num</span><span class="p">)),</span>
+                    <span class="p">(</span><span class="s2">&quot;imputer&quot;</span><span class="p">,</span> <span class="bp">self</span><span class="o">.</span><span class="n">Imputer</span><span class="p">),</span>
+                    <span class="p">(</span><span class="s2">&quot;scaler&quot;</span><span class="p">,</span> <span class="bp">self</span><span class="o">.</span><span class="n">Scaler</span><span class="p">),</span>
+                <span class="p">]</span>
+            <span class="p">),</span>
+        <span class="p">)</span>
+        <span class="n">pipe_str</span> <span class="o">=</span> <span class="p">(</span>
+            <span class="s2">&quot;Strings&quot;</span><span class="p">,</span>
+            <span class="n">Pipeline</span><span class="p">(</span>
+                <span class="p">[</span>
+                    <span class="p">(</span><span class="s2">&quot;selector&quot;</span><span class="p">,</span> <span class="bp">self</span><span class="o">.</span><span class="n">SubSetSelector</span><span class="p">(</span><span class="bp">self</span><span class="o">.</span><span class="n">dtype_str</span><span class="p">)),</span>
+                    <span class="p">(</span><span class="s2">&quot;encoder&quot;</span><span class="p">,</span> <span class="bp">self</span><span class="o">.</span><span class="n">Encoder</span><span class="p">),</span>
+                <span class="p">]</span>
+            <span class="p">),</span>
+        <span class="p">)</span>
+        <span class="n">pipe_bool</span> <span class="o">=</span> <span class="p">(</span>
+            <span class="s2">&quot;Boolean&quot;</span><span class="p">,</span>
+            <span class="n">Pipeline</span><span class="p">(</span>
+                <span class="p">[</span>
+                    <span class="p">(</span><span class="s2">&quot;selector&quot;</span><span class="p">,</span> <span class="bp">self</span><span class="o">.</span><span class="n">SubSetSelector</span><span class="p">(</span><span class="bp">self</span><span class="o">.</span><span class="n">dtype_bool</span><span class="p">)),</span>
+                    <span class="p">(</span><span class="s2">&quot;transformer&quot;</span><span class="p">,</span> <span class="n">BooleanTransformer</span><span class="p">()),</span>
+                <span class="p">]</span>
+            <span class="p">),</span>
+        <span class="p">)</span>
+        <span class="n">pipe_cat</span> <span class="o">=</span> <span class="p">(</span>
+            <span class="s2">&quot;Categorical&quot;</span><span class="p">,</span>
+            <span class="n">Pipeline</span><span class="p">(</span>
+                <span class="p">[</span>
+                    <span class="p">(</span><span class="s2">&quot;selector&quot;</span><span class="p">,</span> <span class="bp">self</span><span class="o">.</span><span class="n">SubSetSelector</span><span class="p">(</span><span class="bp">self</span><span class="o">.</span><span class="n">dtype_cat</span><span class="p">)),</span>
+                    <span class="p">(</span><span class="s2">&quot;categorical_encoder&quot;</span><span class="p">,</span> <span class="bp">self</span><span class="o">.</span><span class="n">Categorical_Encoder</span><span class="p">),</span>
+                <span class="p">]</span>
+            <span class="p">),</span>
+        <span class="p">)</span>
+        <span class="c1"># A dictionary used to check which of the different columns have an empty feature list and can therefore be excluded from the pipeline</span>
+        <span class="n">type_feature_mapping</span> <span class="o">=</span> <span class="p">{</span>
+            <span class="s2">&quot;num&quot;</span><span class="p">:</span> <span class="p">(</span><span class="bp">self</span><span class="o">.</span><span class="n">numerical_features</span><span class="p">,</span> <span class="n">pipe_num</span><span class="p">),</span>
+            <span class="s2">&quot;str&quot;</span><span class="p">:</span> <span class="p">(</span><span class="bp">self</span><span class="o">.</span><span class="n">string_features</span><span class="p">,</span> <span class="n">pipe_str</span><span class="p">),</span>
+            <span class="s2">&quot;bool&quot;</span><span class="p">:</span> <span class="p">(</span><span class="bp">self</span><span class="o">.</span><span class="n">bool_features</span><span class="p">,</span> <span class="n">pipe_bool</span><span class="p">),</span>
+            <span class="s2">&quot;cat&quot;</span><span class="p">:</span> <span class="p">(</span><span class="bp">self</span><span class="o">.</span><span class="n">categorical_features</span><span class="p">,</span> <span class="n">pipe_cat</span><span class="p">),</span>
+        <span class="p">}</span>
+        <span class="n">pipeline</span> <span class="o">=</span> <span class="n">Pipeline</span><span class="p">(</span>
+            <span class="p">[</span>
+                <span class="p">(</span>
+                    <span class="s2">&quot;feature_transformation&quot;</span><span class="p">,</span>
+                    <span class="n">FeatureUnion</span><span class="p">(</span>
+                        <span class="n">n_jobs</span><span class="o">=-</span><span class="mi">1</span><span class="p">,</span>
+                        <span class="n">transformer_list</span><span class="o">=</span><span class="p">[</span>
+                            <span class="n">vals</span><span class="p">[</span><span class="mi">1</span><span class="p">]</span>
+                            <span class="k">for</span> <span class="n">key</span><span class="p">,</span> <span class="n">vals</span> <span class="ow">in</span> <span class="n">type_feature_mapping</span><span class="o">.</span><span class="n">items</span><span class="p">()</span>
+                            <span class="k">if</span> <span class="n">vals</span><span class="p">[</span><span class="mi">0</span><span class="p">]</span>
+                        <span class="p">],</span>
+                    <span class="p">),</span>
+                <span class="p">)</span>
+            <span class="p">]</span>
+        <span class="p">)</span>
+        <span class="k">return</span> <span class="n">pipeline</span></div>
+
+<div class="viewcode-block" id="DataPreProcessor.get_train_test_data"><a class="viewcode-back" href="../ML_Data_Handler.html#preprocess.DataPreProcessor.get_train_test_data">[docs]</a>    <span class="k">def</span> <span class="nf">get_train_test_data</span><span class="p">(</span><span class="bp">self</span><span class="p">,</span> <span class="n">as_df</span><span class="o">=</span><span class="kc">False</span><span class="p">,</span> <span class="n">test_size</span><span class="o">=</span><span class="mf">0.2</span><span class="p">,</span> <span class="o">**</span><span class="n">options</span><span class="p">):</span>
+        <span class="sd">&quot;&quot;&quot;</span>
+<span class="sd">        Creates test and train data set based on the ``create_pipeline`` method.</span>
+
+<span class="sd">        :param as_df: a flag indicating if the returned data is a pandas DataFrame</span>
+<span class="sd">        :type as_df: bool</span>
+<span class="sd">        :param test_size: the proportion of test size in the slitted data</span>
+<span class="sd">        :type test_size: float</span>
+<span class="sd">        :param options: Further options of the split_train_test function</span>
+<span class="sd">        :return: a namedtuple with a ``test`` attribute containing the test data and a ``train`` attribute containing the training data</span>
+<span class="sd">        :rtype: namedtuple</span>
+<span class="sd">        &quot;&quot;&quot;</span>
+        <span class="n">pipe</span> <span class="o">=</span> <span class="bp">self</span><span class="o">.</span><span class="n">create_pipeline</span><span class="p">()</span>
+        <span class="n">log</span><span class="o">.</span><span class="n">info</span><span class="p">(</span><span class="s2">&quot;Transforming initial input data&quot;</span><span class="p">)</span>
+        <span class="n">data</span> <span class="o">=</span> <span class="n">pipe</span><span class="o">.</span><span class="n">fit_transform</span><span class="p">(</span><span class="bp">self</span><span class="o">.</span><span class="n">input</span><span class="p">)</span>
+        <span class="n">log</span><span class="o">.</span><span class="n">info</span><span class="p">(</span><span class="s2">&quot;Splitting to train and test data&quot;</span><span class="p">)</span>
+        <span class="c1"># TODO stratify --&gt; stratify=self.target,</span>
+        <span class="n">train</span><span class="p">,</span> <span class="n">test</span> <span class="o">=</span> <span class="n">train_test_split</span><span class="p">(</span>
+            <span class="n">data</span><span class="p">,</span> <span class="n">test_size</span><span class="o">=</span><span class="n">test_size</span><span class="p">,</span>  <span class="o">**</span><span class="n">options</span>
+        <span class="p">)</span>
+        <span class="k">if</span> <span class="n">as_df</span><span class="p">:</span>  <span class="c1">#</span>
+            <span class="n">train</span><span class="p">,</span> <span class="n">test</span> <span class="o">=</span> <span class="n">pd</span><span class="o">.</span><span class="n">DataFrame</span><span class="p">(</span><span class="n">train</span><span class="p">),</span> <span class="n">pd</span><span class="o">.</span><span class="n">DataFrame</span><span class="p">(</span><span class="n">test</span><span class="p">)</span>
+        <span class="n">data</span> <span class="o">=</span> <span class="n">namedtuple</span><span class="p">(</span><span class="s2">&quot;data&quot;</span><span class="p">,</span> <span class="p">[</span><span class="s2">&quot;train&quot;</span><span class="p">,</span> <span class="s2">&quot;test&quot;</span><span class="p">])</span>
+        <span class="k">return</span> <span class="n">data</span><span class="p">(</span><span class="n">train</span><span class="p">,</span> <span class="n">test</span><span class="p">)</span></div></div>
+
+    <span class="c1"># TODO add get train data by column transformer</span>
+    <span class="c1"># TODO add method to preserve feature names</span>
+
+
+<div class="viewcode-block" id="BooleanTransformer"><a class="viewcode-back" href="../ML_Data_Handler.html#preprocess.BooleanTransformer">[docs]</a><span class="k">class</span> <span class="nc">BooleanTransformer</span><span class="p">(</span><span class="n">BaseEstimator</span><span class="p">,</span> <span class="n">TransformerMixin</span><span class="p">):</span>
+    <span class="sd">&quot;&quot;&quot;</span>
+<span class="sd">    Transforms all boolean features to a numeric data type (1/0)</span>
+<span class="sd">    &quot;&quot;&quot;</span>
+
+<div class="viewcode-block" id="BooleanTransformer.fit"><a class="viewcode-back" href="../ML_Data_Handler.html#preprocess.BooleanTransformer.fit">[docs]</a>    <span class="k">def</span> <span class="nf">fit</span><span class="p">(</span><span class="bp">self</span><span class="p">,</span> <span class="n">X</span><span class="p">,</span> <span class="n">y</span><span class="o">=</span><span class="kc">None</span><span class="p">,</span> <span class="o">**</span><span class="n">kwargs</span><span class="p">):</span>
+        <span class="k">return</span> <span class="bp">self</span></div>
+
+<div class="viewcode-block" id="BooleanTransformer.transform"><a class="viewcode-back" href="../ML_Data_Handler.html#preprocess.BooleanTransformer.transform">[docs]</a>    <span class="nd">@staticmethod</span>
+    <span class="k">def</span> <span class="nf">transform</span><span class="p">(</span><span class="n">X</span><span class="p">:</span> <span class="nb">int</span><span class="p">):</span>
+        <span class="sd">&quot;&quot;&quot;</span>
+<span class="sd">        Converts all boolean features by replacing ``True`` values by ``1`` and ``False`` by 0.</span>
+<span class="sd">        :param X: the Initial DataFrame</span>
+<span class="sd">        :return:</span>
+<span class="sd">        &quot;&quot;&quot;</span>
+        <span class="k">return</span>  <span class="n">X</span> <span class="o">*</span> <span class="mi">1</span></div></div>
+</pre></div>
+
+          </div>
+        </div>
+      </div>
+      <div class="sphinxsidebar" role="navigation" aria-label="main navigation">
+        <div class="sphinxsidebarwrapper">
+<div id="searchbox" style="display: none" role="search">
+  <h3 id="searchlabel">Quick search</h3>
+    <div class="searchformwrapper">
+    <form class="search" action="../search.html" method="get">
+      <input type="text" name="q" aria-labelledby="searchlabel" />
+      <input type="submit" value="Go" />
+    </form>
+    </div>
+</div>
+<script>$('#searchbox').show(0);</script>
+        </div>
+      </div>
+      <div class="clearer"></div>
+    </div>
+    <div class="related" role="navigation" aria-label="related navigation">
+      <h3>Navigation</h3>
+      <ul>
+        <li class="right" style="margin-right: 10px">
+          <a href="../genindex.html" title="General Index"
+             >index</a></li>
+        <li class="right" >
+          <a href="../py-modindex.html" title="Python Module Index"
+             >modules</a> |</li>
+        <li class="nav-item nav-item-0"><a href="../ML_Data_Handler.html">Machine Learning Data Handler 1.2 documentation</a> &#187;</li>
+          <li class="nav-item nav-item-1"><a href="index.html" >Module code</a> &#187;</li> 
+      </ul>
+    </div>
+    <div class="footer" role="contentinfo">
+        &#169; Copyright 2020, Dominik Heinz.
+      Created using <a href="http://sphinx-doc.org/">Sphinx</a> 3.0.3.
+    </div>
+  </body>
+</html>
