@@ -192,9 +192,9 @@ class _TimeFeatureAdder(_PipelineFunctions):
         hour: bool = True,
         minute: bool = True,
         week: bool = True,
-        weekend: bool = True,
         weekofyear: bool = True,
         quarter: bool = True,
+        is_weekend: bool = True,
         is_leap_year: bool = True,
         is_month_end: bool = True,
         is_month_start: bool = True,
@@ -226,8 +226,8 @@ class _TimeFeatureAdder(_PipelineFunctions):
         :type minute: bool
         :param week: a flag indicating if the datetime's ``week`` is derived
         :type week: bool
-        :param weekend: a flag indicating if the datetime is during a weekend
-        :type weekend: bool
+        :param is_weekend: a flag indicating if the datetime is during a weekend
+        :type is_weekend: bool
         :param weekofyear:  a flag indicating if the datetime's ``week of year` is derived
         :type weekofyear: bool
         :param quarter: a flag indicating if the datetime's ``quarter`` is derived
@@ -270,9 +270,9 @@ class _TimeFeatureAdder(_PipelineFunctions):
                 hour=hour,
                 minute=minute,
                 week=week,
-                weekend=weekend,
                 weekofyear=weekofyear,
                 quarter=quarter,
+                is_weekend=is_weekend,
                 is_leap_year=is_leap_year,
                 is_month_end=is_month_end,
                 is_month_start=is_month_start,
