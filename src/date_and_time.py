@@ -270,9 +270,9 @@ class TimeFeatureBasic(BaseEstimator, TransformerMixin):
         hour: bool = True,
         minute: bool = True,
         week: bool = True,
-        weekend: bool = True,
         weekofyear: bool = True,
         quarter: bool = True,
+        is_weekend: bool = True,
         is_leap_year: bool = True,
         is_month_end: bool = True,
         is_month_start: bool = True,
@@ -302,8 +302,8 @@ class TimeFeatureBasic(BaseEstimator, TransformerMixin):
         :type minute: bool
         :param week: a flag indicating if the datetime's ``week`` is derived
         :type week: bool
-        :param weekend: a flag indicating if the datetime is during a weekend
-        :type weekend: bool
+        :param is_weekend: a flag indicating if the datetime is during a weekend
+        :type is_weekend: bool
         :param weekofyear:  a flag indicating if the datetime's ``week of year` is derived
         :type weekofyear: bool
         :param quarter: a flag indicating if the datetime's ``quarter`` is derived
@@ -336,9 +336,9 @@ class TimeFeatureBasic(BaseEstimator, TransformerMixin):
         self.hour = hour
         self.minute = minute
         self.week = week
-        # self.weekend = weekend
         self.weekofyear = weekofyear
         self.quarter = quarter
+        self.is_weekend = is_weekend
         self.is_leap_year = is_leap_year
         self.is_month_end = is_month_end
         self.is_month_start = is_month_start
@@ -350,6 +350,10 @@ class TimeFeatureBasic(BaseEstimator, TransformerMixin):
 
     def fit(self, X, y=None, **kwargs):
         return self
+
+    @staticmethod
+    def _is_weekend(feature):
+        return feature.dt.dayofweek >= 5
 
     def transform(self, X: pd.DataFrame) -> pd.DataFrame:
         """
@@ -372,8 +376,6 @@ class TimeFeatureBasic(BaseEstimator, TransformerMixin):
                 X[ftr + "_dayofyear"] = X[ftr].dt.dayofyear
             if self.week:
                 X[ftr + "_week"] = X[ftr].dt.week
-            # if self.weekend:
-            #    X[ftr + '_weekend'] = X[ftr].dt.weekend
             if self.weekofyear:
                 X[ftr + "_weekofyear"] = X[ftr].dt.weekofyear
             if self.hour:
@@ -382,6 +384,8 @@ class TimeFeatureBasic(BaseEstimator, TransformerMixin):
                 X[ftr + "_minute"] = X[ftr].dt.minute
             if self.quarter:
                 X[ftr + "_quarter"] = X[ftr].dt.quarter
+            if self.is_weekend:
+                X[ftr + '_is_weekend'] = X[ftr].dt.dayofweek >= 5
             if self.is_leap_year:
                 X[ftr + "_is_leap_year"] = X[ftr].dt.is_leap_year
             if self.is_month_end:
