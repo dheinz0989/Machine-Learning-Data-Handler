@@ -165,6 +165,7 @@ class _TimeFeatureAdder(_PipelineFunctions):
         """
         log.info(f"Adding a time difference between {x_time} and {y_time}.")
         # TODO add in which units to the logger
+        # TODO generally, change logging information to include all options
         step = make_pipeline(
             TimeDifference(
                 x_time=x_time,
@@ -476,15 +477,16 @@ class FeatureBuilder(BasicDataAttributes):
 
     In future version, other classes as text is going to be implemented
 
-        Usage: the idea of this class is to have pipelines generator for the above-mentioned data types.
-        In order to add and convert time features, the following implementation is used:
+    Usage: the idea of this class is to have pipelines generator for the above-mentioned data types.
+    In order to add and convert time features, the following implementation is used::
 
-        # Initialize a feature builder "builder"
-        # adding two generic time features
-        > builder.Time.add_...
-        > builder.Time.add_..
-        # and then wrap the pipeline and rut it via
-        > builder.wrap_and_run_current_pipeline()
+    > # Initialize a feature builder "builder"
+    > # adding two generic time features
+    > 1 builder.Time.add_...
+    > 2 builder.Time.add_..
+    > # and then wrap the pipeline and rut it via
+    > 3 builder.wrap_and_run_current_pipeline()
+
     """
 
     # Implement a set features and operate on object attributes
@@ -494,19 +496,22 @@ class FeatureBuilder(BasicDataAttributes):
         """
         Initializes a feature builder object. As its parent classes, only a pointer to a file or a pandas DataFrame is required for initialization
 
-        Other attributes are as follows:
+        Other attributes are as follows
 
-            The main feature builder classes:
-            - ``Time``: is an attribute which allows to build pipeline for creating time related features
-            - ``GIS``: is an attribute which allows to build pipeline for creating gis related features
+        The main feature builder classes:
 
-            After applying feature transformation:
-            - ``transformed_input``: is pandas DataFrame containing the derived features
-            - ``transformed_features``: are all new columns derived within the feature creation
+        - ``Time``: is an attribute which allows to build pipeline for creating time related features
+        - ``GIS``: is an attribute which allows to build pipeline for creating gis related features
 
-            Pipeline information:
-            - wrapped_pipeline: is an attribute, which contains all information when a pipeline of ``Time`` or ``GIS`` has been wrapped
-            - _current_feature_family_in_pipeline: gives information, to which feature class the current pipeline belongs to. Only time and gis is allowed at the moment
+        After applying feature transformation:
+
+        - ``transformed_input``: is pandas DataFrame containing the derived features
+        - ``transformed_features``: are all new columns derived within the feature creation
+
+        Pipeline information:
+
+        - ``wrapped_pipeline``: is an attribute, which contains all information when a pipeline of ``Time`` or ``GIS`` has been wrapped
+        - ``_current_feature_family_in_pipeline``: gives information, to which feature class the current pipeline belongs to. Only time and gis is allowed at the moment
 
         :param data_source: the source of the data
         :type data_source: Union[str, pd.DataFrame]
@@ -596,23 +601,26 @@ class FeatureBuilder(BasicDataAttributes):
         Caution: Temporary results are not saved within this pipeline. For instance, if two pipeline steps transform a given column and the
         second transformation steps depends on the transformation results of the first step, the steps might fall.
 
-            Example:
-            # A first transformer converts a date in a string format to date format
-            > builder.Time.add_str_to_time('Month', "%Y-%m")
-            # A second transformer derives basic features of a datetime column. It therefore expects the column to be in a datetime format:
-            > builder.Time.add_basic_features('Month')
-            # Setting the wrapper to the Time feature, wrapping and running will result in an error
-            > builder.set_current_feature_dimension('time')
-            > builder.wrap_pip()
-            > builder.run_wrapped_pipeline()
+        Example::
 
-            This happens because the result of the first transformer (changing the data type) is not taken into account by the second transformer
+        > # A first transformer converts a date in a string format to date format
+        > 1 builder.Time.add_str_to_time('Month', "%Y-%m")
+        > # A second transformer derives basic features of a datetime column.
+        > # It therefore expects the column to be in a datetime format:
+        > 2 builder.Time.add_basic_features('Month')
+        > # Setting the wrapper to the Time feature, wrapping and running will result in an error
+        > 3 builder.set_current_feature_dimension('time')
+        > 4 builder.wrap_pip()
+        > 5 builder.run_wrapped_pipeline()
 
-            In order to evade the error, the pipeline needs to be wrapped and run separately as follows:
-            > builder.Time.add_str_to_time('Month', "%Y-%m")
-            > builder.wrap_pip().run_wrapped_pipeline()
-            > builder.Time.add_basic_features('Month')
-            > builder.wrap_pip().run_wrapped_pipeline()
+        This happens because the result of the first transformer (changing the data type) is not taken into account by the second transformer
+
+        In order to evade the error, the pipeline needs to be wrapped and run separately as follows::
+
+        > 1 builder.Time.add_str_to_time('Month', "%Y-%m")
+        > 2 builder.wrap_pip().run_wrapped_pipeline()
+        > 3 builder.Time.add_basic_features('Month')
+        > 4 builder.wrap_pip().run_wrapped_pipeline()
 
         :return:
         """

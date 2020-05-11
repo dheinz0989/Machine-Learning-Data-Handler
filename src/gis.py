@@ -355,13 +355,13 @@ class GisBasicTransformer(_BaseClass, BaseEstimator, TransformerMixin):
     Derives primitive feature transformation for GIS
     The primitive transformations are:
 
-        - ``round``: round the GIS to a specific digit length. This can be considered as a feature as it groups together
-        points with similar values. It reduces information but reduces the dimension of the feature
-        - ``radians``: a simple transformation to get the radians of the GIS.
+    - ``round``: round the GIS to a specific digit length. This can be considered as a feature as it groups together points with similar values.
+      It reduces information but reduces the dimension of the feature
 
-    # TODO include x,y,z features.
+    - ``radians``: a simple transformation to get the radians of the GIS.
+
     """
-
+    # TODO include x,y,z features.
     def __init__(self, lat: str, lon: str, round_factor: int = 0, radian: bool = True):
         """
         Initializes a primitive feature creator object

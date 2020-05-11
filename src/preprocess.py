@@ -44,36 +44,38 @@ class DataPreProcessor(BasicDataAttributes):
         The last parameters is a dictionary containing a mapping to preprocessor class. The recommend way is to read a config.yaml file and pass the return value as a parameter
         to this object. The mapping file necessarily requires the following keywords:
 
-            >> "mapping" must be a primary key.
+        - *"mapping"* must be a primary key.
+
         Withing the mapping dictionary, the following second level keywords are mandatory:
-            >> "imputer"
-            >> "encoder"
-            >> "scaler"
-            >> "subset_selector"
-            >> "categorical_encoder"
+
+        - *"imputer"*
+        - *"encoder"*
+        - *"scaler"*
+        - *"subset_selector"*
+        - *"categorical_encoder"*
 
         The values obtained by the second level keywords are pointer to the corresponding preprocessor class.
 
-            Example of a yaml mapping:
+        Example of a yaml mapping::
 
-            >> mapping:
-            >>     scaler:
-            >>           'minmax': MinMaxScaler
-            >>             'standard': StandardScaler
-            >>     encoder:
-            >>             'onehot': OneHotEncoder
-            >>             'label': LabelEncoder
-            >>             'binarize': Binarizer
-            >>     categorical_encoder:
-            >>             'onehot': OneHotEncoder
-            >>             'label': LabelEncoder
-            >>             'binarize': Binarizer
-            >>     subset_selector:
-            >>             'name' : NameSelector
-            >>             'type' : TypeSelector
-            >>     imputer:
-            >>             simple : SimpleImputer
-            >>             knn : KNNImputer
+         mapping:
+             scaler:
+                   'minmax': MinMaxScaler
+                     'standard': StandardScaler
+             encoder:
+                     'onehot': OneHotEncoder
+                     'label': LabelEncoder
+                     'binarize': Binarizer
+             categorical_encoder:
+                     'onehot': OneHotEncoder
+                     'label': LabelEncoder
+                     'binarize': Binarizer
+             subset_selector:
+                     'name' : NameSelector
+                     'type' : TypeSelector
+             imputer:
+                     'simple' : SimpleImputer
+                     'knn' : KNNImputer
 
 
         :param data_source: provides a string to a file to be read or a plain pandas DataFrame
@@ -118,16 +120,17 @@ class DataPreProcessor(BasicDataAttributes):
         The value to reset must be a dictionary key in the ``subset_selector`` dictionary
 
             Example:
-            Given the following configuration file entries:
+            Given the following configuration file entries::
 
-            >> mapping:
-            >>    subset_selector:
-            >>            'name' : NameSelector
-            >>            'type' : TypeSelector
+            mapping:
+                subset_selector:
+                        'name' : NameSelector
+                        'type' : TypeSelector
 
-            and an DataPreProcessor object:
-            >> preprocessor = DataPreProcessor(data)
-            >> preprocessor.ingest()
+            and an DataPreProcessor object::
+
+            preprocessor = DataPreProcessor(data)
+            preprocessor.ingest()
 
             The SubSetSelector property can be set using:
 
@@ -377,6 +380,7 @@ class DataPreProcessor(BasicDataAttributes):
 
         The current version of this function operates on the TypeSelector
         # TODO add a version for naming based pre processors
+        # TODO change to column_Transformer
 
         :return: a pipeline which can be used to fit_transform the original data
         :rtype: Pipeline

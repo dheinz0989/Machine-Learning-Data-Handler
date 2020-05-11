@@ -152,6 +152,7 @@ class DataExplorer(BasicDataAttributes):
             self.dtype_cat,
             self.dtype_num,
         ]
+    # TODO change implementation from properties to classes
 
     @property
     def Numerical_Data(self) -> NumericalAnalyzer:
@@ -168,7 +169,7 @@ class DataExplorer(BasicDataAttributes):
             return NumericalAnalyzer(val)
 
     @property
-    def Data_Mixed_Types(self) -> Data_Mixed_Types:
+    def Data_Mixed_Types(self) -> DataExplorer:
         """
         A property which returns a data set of different types. This can be used to analyze relationships between different features of different types.
 
@@ -325,7 +326,7 @@ class DataExplorer(BasicDataAttributes):
             return CategoricalAnalyzer(val)
 
     @property
-    def Date_By_Data(self) -> Date_By_Data:
+    def Date_By_Data(self):
         """
         A property which returns a Data By Date object. This can be used to analyze columns by time.
 
@@ -379,7 +380,7 @@ class DataExplorer(BasicDataAttributes):
             )
 
     @property
-    def Gis_DataWithLabel(self) -> Gis_DataWithLabel:
+    def Gis_DataWithLabel(self):
         """
         A property which returns all gis features with a corresponding label. This is intended to check for clustering algorithms results
 

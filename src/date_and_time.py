@@ -87,8 +87,6 @@ class DateByAnalyzer(BaseStats):
         sns.relplot(x=self.x, y=self.date, data=self.data, **options)
 
 
-
-
 class UnixTimeStampConverter(BaseEstimator, TransformerMixin):
     """
     Converts the Unix Time Stamp of a feature to a datetime Object
@@ -254,10 +252,9 @@ class StringToTimeConverter(BaseEstimator, TransformerMixin):
 
 class TimeFeatureBasic(BaseEstimator, TransformerMixin):
     """
-    Derives Time features properties in the DataFra e column
+    Derives Time features properties in the DataFrame column
     """
 
-    # TODO Implement weekend
     def __init__(
         self,
         time_features: Union[str, Sequence],
@@ -286,44 +283,43 @@ class TimeFeatureBasic(BaseEstimator, TransformerMixin):
 
         :param delete_original_column: a flag indicating if the original column is dropped from the resulting DataFrame
         :type delete_original_column: bool
-        :param month: a flag indicating if the datetime's ``month`` is derived
+        :param month: a flag indicating if the datetime's *month* is derived
         :type month: bool
-        :param year: a flag indicating if the datetime's ``year`` is derived
+        :param year: a flag indicating if the datetime's *year* is derived
         :type year: bool
-        :param day: a flag indicating if the datetime's ``day`` is derived
+        :param day: a flag indicating if the datetime's *day* is derived
         :type day: bool
-        :param dayofweek: a flag indicating if the datetime's ``day of the week`` is derived
+        :param dayofweek: a flag indicating if the datetime's *day of the week* is derived
         :type dayofweek: bool
-        :param dayofyear: a flag indicating if the datetime's ``day of the year`` is derived
+        :param dayofyear: a flag indicating if the datetime's *day of the year* is derived
         :type dayofyear: bool
-        :param hour: a flag indicating if the datetime's ``hour`` is derived
+        :param hour: a flag indicating if the datetime's *hour* is derived
         :type hour: bool
-        :param minute: a flag indicating if the datetime's ``minute`` is derived
+        :param minute: a flag indicating if the datetime's *minute* is derived
         :type minute: bool
-        :param week: a flag indicating if the datetime's ``week`` is derived
+        :param week: a flag indicating if the datetime's *week* is derived
         :type week: bool
-        :param is_weekend: a flag indicating if the datetime is during a weekend
+        :param is_weekend: a flag indicating if the datetime is during a *weekend*
         :type is_weekend: bool
-        :param weekofyear:  a flag indicating if the datetime's ``week of year` is derived
+        :param weekofyear:  a flag indicating if the datetime's *week of year* is derived
         :type weekofyear: bool
-        :param quarter: a flag indicating if the datetime's ``quarter`` is derived
+        :param quarter: a flag indicating if the datetime's *quarter* is derived
         :type quarter: bool
-        :param is_leap_year: a flag indicating if the datetime's  derives, if it is a leap year
+        :param is_leap_year: a flag indicating if the datetime's  derives, if it is a *leap year*
         :type is_leap_year: bool
-        :param is_month_end: a flag indicating if the datetime's  derives, if it is the month's last day
+        :param is_month_end: a flag indicating if the datetime's  derives, if it is the *month's last day*
         :type is_month_end: bool
-        :param is_month_start: a flag indicating if the datetime's  derives, if it is the month's first day
+        :param is_month_start: a flag indicating if the datetime's  derives, if it is the *month's first day*
         :type is_quarter_start: bool
-        :param is_quarter_start: a flag indicating if the datetime's  derives, if it is the quarter's first day
+        :param is_quarter_start: a flag indicating if the datetime's  derives, if it is the *quarter's first day*
         :type is_month_start: bool
-        :param is_quarter_end: a flag indicating if the datetime's  derives, if it is the quarter's last day
+        :param is_quarter_end: a flag indicating if the datetime's  derives, if it is the *quarter's last day*
         :type is_quarter_end: bool
-        :param is_year_start: a flag indicating if the datetime's  derives, if it is the year's first day
+        :param is_year_start: a flag indicating if the datetime's  derives, if it is the *year's first day*
         :type is_year_start: bool
-        :param is_year_end: a flag indicating if the datetime's  derives, if it is the year's last day
+        :param is_year_end: a flag indicating if the datetime's  derives, if it is the *year's last day*
         :type is_year_end: bool
         """
-
         self.time_features = (
             time_features if isinstance(time_features, list) else [time_features]
         )

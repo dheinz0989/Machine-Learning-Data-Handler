@@ -21,7 +21,7 @@ from numpy import number
 
 class TypeSelector(BaseEstimator, TransformerMixin):
     """
-    'Selects a subset of columns from a DataFrame based on the type of data
+    Selects a subset of columns from a DataFrame based on the type of data
     """
 
     def __init__(self, dtype: Union[str, int, float, number, pd.datetime]):
