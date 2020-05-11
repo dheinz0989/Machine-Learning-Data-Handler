@@ -1,0 +1,441 @@
+
+<!DOCTYPE html>
+
+<html>
+  <head>
+    <meta charset="utf-8" />
+    <title>Base Attributes &#8212; Machine Learning Data Handler 1.2 documentation</title>
+    <link rel="stylesheet" href="_static/sphinxdoc.css" type="text/css" />
+    <link rel="stylesheet" href="_static/pygments.css" type="text/css" />
+    <script id="documentation_options" data-url_root="./" src="_static/documentation_options.js"></script>
+    <script src="_static/jquery.js"></script>
+    <script src="_static/underscore.js"></script>
+    <script src="_static/doctools.js"></script>
+    <script src="_static/language_data.js"></script>
+    <link rel="index" title="Index" href="genindex.html" />
+    <link rel="search" title="Search" href="search.html" />
+    <link rel="next" title="Data Selector" href="dataframeselector.html" />
+    <link rel="prev" title="Data PreProcessor" href="preprocess.html" /> 
+  </head><body>
+    <div class="related" role="navigation" aria-label="related navigation">
+      <h3>Navigation</h3>
+      <ul>
+        <li class="right" style="margin-right: 10px">
+          <a href="genindex.html" title="General Index"
+             accesskey="I">index</a></li>
+        <li class="right" >
+          <a href="py-modindex.html" title="Python Module Index"
+             >modules</a> |</li>
+        <li class="right" >
+          <a href="dataframeselector.html" title="Data Selector"
+             accesskey="N">next</a> |</li>
+        <li class="right" >
+          <a href="preprocess.html" title="Data PreProcessor"
+             accesskey="P">previous</a> |</li>
+        <li class="nav-item nav-item-0"><a href="ML_Data_Handler.html">Machine Learning Data Handler 1.2 documentation</a> &#187;</li> 
+      </ul>
+    </div>
+      <div class="sphinxsidebar" role="navigation" aria-label="main navigation">
+        <div class="sphinxsidebarwrapper">
+  <h3><a href="ML_Data_Handler.html">Table of Contents</a></h3>
+  <ul>
+<li><a class="reference internal" href="#">Base Attributes</a><ul>
+<li><a class="reference internal" href="#module-baseattrs">Source Code</a></li>
+</ul>
+</li>
+</ul>
+
+  <h4>Previous topic</h4>
+  <p class="topless"><a href="preprocess.html"
+                        title="previous chapter">Data PreProcessor</a></p>
+  <h4>Next topic</h4>
+  <p class="topless"><a href="dataframeselector.html"
+                        title="next chapter">Data Selector</a></p>
+  <div role="note" aria-label="source link">
+    <h3>This Page</h3>
+    <ul class="this-page-menu">
+      <li><a href="_sources/baseattrs.rst.txt"
+            rel="nofollow">Show Source</a></li>
+    </ul>
+   </div>
+<div id="searchbox" style="display: none" role="search">
+  <h3 id="searchlabel">Quick search</h3>
+    <div class="searchformwrapper">
+    <form class="search" action="search.html" method="get">
+      <input type="text" name="q" aria-labelledby="searchlabel" />
+      <input type="submit" value="Go" />
+    </form>
+    </div>
+</div>
+<script>$('#searchbox').show(0);</script>
+        </div>
+      </div>
+
+    <div class="document">
+      <div class="documentwrapper">
+        <div class="bodywrapper">
+          <div class="body" role="main">
+            
+  <div class="section" id="base-attributes">
+<h1>Base Attributes<a class="headerlink" href="#base-attributes" title="Permalink to this headline">¶</a></h1>
+<p>Description for basic attributes to be added here</p>
+<div class="section" id="module-baseattrs">
+<span id="source-code"></span><h2>Source Code<a class="headerlink" href="#module-baseattrs" title="Permalink to this headline">¶</a></h2>
+<p>This module includes a class which defines basic attributes and methods for the Data Explorer, Preprocessor and FeatureBuilder
+and all their custom classes. The respective modules import this class and inherit from it</p>
+<dl class="py class">
+<dt id="baseattrs.BasicDataAttributes">
+<em class="property">class </em><code class="sig-prename descclassname">baseattrs.</code><code class="sig-name descname">BasicDataAttributes</code><span class="sig-paren">(</span><em class="sig-param"><span class="n">data_source</span><span class="p">:</span> <span class="n">Union<span class="p">[</span>str<span class="p">, </span>pandas.core.frame.DataFrame<span class="p">]</span></span></em>, <em class="sig-param"><span class="n">target_name</span><span class="p">:</span> <span class="n">str</span> <span class="o">=</span> <span class="default_value">''</span></em>, <em class="sig-param"><span class="n">features</span><span class="p">:</span> <span class="n">Union[str, Sequence, None]</span> <span class="o">=</span> <span class="default_value">None</span></em><span class="sig-paren">)</span><a class="reference internal" href="_modules/baseattrs.html#BasicDataAttributes"><span class="viewcode-link">[source]</span></a><a class="headerlink" href="#baseattrs.BasicDataAttributes" title="Permalink to this definition">¶</a></dt>
+<dd><p>Bases: <code class="xref py py-class docutils literal notranslate"><span class="pre">object</span></code></p>
+<p>This class contains several attributes, methods and properties used within different classes.</p>
+<dl class="py attribute">
+<dt id="baseattrs.BasicDataAttributes.dtype_num">
+<code class="sig-name descname">dtype_num</code><a class="headerlink" href="#baseattrs.BasicDataAttributes.dtype_num" title="Permalink to this definition">¶</a></dt>
+<dd><p>alias of <code class="xref py py-class docutils literal notranslate"><span class="pre">numpy.number</span></code></p>
+</dd></dl>
+
+<dl class="py attribute">
+<dt id="baseattrs.BasicDataAttributes.dtype_str">
+<code class="sig-name descname">dtype_str</code><a class="headerlink" href="#baseattrs.BasicDataAttributes.dtype_str" title="Permalink to this definition">¶</a></dt>
+<dd><p>alias of <code class="xref py py-class docutils literal notranslate"><span class="pre">builtins.object</span></code></p>
+</dd></dl>
+
+<dl class="py attribute">
+<dt id="baseattrs.BasicDataAttributes.dtype_bool">
+<code class="sig-name descname">dtype_bool</code><a class="headerlink" href="#baseattrs.BasicDataAttributes.dtype_bool" title="Permalink to this definition">¶</a></dt>
+<dd><p>alias of <code class="xref py py-class docutils literal notranslate"><span class="pre">builtins.bool</span></code></p>
+</dd></dl>
+
+<dl class="py attribute">
+<dt id="baseattrs.BasicDataAttributes.dtype_date">
+<code class="sig-name descname">dtype_date</code><a class="headerlink" href="#baseattrs.BasicDataAttributes.dtype_date" title="Permalink to this definition">¶</a></dt>
+<dd><p>alias of <code class="xref py py-class docutils literal notranslate"><span class="pre">numpy.datetime64</span></code></p>
+</dd></dl>
+
+<dl class="py attribute">
+<dt id="baseattrs.BasicDataAttributes.dtype_cat">
+<code class="sig-name descname">dtype_cat</code><em class="property"> = 'category'</em><a class="headerlink" href="#baseattrs.BasicDataAttributes.dtype_cat" title="Permalink to this definition">¶</a></dt>
+<dd></dd></dl>
+
+<dl class="py method">
+<dt id="baseattrs.BasicDataAttributes.__init__">
+<code class="sig-name descname">__init__</code><span class="sig-paren">(</span><em class="sig-param"><span class="n">data_source</span><span class="p">:</span> <span class="n">Union<span class="p">[</span>str<span class="p">, </span>pandas.core.frame.DataFrame<span class="p">]</span></span></em>, <em class="sig-param"><span class="n">target_name</span><span class="p">:</span> <span class="n">str</span> <span class="o">=</span> <span class="default_value">''</span></em>, <em class="sig-param"><span class="n">features</span><span class="p">:</span> <span class="n">Union[str, Sequence, None]</span> <span class="o">=</span> <span class="default_value">None</span></em><span class="sig-paren">)</span><a class="reference internal" href="_modules/baseattrs.html#BasicDataAttributes.__init__"><span class="viewcode-link">[source]</span></a><a class="headerlink" href="#baseattrs.BasicDataAttributes.__init__" title="Permalink to this definition">¶</a></dt>
+<dd><p>Initialization function for Basic Data Attributes.</p>
+<dl class="field-list simple">
+<dt class="field-odd">Parameters</dt>
+<dd class="field-odd"><ul class="simple">
+<li><p><strong>data_source</strong> (<em>str</em><em> or </em><em>pd.DataFrame</em>) – a string with a file containing Data or a pandas DataFrame to be read.</p></li>
+<li><p><strong>target_name</strong> – optionally specify the target_name column within the data set</p></li>
+<li><p><strong>features</strong> – optionally pre define features which are to be kept upon initialization</p></li>
+</ul>
+</dd>
+</dl>
+</dd></dl>
+
+<dl class="py method">
+<dt id="baseattrs.BasicDataAttributes.ingest">
+<code class="sig-name descname">ingest</code><span class="sig-paren">(</span><em class="sig-param"><span class="o">**</span><span class="n">options</span><span class="p">:</span> <span class="n">Mapping<span class="p">[</span>str<span class="p">]</span></span></em><span class="sig-paren">)</span> &#x2192; BasicDataAttributes<a class="reference internal" href="_modules/baseattrs.html#BasicDataAttributes.ingest"><span class="viewcode-link">[source]</span></a><a class="headerlink" href="#baseattrs.BasicDataAttributes.ingest" title="Permalink to this definition">¶</a></dt>
+<dd><p>Ingests the data source provided in the attribute and derives a pandas DataFrame out of it. The following data source are possible:</p>
+<blockquote>
+<div><ul class="simple">
+<li><p>csv files</p></li>
+<li><p>json files</p></li>
+<li><p>parquet files</p></li>
+<li><p>pickle files</p></li>
+<li><p>pandas DataFrame</p></li>
+</ul>
+</div></blockquote>
+<p>When the data source is a string containing a pointer to a file, the respective file is read. If it is however a pandas DataFrame, the data is kept
+in a DataFrame.</p>
+<p>The pandas DataFrame is saved into the input attribute</p>
+<dl class="field-list simple">
+<dt class="field-odd">Parameters</dt>
+<dd class="field-odd"><p><strong>options</strong> – </p>
+</dd>
+<dt class="field-even">Returns</dt>
+<dd class="field-even"><p></p>
+</dd>
+</dl>
+</dd></dl>
+
+<dl class="py method">
+<dt id="baseattrs.BasicDataAttributes.numerical_features">
+<em class="property">property </em><code class="sig-name descname">numerical_features</code><a class="headerlink" href="#baseattrs.BasicDataAttributes.numerical_features" title="Permalink to this definition">¶</a></dt>
+<dd><p>Returns all feature columns having a numerical data type, i.e. int and float</p>
+<dl class="field-list simple">
+<dt class="field-odd">Returns</dt>
+<dd class="field-odd"><p>a list of all feature columns having a numerical data type, i.e. int and float</p>
+</dd>
+<dt class="field-even">Return type</dt>
+<dd class="field-even"><p>list</p>
+</dd>
+</dl>
+</dd></dl>
+
+<dl class="py method">
+<dt id="baseattrs.BasicDataAttributes.categorical_features">
+<em class="property">property </em><code class="sig-name descname">categorical_features</code><a class="headerlink" href="#baseattrs.BasicDataAttributes.categorical_features" title="Permalink to this definition">¶</a></dt>
+<dd><p>Returns all feature columns having a categorical data type</p>
+<dl class="field-list simple">
+<dt class="field-odd">Returns</dt>
+<dd class="field-odd"><p>a list of all feature columns having a categorical data type</p>
+</dd>
+<dt class="field-even">Return type</dt>
+<dd class="field-even"><p>list</p>
+</dd>
+</dl>
+</dd></dl>
+
+<dl class="py method">
+<dt id="baseattrs.BasicDataAttributes.string_features">
+<em class="property">property </em><code class="sig-name descname">string_features</code><a class="headerlink" href="#baseattrs.BasicDataAttributes.string_features" title="Permalink to this definition">¶</a></dt>
+<dd><p>Returns all feature columns having a object data type. In pandas, object data types are found to be string features. It is however possible,
+that these are other native Python objects as list, dict or tuples.</p>
+<dl class="field-list simple">
+<dt class="field-odd">Returns</dt>
+<dd class="field-odd"><p>a list of all feature columns having an object data type</p>
+</dd>
+<dt class="field-even">Return type</dt>
+<dd class="field-even"><p>list</p>
+</dd>
+</dl>
+</dd></dl>
+
+<dl class="py method">
+<dt id="baseattrs.BasicDataAttributes.bool_features">
+<em class="property">property </em><code class="sig-name descname">bool_features</code><a class="headerlink" href="#baseattrs.BasicDataAttributes.bool_features" title="Permalink to this definition">¶</a></dt>
+<dd><p>Returns all feature columns having a boolean data type</p>
+<dl class="field-list simple">
+<dt class="field-odd">Returns</dt>
+<dd class="field-odd"><p>a list of all feature columns having a boolean data type</p>
+</dd>
+<dt class="field-even">Return type</dt>
+<dd class="field-even"><p>list</p>
+</dd>
+</dl>
+</dd></dl>
+
+<dl class="py method">
+<dt id="baseattrs.BasicDataAttributes.date_features">
+<em class="property">property </em><code class="sig-name descname">date_features</code><a class="headerlink" href="#baseattrs.BasicDataAttributes.date_features" title="Permalink to this definition">¶</a></dt>
+<dd><p>Returns all feature columns having a datetime data type</p>
+<dl class="field-list simple">
+<dt class="field-odd">Returns</dt>
+<dd class="field-odd"><p>a list of all feature columns having a datetime data type</p>
+</dd>
+<dt class="field-even">Return type</dt>
+<dd class="field-even"><p>list</p>
+</dd>
+</dl>
+</dd></dl>
+
+<dl class="py method">
+<dt id="baseattrs.BasicDataAttributes.Features">
+<em class="property">property </em><code class="sig-name descname">Features</code><a class="headerlink" href="#baseattrs.BasicDataAttributes.Features" title="Permalink to this definition">¶</a></dt>
+<dd><p>Can be used to reset the current DataFrame to a specified set of features</p>
+<dl class="field-list simple">
+<dt class="field-odd">Returns</dt>
+<dd class="field-odd"><p></p>
+</dd>
+</dl>
+</dd></dl>
+
+<dl class="py method">
+<dt id="baseattrs.BasicDataAttributes.all_feature_columns">
+<em class="property">property </em><code class="sig-name descname">all_feature_columns</code><a class="headerlink" href="#baseattrs.BasicDataAttributes.all_feature_columns" title="Permalink to this definition">¶</a></dt>
+<dd><blockquote>
+<div><p>Returns all feature columns of the data frame</p>
+</div></blockquote>
+<dl class="field-list simple">
+<dt class="field-odd">Returns</dt>
+<dd class="field-odd"><p>a list of all feature columns</p>
+</dd>
+<dt class="field-even">Return type</dt>
+<dd class="field-even"><p>list</p>
+</dd>
+<dt class="field-odd">Returns</dt>
+<dd class="field-odd"><p></p>
+</dd>
+</dl>
+</dd></dl>
+
+<dl class="py method">
+<dt id="baseattrs.BasicDataAttributes.feature_types">
+<em class="property">property </em><code class="sig-name descname">feature_types</code><a class="headerlink" href="#baseattrs.BasicDataAttributes.feature_types" title="Permalink to this definition">¶</a></dt>
+<dd><p>Returns a list of type for all features.</p>
+<dl class="field-list simple">
+<dt class="field-odd">Returns</dt>
+<dd class="field-odd"><p>list of type for all features</p>
+</dd>
+<dt class="field-even">Return type</dt>
+<dd class="field-even"><p>list</p>
+</dd>
+</dl>
+</dd></dl>
+
+<dl class="py method">
+<dt id="baseattrs.BasicDataAttributes.reset_feature_type">
+<code class="sig-name descname">reset_feature_type</code><span class="sig-paren">(</span><em class="sig-param"><span class="n">feature</span><span class="p">:</span> <span class="n">str</span></em>, <em class="sig-param"><span class="n">dtype</span><span class="p">:</span> <span class="n">Union<span class="p">[</span>str<span class="p">, </span>numpy.number<span class="p">, </span>int<span class="p">, </span>float<span class="p">]</span></span></em><span class="sig-paren">)</span><a class="reference internal" href="_modules/baseattrs.html#BasicDataAttributes.reset_feature_type"><span class="viewcode-link">[source]</span></a><a class="headerlink" href="#baseattrs.BasicDataAttributes.reset_feature_type" title="Permalink to this definition">¶</a></dt>
+<dd><p>This function can be used to reset the data type for a specified column</p>
+<dl class="field-list simple">
+<dt class="field-odd">Parameters</dt>
+<dd class="field-odd"><ul class="simple">
+<li><p><strong>feature</strong> – <p>’’</p>
+</p></li>
+<li><p><strong>dtype</strong> – </p></li>
+</ul>
+</dd>
+<dt class="field-even">Returns</dt>
+<dd class="field-even"><p></p>
+</dd>
+</dl>
+</dd></dl>
+
+<dl class="py method">
+<dt id="baseattrs.BasicDataAttributes.convert_nested_dictionary_class">
+<em class="property">static </em><code class="sig-name descname">convert_nested_dictionary_class</code><span class="sig-paren">(</span><em class="sig-param"><span class="n">d</span><span class="p">:</span> <span class="n">Dict</span></em><span class="sig-paren">)</span> &#x2192; Dict<a class="reference internal" href="_modules/baseattrs.html#BasicDataAttributes.convert_nested_dictionary_class"><span class="viewcode-link">[source]</span></a><a class="headerlink" href="#baseattrs.BasicDataAttributes.convert_nested_dictionary_class" title="Permalink to this definition">¶</a></dt>
+<dd><p>Takes a dictionary and converts a string values to the corresponding Python classes</p>
+<dl class="field-list simple">
+<dt class="field-odd">Parameters</dt>
+<dd class="field-odd"><p><strong>d</strong> – a dictionary holding values</p>
+</dd>
+<dt class="field-even">Returns</dt>
+<dd class="field-even"><p>the dictionary whose key values are now pointing to the value’s corresponding classes</p>
+</dd>
+</dl>
+</dd></dl>
+
+</dd></dl>
+
+<dl class="py class">
+<dt id="baseattrs.BaseStats">
+<em class="property">class </em><code class="sig-prename descclassname">baseattrs.</code><code class="sig-name descname">BaseStats</code><span class="sig-paren">(</span><em class="sig-param"><span class="n">data</span><span class="p">:</span> <span class="n">Union<span class="p">[</span>str<span class="p">, </span>pandas.core.frame.DataFrame<span class="p">]</span></span></em><span class="sig-paren">)</span><a class="reference internal" href="_modules/baseattrs.html#BaseStats"><span class="viewcode-link">[source]</span></a><a class="headerlink" href="#baseattrs.BaseStats" title="Permalink to this definition">¶</a></dt>
+<dd><p>Bases: <code class="xref py py-class docutils literal notranslate"><span class="pre">object</span></code></p>
+<dl class="py method">
+<dt id="baseattrs.BaseStats.__init__">
+<code class="sig-name descname">__init__</code><span class="sig-paren">(</span><em class="sig-param"><span class="n">data</span><span class="p">:</span> <span class="n">Union<span class="p">[</span>str<span class="p">, </span>pandas.core.frame.DataFrame<span class="p">]</span></span></em><span class="sig-paren">)</span><a class="reference internal" href="_modules/baseattrs.html#BaseStats.__init__"><span class="viewcode-link">[source]</span></a><a class="headerlink" href="#baseattrs.BaseStats.__init__" title="Permalink to this definition">¶</a></dt>
+<dd><p>Initialization of the basic class. It accepts a pandas DataFrame as input.</p>
+<dl class="field-list simple">
+<dt class="field-odd">Parameters</dt>
+<dd class="field-odd"><p><strong>data</strong> – the base DataFrame</p>
+</dd>
+<dt class="field-even">Rtype data</dt>
+<dd class="field-even"><p>pd.DataFrame</p>
+</dd>
+</dl>
+</dd></dl>
+
+<dl class="py method">
+<dt id="baseattrs.BaseStats.get_missing_values">
+<code class="sig-name descname">get_missing_values</code><span class="sig-paren">(</span><em class="sig-param"><span class="n">column</span><span class="p">:</span> <span class="n">str</span></em><span class="sig-paren">)</span> &#x2192; collections.namedtuple<a class="reference internal" href="_modules/baseattrs.html#BaseStats.get_missing_values"><span class="viewcode-link">[source]</span></a><a class="headerlink" href="#baseattrs.BaseStats.get_missing_values" title="Permalink to this definition">¶</a></dt>
+<dd><p>Returns the amount of missing values for a given column. Returns a namedtuple including the absolute and relative value of missing values.</p>
+<dl class="field-list simple">
+<dt class="field-odd">Parameters</dt>
+<dd class="field-odd"><p><strong>column</strong> – a string of the DataFame column</p>
+</dd>
+<dt class="field-even">Returns</dt>
+<dd class="field-even"><p>a namedtuple with absolute and relative amount of missing values</p>
+</dd>
+<dt class="field-odd">Return type</dt>
+<dd class="field-odd"><p>namedtuple</p>
+</dd>
+</dl>
+</dd></dl>
+
+<dl class="py method">
+<dt id="baseattrs.BaseStats.get_stats">
+<code class="sig-name descname">get_stats</code><span class="sig-paren">(</span><span class="sig-paren">)</span> &#x2192; pandas.core.frame.DataFrame<a class="reference internal" href="_modules/baseattrs.html#BaseStats.get_stats"><span class="viewcode-link">[source]</span></a><a class="headerlink" href="#baseattrs.BaseStats.get_stats" title="Permalink to this definition">¶</a></dt>
+<dd><p>Returns the summary statistics of the pd.DataFrame</p>
+<dl class="field-list simple">
+<dt class="field-odd">Returns</dt>
+<dd class="field-odd"><p>an overview of the descriptive statistics</p>
+</dd>
+</dl>
+</dd></dl>
+
+<dl class="py method">
+<dt id="baseattrs.BaseStats.get_unique_values">
+<code class="sig-name descname">get_unique_values</code><span class="sig-paren">(</span><em class="sig-param"><span class="n">column</span><span class="p">:</span> <span class="n">str</span></em><span class="sig-paren">)</span> &#x2192; collections.namedtuple<a class="reference internal" href="_modules/baseattrs.html#BaseStats.get_unique_values"><span class="viewcode-link">[source]</span></a><a class="headerlink" href="#baseattrs.BaseStats.get_unique_values" title="Permalink to this definition">¶</a></dt>
+<dd><p>Returns the amount of unique values for a given column. Returns a namedtuple including the absolute and relative value of missing values.</p>
+<dl class="field-list simple">
+<dt class="field-odd">Parameters</dt>
+<dd class="field-odd"><p><strong>column</strong> – a string of the DataFame column</p>
+</dd>
+<dt class="field-even">Returns</dt>
+<dd class="field-even"><p>a namedtuple with absolute and relative amount of unique values</p>
+</dd>
+<dt class="field-odd">Return type</dt>
+<dd class="field-odd"><p>namedtuple</p>
+</dd>
+</dl>
+</dd></dl>
+
+<dl class="py method">
+<dt id="baseattrs.BaseStats._abs_rel_namedtuple_creator">
+<em class="property">static </em><code class="sig-name descname">_abs_rel_namedtuple_creator</code><span class="sig-paren">(</span><em class="sig-param"><span class="n">value</span><span class="p">:</span> <span class="n">str</span></em><span class="sig-paren">)</span> &#x2192; collections.namedtuple<a class="reference internal" href="_modules/baseattrs.html#BaseStats._abs_rel_namedtuple_creator"><span class="viewcode-link">[source]</span></a><a class="headerlink" href="#baseattrs.BaseStats._abs_rel_namedtuple_creator" title="Permalink to this definition">¶</a></dt>
+<dd><p>Returns a namedtuple with an absolute and percent attribute</p>
+<dl class="field-list simple">
+<dt class="field-odd">Parameters</dt>
+<dd class="field-odd"><p><strong>value</strong> – the namedtuple name</p>
+</dd>
+<dt class="field-even">Returns</dt>
+<dd class="field-even"><p>a namedtuple with absolute and percent values</p>
+</dd>
+<dt class="field-odd">Return type</dt>
+<dd class="field-odd"><p>namedtuple</p>
+</dd>
+</dl>
+</dd></dl>
+
+<dl class="py method">
+<dt id="baseattrs.BaseStats.get_size_in_memory">
+<code class="sig-name descname">get_size_in_memory</code><span class="sig-paren">(</span><em class="sig-param"><span class="n">column</span><span class="p">:</span> <span class="n">str</span></em><span class="sig-paren">)</span> &#x2192; str<a class="reference internal" href="_modules/baseattrs.html#BaseStats.get_size_in_memory"><span class="viewcode-link">[source]</span></a><a class="headerlink" href="#baseattrs.BaseStats.get_size_in_memory" title="Permalink to this definition">¶</a></dt>
+<dd><p>Returns the amount of memory consumed by the given column</p>
+<dl class="field-list simple">
+<dt class="field-odd">Parameters</dt>
+<dd class="field-odd"><p><strong>column</strong> – a string of the DataFame column</p>
+</dd>
+<dt class="field-even">Returns</dt>
+<dd class="field-even"><p>the amount of memory consumed by the columns</p>
+</dd>
+<dt class="field-odd">Return type</dt>
+<dd class="field-odd"><p>str</p>
+</dd>
+</dl>
+</dd></dl>
+
+</dd></dl>
+
+</div>
+</div>
+
+
+          </div>
+        </div>
+      </div>
+      <div class="clearer"></div>
+    </div>
+    <div class="related" role="navigation" aria-label="related navigation">
+      <h3>Navigation</h3>
+      <ul>
+        <li class="right" style="margin-right: 10px">
+          <a href="genindex.html" title="General Index"
+             >index</a></li>
+        <li class="right" >
+          <a href="py-modindex.html" title="Python Module Index"
+             >modules</a> |</li>
+        <li class="right" >
+          <a href="dataframeselector.html" title="Data Selector"
+             >next</a> |</li>
+        <li class="right" >
+          <a href="preprocess.html" title="Data PreProcessor"
+             >previous</a> |</li>
+        <li class="nav-item nav-item-0"><a href="ML_Data_Handler.html">Machine Learning Data Handler 1.2 documentation</a> &#187;</li> 
+      </ul>
+    </div>
+    <div class="footer" role="contentinfo">
+        &#169; Copyright 2020, Dominik Heinz.
+      Created using <a href="http://sphinx-doc.org/">Sphinx</a> 3.0.3.
+    </div>
+  </body>
+</html>

@@ -1,0 +1,391 @@
+
+<!DOCTYPE html>
+
+<html>
+  <head>
+    <meta charset="utf-8" />
+    <title>Date and Time &#8212; Machine Learning Data Handler 1.2 documentation</title>
+    <link rel="stylesheet" href="_static/sphinxdoc.css" type="text/css" />
+    <link rel="stylesheet" href="_static/pygments.css" type="text/css" />
+    <script id="documentation_options" data-url_root="./" src="_static/documentation_options.js"></script>
+    <script src="_static/jquery.js"></script>
+    <script src="_static/underscore.js"></script>
+    <script src="_static/doctools.js"></script>
+    <script src="_static/language_data.js"></script>
+    <link rel="index" title="Index" href="genindex.html" />
+    <link rel="search" title="Search" href="search.html" />
+    <link rel="next" title="Geoinformation System" href="gis.html" />
+    <link rel="prev" title="Data Selector" href="dataframeselector.html" /> 
+  </head><body>
+    <div class="related" role="navigation" aria-label="related navigation">
+      <h3>Navigation</h3>
+      <ul>
+        <li class="right" style="margin-right: 10px">
+          <a href="genindex.html" title="General Index"
+             accesskey="I">index</a></li>
+        <li class="right" >
+          <a href="py-modindex.html" title="Python Module Index"
+             >modules</a> |</li>
+        <li class="right" >
+          <a href="gis.html" title="Geoinformation System"
+             accesskey="N">next</a> |</li>
+        <li class="right" >
+          <a href="dataframeselector.html" title="Data Selector"
+             accesskey="P">previous</a> |</li>
+        <li class="nav-item nav-item-0"><a href="ML_Data_Handler.html">Machine Learning Data Handler 1.2 documentation</a> &#187;</li> 
+      </ul>
+    </div>
+      <div class="sphinxsidebar" role="navigation" aria-label="main navigation">
+        <div class="sphinxsidebarwrapper">
+  <h3><a href="ML_Data_Handler.html">Table of Contents</a></h3>
+  <ul>
+<li><a class="reference internal" href="#">Date and Time</a><ul>
+<li><a class="reference internal" href="#module-date_and_time">Source Code</a></li>
+</ul>
+</li>
+</ul>
+
+  <h4>Previous topic</h4>
+  <p class="topless"><a href="dataframeselector.html"
+                        title="previous chapter">Data Selector</a></p>
+  <h4>Next topic</h4>
+  <p class="topless"><a href="gis.html"
+                        title="next chapter">Geoinformation System</a></p>
+  <div role="note" aria-label="source link">
+    <h3>This Page</h3>
+    <ul class="this-page-menu">
+      <li><a href="_sources/date_and_time.rst.txt"
+            rel="nofollow">Show Source</a></li>
+    </ul>
+   </div>
+<div id="searchbox" style="display: none" role="search">
+  <h3 id="searchlabel">Quick search</h3>
+    <div class="searchformwrapper">
+    <form class="search" action="search.html" method="get">
+      <input type="text" name="q" aria-labelledby="searchlabel" />
+      <input type="submit" value="Go" />
+    </form>
+    </div>
+</div>
+<script>$('#searchbox').show(0);</script>
+        </div>
+      </div>
+
+    <div class="document">
+      <div class="documentwrapper">
+        <div class="bodywrapper">
+          <div class="body" role="main">
+            
+  <div class="section" id="date-and-time">
+<h1>Date and Time<a class="headerlink" href="#date-and-time" title="Permalink to this headline">¶</a></h1>
+<p>Description for data selector to be added here</p>
+<div class="section" id="module-date_and_time">
+<span id="source-code"></span><h2>Source Code<a class="headerlink" href="#module-date_and_time" title="Permalink to this headline">¶</a></h2>
+<p>This module defines a data class used to process features by time.
+It now has only minor method which are intended to have more methods added by time. As of today (08.05.2020), it has the following methods</p>
+<blockquote>
+<div><ul class="simple">
+<li><p><code class="docutils literal notranslate"><span class="pre">rolling_mean_plot</span></code>: a plot for visualizing time data</p></li>
+<li><p><code class="docutils literal notranslate"><span class="pre">rel_plot</span></code>: a plot for visualizing time data</p></li>
+</ul>
+</div></blockquote>
+<p>Furthermore, it has code to generate features out of date time data.
+Note that all of those classes are using the BaseEstimator and TransformerMixin classes from the scikit-learn bases classes.
+In order to use the <code class="docutils literal notranslate"><span class="pre">fit_transform</span></code> implemented by the scikit-learn, every single Feature Transformer needs to have a  <code class="docutils literal notranslate"><span class="pre">fit</span></code> and <code class="docutils literal notranslate"><span class="pre">transform</span></code> method.
+The <code class="docutils literal notranslate"><span class="pre">fit</span></code> methods returns the object itself and is therefore not documented</p>
+<dl class="py class">
+<dt id="date_and_time.DateByAnalyzer">
+<em class="property">class </em><code class="sig-prename descclassname">date_and_time.</code><code class="sig-name descname">DateByAnalyzer</code><span class="sig-paren">(</span><em class="sig-param"><span class="n">data</span><span class="p">:</span> <span class="n">Union<span class="p">[</span>str<span class="p">, </span>pandas.core.frame.DataFrame<span class="p">]</span></span></em>, <em class="sig-param"><span class="n">x_cols</span><span class="p">:</span> <span class="n">Union<span class="p">[</span>str<span class="p">, </span>Sequence<span class="p">[</span>str<span class="p">]</span><span class="p">]</span></span></em>, <em class="sig-param"><span class="n">date_cols</span><span class="p">:</span> <span class="n">Union<span class="p">[</span>str<span class="p">, </span>Sequence<span class="p">[</span>str<span class="p">]</span><span class="p">]</span></span></em><span class="sig-paren">)</span><a class="reference internal" href="_modules/date_and_time.html#DateByAnalyzer"><span class="viewcode-link">[source]</span></a><a class="headerlink" href="#date_and_time.DateByAnalyzer" title="Permalink to this definition">¶</a></dt>
+<dd><p>Bases: <a class="reference internal" href="baseattrs.html#baseattrs.BaseStats" title="baseattrs.BaseStats"><code class="xref py py-class docutils literal notranslate"><span class="pre">baseattrs.BaseStats</span></code></a></p>
+<p>A class which can be used to plot features (x_cols) by Time</p>
+<dl class="py method">
+<dt id="date_and_time.DateByAnalyzer.__init__">
+<code class="sig-name descname">__init__</code><span class="sig-paren">(</span><em class="sig-param"><span class="n">data</span><span class="p">:</span> <span class="n">Union<span class="p">[</span>str<span class="p">, </span>pandas.core.frame.DataFrame<span class="p">]</span></span></em>, <em class="sig-param"><span class="n">x_cols</span><span class="p">:</span> <span class="n">Union<span class="p">[</span>str<span class="p">, </span>Sequence<span class="p">[</span>str<span class="p">]</span><span class="p">]</span></span></em>, <em class="sig-param"><span class="n">date_cols</span><span class="p">:</span> <span class="n">Union<span class="p">[</span>str<span class="p">, </span>Sequence<span class="p">[</span>str<span class="p">]</span><span class="p">]</span></span></em><span class="sig-paren">)</span><a class="reference internal" href="_modules/date_and_time.html#DateByAnalyzer.__init__"><span class="viewcode-link">[source]</span></a><a class="headerlink" href="#date_and_time.DateByAnalyzer.__init__" title="Permalink to this definition">¶</a></dt>
+<dd><p>Initializes a Date By Analyzer object</p>
+<dl class="field-list simple">
+<dt class="field-odd">Parameters</dt>
+<dd class="field-odd"><ul class="simple">
+<li><p><strong>data</strong> – The source or Data Frame the source data comes from</p></li>
+<li><p><strong>x_cols</strong> – the different columns which are to be analyzed by time</p></li>
+<li><p><strong>date_cols</strong> – the date columns.</p></li>
+</ul>
+</dd>
+</dl>
+</dd></dl>
+
+<dl class="py method">
+<dt id="date_and_time.DateByAnalyzer.rolling_mean_plot">
+<code class="sig-name descname">rolling_mean_plot</code><span class="sig-paren">(</span><em class="sig-param"><span class="n">n_roll</span><span class="p">:</span> <span class="n">int</span> <span class="o">=</span> <span class="default_value">6</span></em>, <em class="sig-param"><span class="o">**</span><span class="n">options</span><span class="p">:</span> <span class="n">Dict</span></em><span class="sig-paren">)</span><a class="reference internal" href="_modules/date_and_time.html#DateByAnalyzer.rolling_mean_plot"><span class="viewcode-link">[source]</span></a><a class="headerlink" href="#date_and_time.DateByAnalyzer.rolling_mean_plot" title="Permalink to this definition">¶</a></dt>
+<dd><p>Plots a rolling mean over time of the x column</p>
+<dl class="field-list simple">
+<dt class="field-odd">Parameters</dt>
+<dd class="field-odd"><ul class="simple">
+<li><p><strong>n_roll</strong> – number of Windows to take into the calculation of the mean</p></li>
+<li><p><strong>options</strong> – plotting options</p></li>
+</ul>
+</dd>
+<dt class="field-even">Returns</dt>
+<dd class="field-even"><p></p>
+</dd>
+</dl>
+</dd></dl>
+
+<dl class="py method">
+<dt id="date_and_time.DateByAnalyzer.rel_plot">
+<code class="sig-name descname">rel_plot</code><span class="sig-paren">(</span><em class="sig-param"><span class="o">**</span><span class="n">options</span></em><span class="sig-paren">)</span><a class="reference internal" href="_modules/date_and_time.html#DateByAnalyzer.rel_plot"><span class="viewcode-link">[source]</span></a><a class="headerlink" href="#date_and_time.DateByAnalyzer.rel_plot" title="Permalink to this definition">¶</a></dt>
+<dd><p>Generates a relationship plot between x column by the date.</p>
+<dl class="field-list simple">
+<dt class="field-odd">Parameters</dt>
+<dd class="field-odd"><p><strong>options</strong> – </p>
+</dd>
+<dt class="field-even">Returns</dt>
+<dd class="field-even"><p></p>
+</dd>
+</dl>
+</dd></dl>
+
+</dd></dl>
+
+<dl class="py class">
+<dt id="date_and_time.UnixTimeStampConverter">
+<em class="property">class </em><code class="sig-prename descclassname">date_and_time.</code><code class="sig-name descname">UnixTimeStampConverter</code><span class="sig-paren">(</span><em class="sig-param"><span class="n">features</span><span class="p">:</span> <span class="n">Union<span class="p">[</span>str<span class="p">, </span>Sequence<span class="p">]</span></span></em><span class="sig-paren">)</span><a class="reference internal" href="_modules/date_and_time.html#UnixTimeStampConverter"><span class="viewcode-link">[source]</span></a><a class="headerlink" href="#date_and_time.UnixTimeStampConverter" title="Permalink to this definition">¶</a></dt>
+<dd><p>Bases: <code class="xref py py-class docutils literal notranslate"><span class="pre">sklearn.base.BaseEstimator</span></code>, <code class="xref py py-class docutils literal notranslate"><span class="pre">sklearn.base.TransformerMixin</span></code></p>
+<p>Converts the Unix Time Stamp of a feature to a datetime Object</p>
+<dl class="py method">
+<dt id="date_and_time.UnixTimeStampConverter.__init__">
+<code class="sig-name descname">__init__</code><span class="sig-paren">(</span><em class="sig-param"><span class="n">features</span><span class="p">:</span> <span class="n">Union<span class="p">[</span>str<span class="p">, </span>Sequence<span class="p">]</span></span></em><span class="sig-paren">)</span><a class="reference internal" href="_modules/date_and_time.html#UnixTimeStampConverter.__init__"><span class="viewcode-link">[source]</span></a><a class="headerlink" href="#date_and_time.UnixTimeStampConverter.__init__" title="Permalink to this definition">¶</a></dt>
+<dd><p>Initialize self.  See help(type(self)) for accurate signature.</p>
+</dd></dl>
+
+<dl class="py method">
+<dt id="date_and_time.UnixTimeStampConverter.fit">
+<code class="sig-name descname">fit</code><span class="sig-paren">(</span><em class="sig-param"><span class="n">X</span></em>, <em class="sig-param"><span class="n">y</span><span class="o">=</span><span class="default_value">None</span></em>, <em class="sig-param"><span class="o">**</span><span class="n">kwargs</span></em><span class="sig-paren">)</span> &#x2192; <a class="reference internal" href="#date_and_time.UnixTimeStampConverter" title="date_and_time.UnixTimeStampConverter">date_and_time.UnixTimeStampConverter</a><a class="reference internal" href="_modules/date_and_time.html#UnixTimeStampConverter.fit"><span class="viewcode-link">[source]</span></a><a class="headerlink" href="#date_and_time.UnixTimeStampConverter.fit" title="Permalink to this definition">¶</a></dt>
+<dd></dd></dl>
+
+<dl class="py method">
+<dt id="date_and_time.UnixTimeStampConverter.transform">
+<code class="sig-name descname">transform</code><span class="sig-paren">(</span><em class="sig-param"><span class="n">X</span><span class="p">:</span> <span class="n">pandas.core.frame.DataFrame</span></em><span class="sig-paren">)</span> &#x2192; pandas.core.frame.DataFrame<a class="reference internal" href="_modules/date_and_time.html#UnixTimeStampConverter.transform"><span class="viewcode-link">[source]</span></a><a class="headerlink" href="#date_and_time.UnixTimeStampConverter.transform" title="Permalink to this definition">¶</a></dt>
+<dd><p>Transforms a Unix Timestamp to a Pandas DataFrame <code class="docutils literal notranslate"><span class="pre">datetime</span></code> object</p>
+<dl class="field-list simple">
+<dt class="field-odd">Parameters</dt>
+<dd class="field-odd"><p><strong>X</strong> – The DataFrame whose columns is a UnixTimeStamp</p>
+</dd>
+<dt class="field-even">Returns</dt>
+<dd class="field-even"><p></p>
+</dd>
+</dl>
+</dd></dl>
+
+</dd></dl>
+
+<dl class="py class">
+<dt id="date_and_time.TimeDifference">
+<em class="property">class </em><code class="sig-prename descclassname">date_and_time.</code><code class="sig-name descname">TimeDifference</code><span class="sig-paren">(</span><em class="sig-param"><span class="n">x_time</span><span class="p">:</span> <span class="n">str</span></em>, <em class="sig-param"><span class="n">y_time</span><span class="p">:</span> <span class="n">str</span></em>, <em class="sig-param"><span class="n">days</span><span class="p">:</span> <span class="n">bool</span> <span class="o">=</span> <span class="default_value">True</span></em>, <em class="sig-param"><span class="n">seconds</span><span class="p">:</span> <span class="n">bool</span> <span class="o">=</span> <span class="default_value">False</span></em>, <em class="sig-param"><span class="n">microseconds</span><span class="p">:</span> <span class="n">bool</span> <span class="o">=</span> <span class="default_value">False</span></em>, <em class="sig-param"><span class="n">nanoseconds</span><span class="p">:</span> <span class="n">bool</span> <span class="o">=</span> <span class="default_value">False</span></em>, <em class="sig-param"><span class="n">components</span><span class="p">:</span> <span class="n">bool</span> <span class="o">=</span> <span class="default_value">False</span></em><span class="sig-paren">)</span><a class="reference internal" href="_modules/date_and_time.html#TimeDifference"><span class="viewcode-link">[source]</span></a><a class="headerlink" href="#date_and_time.TimeDifference" title="Permalink to this definition">¶</a></dt>
+<dd><p>Bases: <code class="xref py py-class docutils literal notranslate"><span class="pre">sklearn.base.BaseEstimator</span></code>, <code class="xref py py-class docutils literal notranslate"><span class="pre">sklearn.base.TransformerMixin</span></code></p>
+<p>Returns the difference in time between two different time columns.</p>
+<dl class="py method">
+<dt id="date_and_time.TimeDifference.__init__">
+<code class="sig-name descname">__init__</code><span class="sig-paren">(</span><em class="sig-param"><span class="n">x_time</span><span class="p">:</span> <span class="n">str</span></em>, <em class="sig-param"><span class="n">y_time</span><span class="p">:</span> <span class="n">str</span></em>, <em class="sig-param"><span class="n">days</span><span class="p">:</span> <span class="n">bool</span> <span class="o">=</span> <span class="default_value">True</span></em>, <em class="sig-param"><span class="n">seconds</span><span class="p">:</span> <span class="n">bool</span> <span class="o">=</span> <span class="default_value">False</span></em>, <em class="sig-param"><span class="n">microseconds</span><span class="p">:</span> <span class="n">bool</span> <span class="o">=</span> <span class="default_value">False</span></em>, <em class="sig-param"><span class="n">nanoseconds</span><span class="p">:</span> <span class="n">bool</span> <span class="o">=</span> <span class="default_value">False</span></em>, <em class="sig-param"><span class="n">components</span><span class="p">:</span> <span class="n">bool</span> <span class="o">=</span> <span class="default_value">False</span></em><span class="sig-paren">)</span><a class="reference internal" href="_modules/date_and_time.html#TimeDifference.__init__"><span class="viewcode-link">[source]</span></a><a class="headerlink" href="#date_and_time.TimeDifference.__init__" title="Permalink to this definition">¶</a></dt>
+<dd><p>Initializes a Time Difference Calculator object to fit_transform a DataFrame
+The following return columns can be retrieved:</p>
+<blockquote>
+<div><ul class="simple">
+<li><p><code class="docutils literal notranslate"><span class="pre">days</span></code>: the difference of days between the two columns</p></li>
+<li><p><code class="docutils literal notranslate"><span class="pre">seconds</span></code>: the difference of seconds between the two columns</p></li>
+<li><p><code class="docutils literal notranslate"><span class="pre">microseconds</span></code>: the difference of microseconds between the two columns</p></li>
+<li><p>`` nanoseconds``:  the difference of nanoseconds between the two columns</p></li>
+<li><p><code class="docutils literal notranslate"><span class="pre">components</span></code>: the difference expressed in date time components</p></li>
+</ul>
+</div></blockquote>
+<dl class="field-list simple">
+<dt class="field-odd">Parameters</dt>
+<dd class="field-odd"><ul class="simple">
+<li><p><strong>x_time</strong> (<em>str</em>) – first time column</p></li>
+<li><p><strong>y_time</strong> (<em>str</em>) – second time column</p></li>
+<li><p><strong>days</strong> (<em>bool</em>) – a flag indicating if a column with the difference in <code class="docutils literal notranslate"><span class="pre">days</span></code> is returned</p></li>
+<li><p><strong>seconds</strong> (<em>bool</em>) – a flag indicating if a column with the difference in <code class="docutils literal notranslate"><span class="pre">seconds</span></code> is returned</p></li>
+<li><p><strong>microseconds</strong> (<em>bool</em>) – a flag indicating if a column with the difference in <code class="docutils literal notranslate"><span class="pre">microseconds</span></code> is returned</p></li>
+<li><p><strong>nanoseconds</strong> (<em>bool</em>) – a flag indicating if a column with the difference in <code class="docutils literal notranslate"><span class="pre">nanoseconds</span></code> is returned</p></li>
+<li><p><strong>components</strong> – a flag indicating if a column with the difference in <code class="docutils literal notranslate"><span class="pre">datetime</span> <span class="pre">components</span></code> is returned</p></li>
+</ul>
+</dd>
+</dl>
+</dd></dl>
+
+<dl class="py method">
+<dt id="date_and_time.TimeDifference.fit">
+<code class="sig-name descname">fit</code><span class="sig-paren">(</span><em class="sig-param"><span class="n">X</span></em>, <em class="sig-param"><span class="n">y</span><span class="o">=</span><span class="default_value">None</span></em>, <em class="sig-param"><span class="o">**</span><span class="n">kwargs</span></em><span class="sig-paren">)</span> &#x2192; <a class="reference internal" href="#date_and_time.TimeDifference" title="date_and_time.TimeDifference">date_and_time.TimeDifference</a><a class="reference internal" href="_modules/date_and_time.html#TimeDifference.fit"><span class="viewcode-link">[source]</span></a><a class="headerlink" href="#date_and_time.TimeDifference.fit" title="Permalink to this definition">¶</a></dt>
+<dd></dd></dl>
+
+<dl class="py method">
+<dt id="date_and_time.TimeDifference.transform">
+<code class="sig-name descname">transform</code><span class="sig-paren">(</span><em class="sig-param"><span class="n">X</span><span class="p">:</span> <span class="n">pandas.core.frame.DataFrame</span></em><span class="sig-paren">)</span> &#x2192; pandas.core.frame.DataFrame<a class="reference internal" href="_modules/date_and_time.html#TimeDifference.transform"><span class="viewcode-link">[source]</span></a><a class="headerlink" href="#date_and_time.TimeDifference.transform" title="Permalink to this definition">¶</a></dt>
+<dd><p>Transforms the DataFrame by creating new columns yielding the time difference.
+Iterates over all boolean arguments and applies a transformation is the boolean flag is set to True.</p>
+<dl class="field-list simple">
+<dt class="field-odd">Parameters</dt>
+<dd class="field-odd"><p><strong>X</strong> – The DataFrame for which the time difference between x_time and y_time is yielded</p>
+</dd>
+<dt class="field-even">Returns</dt>
+<dd class="field-even"><p></p>
+</dd>
+</dl>
+</dd></dl>
+
+</dd></dl>
+
+<dl class="py class">
+<dt id="date_and_time.StringToTimeConverter">
+<em class="property">class </em><code class="sig-prename descclassname">date_and_time.</code><code class="sig-name descname">StringToTimeConverter</code><span class="sig-paren">(</span><em class="sig-param"><span class="n">features</span><span class="p">:</span> <span class="n">Union<span class="p">[</span>str<span class="p">, </span>Sequence<span class="p">]</span></span></em>, <em class="sig-param"><span class="n">format_string</span><span class="p">:</span> <span class="n">str</span></em><span class="sig-paren">)</span><a class="reference internal" href="_modules/date_and_time.html#StringToTimeConverter"><span class="viewcode-link">[source]</span></a><a class="headerlink" href="#date_and_time.StringToTimeConverter" title="Permalink to this definition">¶</a></dt>
+<dd><p>Bases: <code class="xref py py-class docutils literal notranslate"><span class="pre">sklearn.base.BaseEstimator</span></code>, <code class="xref py py-class docutils literal notranslate"><span class="pre">sklearn.base.TransformerMixin</span></code></p>
+<p>Converts a time column expressed as a string to a Datetime object</p>
+<dl class="py method">
+<dt id="date_and_time.StringToTimeConverter.__init__">
+<code class="sig-name descname">__init__</code><span class="sig-paren">(</span><em class="sig-param"><span class="n">features</span><span class="p">:</span> <span class="n">Union<span class="p">[</span>str<span class="p">, </span>Sequence<span class="p">]</span></span></em>, <em class="sig-param"><span class="n">format_string</span><span class="p">:</span> <span class="n">str</span></em><span class="sig-paren">)</span><a class="reference internal" href="_modules/date_and_time.html#StringToTimeConverter.__init__"><span class="viewcode-link">[source]</span></a><a class="headerlink" href="#date_and_time.StringToTimeConverter.__init__" title="Permalink to this definition">¶</a></dt>
+<dd><p>Initializes an object to convert string column to a datetime column</p>
+<dl class="field-list simple">
+<dt class="field-odd">Parameters</dt>
+<dd class="field-odd"><ul class="simple">
+<li><p><strong>features</strong> (<em>Union</em><em>[</em><em>str</em><em>, </em><em>Sequence</em><em>]</em>) – the feature column whose column string is to be converted</p></li>
+<li><p><strong>format_string</strong> (<em>str</em>) – the string format to be converted to a datetime object</p></li>
+</ul>
+</dd>
+</dl>
+</dd></dl>
+
+<dl class="py method">
+<dt id="date_and_time.StringToTimeConverter.as_date_time">
+<em class="property">static </em><code class="sig-name descname">as_date_time</code><span class="sig-paren">(</span><em class="sig-param"><span class="n">date_str</span><span class="p">:</span> <span class="n">str</span></em>, <em class="sig-param"><span class="n">format_string</span><span class="p">:</span> <span class="n">str</span> <span class="o">=</span> <span class="default_value">'%Y-%m-%d'</span></em><span class="sig-paren">)</span> &#x2192; datetime.datetime<a class="reference internal" href="_modules/date_and_time.html#StringToTimeConverter.as_date_time"><span class="viewcode-link">[source]</span></a><a class="headerlink" href="#date_and_time.StringToTimeConverter.as_date_time" title="Permalink to this definition">¶</a></dt>
+<dd><p>Converts a date string to a Python datetime object. Format string is YYYY-MM-DD</p>
+<dl class="field-list simple">
+<dt class="field-odd">Parameters</dt>
+<dd class="field-odd"><p><strong>date_str</strong> (<em>str</em>) – a date in a string format</p>
+</dd>
+<dt class="field-even">Format_string</dt>
+<dd class="field-even"><p>the string format</p>
+</dd>
+<dt class="field-odd">Returns</dt>
+<dd class="field-odd"><p>the date in a datetime format</p>
+</dd>
+<dt class="field-even">Return type</dt>
+<dd class="field-even"><p>datetime</p>
+</dd>
+</dl>
+</dd></dl>
+
+<dl class="py method">
+<dt id="date_and_time.StringToTimeConverter.fit">
+<code class="sig-name descname">fit</code><span class="sig-paren">(</span><em class="sig-param"><span class="n">X</span></em>, <em class="sig-param"><span class="n">y</span><span class="o">=</span><span class="default_value">None</span></em>, <em class="sig-param"><span class="o">**</span><span class="n">kwargs</span></em><span class="sig-paren">)</span><a class="reference internal" href="_modules/date_and_time.html#StringToTimeConverter.fit"><span class="viewcode-link">[source]</span></a><a class="headerlink" href="#date_and_time.StringToTimeConverter.fit" title="Permalink to this definition">¶</a></dt>
+<dd></dd></dl>
+
+<dl class="py method">
+<dt id="date_and_time.StringToTimeConverter.transform">
+<code class="sig-name descname">transform</code><span class="sig-paren">(</span><em class="sig-param"><span class="n">X</span><span class="p">:</span> <span class="n">pandas.core.frame.DataFrame</span></em><span class="sig-paren">)</span> &#x2192; pandas.core.frame.DataFrame<a class="reference internal" href="_modules/date_and_time.html#StringToTimeConverter.transform"><span class="viewcode-link">[source]</span></a><a class="headerlink" href="#date_and_time.StringToTimeConverter.transform" title="Permalink to this definition">¶</a></dt>
+<dd><p>Transforms the DataFrame columns to an datetime object.</p>
+<dl class="field-list simple">
+<dt class="field-odd">Parameters</dt>
+<dd class="field-odd"><p><strong>X</strong> – The DataFrame for which the time difference between x_time and y_time is yielded</p>
+</dd>
+<dt class="field-even">Returns</dt>
+<dd class="field-even"><p></p>
+</dd>
+</dl>
+</dd></dl>
+
+</dd></dl>
+
+<dl class="py class">
+<dt id="date_and_time.TimeFeatureBasic">
+<em class="property">class </em><code class="sig-prename descclassname">date_and_time.</code><code class="sig-name descname">TimeFeatureBasic</code><span class="sig-paren">(</span><em class="sig-param"><span class="n">time_features</span><span class="p">:</span> <span class="n">Union<span class="p">[</span>str<span class="p">, </span>Sequence<span class="p">]</span></span></em>, <em class="sig-param"><span class="n">delete_original_column</span><span class="p">:</span> <span class="n">bool</span> <span class="o">=</span> <span class="default_value">True</span></em>, <em class="sig-param"><span class="n">month</span><span class="p">:</span> <span class="n">bool</span> <span class="o">=</span> <span class="default_value">True</span></em>, <em class="sig-param"><span class="n">year</span><span class="p">:</span> <span class="n">bool</span> <span class="o">=</span> <span class="default_value">True</span></em>, <em class="sig-param"><span class="n">day</span><span class="p">:</span> <span class="n">bool</span> <span class="o">=</span> <span class="default_value">True</span></em>, <em class="sig-param"><span class="n">dayofweek</span><span class="p">:</span> <span class="n">bool</span> <span class="o">=</span> <span class="default_value">True</span></em>, <em class="sig-param"><span class="n">dayofyear</span><span class="p">:</span> <span class="n">bool</span> <span class="o">=</span> <span class="default_value">True</span></em>, <em class="sig-param"><span class="n">hour</span><span class="p">:</span> <span class="n">bool</span> <span class="o">=</span> <span class="default_value">True</span></em>, <em class="sig-param"><span class="n">minute</span><span class="p">:</span> <span class="n">bool</span> <span class="o">=</span> <span class="default_value">True</span></em>, <em class="sig-param"><span class="n">week</span><span class="p">:</span> <span class="n">bool</span> <span class="o">=</span> <span class="default_value">True</span></em>, <em class="sig-param"><span class="n">weekofyear</span><span class="p">:</span> <span class="n">bool</span> <span class="o">=</span> <span class="default_value">True</span></em>, <em class="sig-param"><span class="n">quarter</span><span class="p">:</span> <span class="n">bool</span> <span class="o">=</span> <span class="default_value">True</span></em>, <em class="sig-param"><span class="n">is_weekend</span><span class="p">:</span> <span class="n">bool</span> <span class="o">=</span> <span class="default_value">True</span></em>, <em class="sig-param"><span class="n">is_leap_year</span><span class="p">:</span> <span class="n">bool</span> <span class="o">=</span> <span class="default_value">True</span></em>, <em class="sig-param"><span class="n">is_month_end</span><span class="p">:</span> <span class="n">bool</span> <span class="o">=</span> <span class="default_value">True</span></em>, <em class="sig-param"><span class="n">is_month_start</span><span class="p">:</span> <span class="n">bool</span> <span class="o">=</span> <span class="default_value">True</span></em>, <em class="sig-param"><span class="n">is_quarter_start</span><span class="p">:</span> <span class="n">bool</span> <span class="o">=</span> <span class="default_value">True</span></em>, <em class="sig-param"><span class="n">is_quarter_end</span><span class="p">:</span> <span class="n">bool</span> <span class="o">=</span> <span class="default_value">True</span></em>, <em class="sig-param"><span class="n">is_year_start</span><span class="p">:</span> <span class="n">bool</span> <span class="o">=</span> <span class="default_value">True</span></em>, <em class="sig-param"><span class="n">is_year_end</span><span class="p">:</span> <span class="n">bool</span> <span class="o">=</span> <span class="default_value">True</span></em><span class="sig-paren">)</span><a class="reference internal" href="_modules/date_and_time.html#TimeFeatureBasic"><span class="viewcode-link">[source]</span></a><a class="headerlink" href="#date_and_time.TimeFeatureBasic" title="Permalink to this definition">¶</a></dt>
+<dd><p>Bases: <code class="xref py py-class docutils literal notranslate"><span class="pre">sklearn.base.BaseEstimator</span></code>, <code class="xref py py-class docutils literal notranslate"><span class="pre">sklearn.base.TransformerMixin</span></code></p>
+<p>Derives Time features properties in the DataFrame column</p>
+<dl class="py method">
+<dt id="date_and_time.TimeFeatureBasic.__init__">
+<code class="sig-name descname">__init__</code><span class="sig-paren">(</span><em class="sig-param"><span class="n">time_features</span><span class="p">:</span> <span class="n">Union<span class="p">[</span>str<span class="p">, </span>Sequence<span class="p">]</span></span></em>, <em class="sig-param"><span class="n">delete_original_column</span><span class="p">:</span> <span class="n">bool</span> <span class="o">=</span> <span class="default_value">True</span></em>, <em class="sig-param"><span class="n">month</span><span class="p">:</span> <span class="n">bool</span> <span class="o">=</span> <span class="default_value">True</span></em>, <em class="sig-param"><span class="n">year</span><span class="p">:</span> <span class="n">bool</span> <span class="o">=</span> <span class="default_value">True</span></em>, <em class="sig-param"><span class="n">day</span><span class="p">:</span> <span class="n">bool</span> <span class="o">=</span> <span class="default_value">True</span></em>, <em class="sig-param"><span class="n">dayofweek</span><span class="p">:</span> <span class="n">bool</span> <span class="o">=</span> <span class="default_value">True</span></em>, <em class="sig-param"><span class="n">dayofyear</span><span class="p">:</span> <span class="n">bool</span> <span class="o">=</span> <span class="default_value">True</span></em>, <em class="sig-param"><span class="n">hour</span><span class="p">:</span> <span class="n">bool</span> <span class="o">=</span> <span class="default_value">True</span></em>, <em class="sig-param"><span class="n">minute</span><span class="p">:</span> <span class="n">bool</span> <span class="o">=</span> <span class="default_value">True</span></em>, <em class="sig-param"><span class="n">week</span><span class="p">:</span> <span class="n">bool</span> <span class="o">=</span> <span class="default_value">True</span></em>, <em class="sig-param"><span class="n">weekofyear</span><span class="p">:</span> <span class="n">bool</span> <span class="o">=</span> <span class="default_value">True</span></em>, <em class="sig-param"><span class="n">quarter</span><span class="p">:</span> <span class="n">bool</span> <span class="o">=</span> <span class="default_value">True</span></em>, <em class="sig-param"><span class="n">is_weekend</span><span class="p">:</span> <span class="n">bool</span> <span class="o">=</span> <span class="default_value">True</span></em>, <em class="sig-param"><span class="n">is_leap_year</span><span class="p">:</span> <span class="n">bool</span> <span class="o">=</span> <span class="default_value">True</span></em>, <em class="sig-param"><span class="n">is_month_end</span><span class="p">:</span> <span class="n">bool</span> <span class="o">=</span> <span class="default_value">True</span></em>, <em class="sig-param"><span class="n">is_month_start</span><span class="p">:</span> <span class="n">bool</span> <span class="o">=</span> <span class="default_value">True</span></em>, <em class="sig-param"><span class="n">is_quarter_start</span><span class="p">:</span> <span class="n">bool</span> <span class="o">=</span> <span class="default_value">True</span></em>, <em class="sig-param"><span class="n">is_quarter_end</span><span class="p">:</span> <span class="n">bool</span> <span class="o">=</span> <span class="default_value">True</span></em>, <em class="sig-param"><span class="n">is_year_start</span><span class="p">:</span> <span class="n">bool</span> <span class="o">=</span> <span class="default_value">True</span></em>, <em class="sig-param"><span class="n">is_year_end</span><span class="p">:</span> <span class="n">bool</span> <span class="o">=</span> <span class="default_value">True</span></em><span class="sig-paren">)</span><a class="reference internal" href="_modules/date_and_time.html#TimeFeatureBasic.__init__"><span class="viewcode-link">[source]</span></a><a class="headerlink" href="#date_and_time.TimeFeatureBasic.__init__" title="Permalink to this definition">¶</a></dt>
+<dd><p>Initializes a Time Feature creator object.</p>
+<dl class="field-list simple">
+<dt class="field-odd">Parameters</dt>
+<dd class="field-odd"><ul class="simple">
+<li><p><strong>delete_original_column</strong> (<em>bool</em>) – a flag indicating if the original column is dropped from the resulting DataFrame</p></li>
+<li><p><strong>month</strong> (<em>bool</em>) – a flag indicating if the datetime’s <em>month</em> is derived</p></li>
+<li><p><strong>year</strong> (<em>bool</em>) – a flag indicating if the datetime’s <em>year</em> is derived</p></li>
+<li><p><strong>day</strong> (<em>bool</em>) – a flag indicating if the datetime’s <em>day</em> is derived</p></li>
+<li><p><strong>dayofweek</strong> (<em>bool</em>) – a flag indicating if the datetime’s <em>day of the week</em> is derived</p></li>
+<li><p><strong>dayofyear</strong> (<em>bool</em>) – a flag indicating if the datetime’s <em>day of the year</em> is derived</p></li>
+<li><p><strong>hour</strong> (<em>bool</em>) – a flag indicating if the datetime’s <em>hour</em> is derived</p></li>
+<li><p><strong>minute</strong> (<em>bool</em>) – a flag indicating if the datetime’s <em>minute</em> is derived</p></li>
+<li><p><strong>week</strong> (<em>bool</em>) – a flag indicating if the datetime’s <em>week</em> is derived</p></li>
+<li><p><strong>is_weekend</strong> (<em>bool</em>) – a flag indicating if the datetime is during a <em>weekend</em></p></li>
+<li><p><strong>weekofyear</strong> (<em>bool</em>) – a flag indicating if the datetime’s <em>week of year</em> is derived</p></li>
+<li><p><strong>quarter</strong> (<em>bool</em>) – a flag indicating if the datetime’s <em>quarter</em> is derived</p></li>
+<li><p><strong>is_leap_year</strong> (<em>bool</em>) – a flag indicating if the datetime’s  derives, if it is a <em>leap year</em></p></li>
+<li><p><strong>is_month_end</strong> (<em>bool</em>) – a flag indicating if the datetime’s  derives, if it is the <em>month’s last day</em></p></li>
+<li><p><strong>is_month_start</strong> (<em>bool</em>) – a flag indicating if the datetime’s  derives, if it is the <em>month’s first day</em></p></li>
+<li><p><strong>is_quarter_start</strong> (<em>bool</em>) – a flag indicating if the datetime’s  derives, if it is the <em>quarter’s first day</em></p></li>
+<li><p><strong>is_quarter_end</strong> (<em>bool</em>) – a flag indicating if the datetime’s  derives, if it is the <em>quarter’s last day</em></p></li>
+<li><p><strong>is_year_start</strong> (<em>bool</em>) – a flag indicating if the datetime’s  derives, if it is the <em>year’s first day</em></p></li>
+<li><p><strong>is_year_end</strong> (<em>bool</em>) – a flag indicating if the datetime’s  derives, if it is the <em>year’s last day</em></p></li>
+</ul>
+</dd>
+</dl>
+</dd></dl>
+
+<dl class="py method">
+<dt id="date_and_time.TimeFeatureBasic.fit">
+<code class="sig-name descname">fit</code><span class="sig-paren">(</span><em class="sig-param"><span class="n">X</span></em>, <em class="sig-param"><span class="n">y</span><span class="o">=</span><span class="default_value">None</span></em>, <em class="sig-param"><span class="o">**</span><span class="n">kwargs</span></em><span class="sig-paren">)</span><a class="reference internal" href="_modules/date_and_time.html#TimeFeatureBasic.fit"><span class="viewcode-link">[source]</span></a><a class="headerlink" href="#date_and_time.TimeFeatureBasic.fit" title="Permalink to this definition">¶</a></dt>
+<dd></dd></dl>
+
+<dl class="py method">
+<dt id="date_and_time.TimeFeatureBasic._is_weekend">
+<em class="property">static </em><code class="sig-name descname">_is_weekend</code><span class="sig-paren">(</span><em class="sig-param"><span class="n">feature</span></em><span class="sig-paren">)</span><a class="reference internal" href="_modules/date_and_time.html#TimeFeatureBasic._is_weekend"><span class="viewcode-link">[source]</span></a><a class="headerlink" href="#date_and_time.TimeFeatureBasic._is_weekend" title="Permalink to this definition">¶</a></dt>
+<dd></dd></dl>
+
+<dl class="py method">
+<dt id="date_and_time.TimeFeatureBasic.transform">
+<code class="sig-name descname">transform</code><span class="sig-paren">(</span><em class="sig-param"><span class="n">X</span><span class="p">:</span> <span class="n">pandas.core.frame.DataFrame</span></em><span class="sig-paren">)</span> &#x2192; pandas.core.frame.DataFrame<a class="reference internal" href="_modules/date_and_time.html#TimeFeatureBasic.transform"><span class="viewcode-link">[source]</span></a><a class="headerlink" href="#date_and_time.TimeFeatureBasic.transform" title="Permalink to this definition">¶</a></dt>
+<dd><p>Iterates over all boolean columns. If they are set to True, the respective feature is derived</p>
+<dl class="field-list simple">
+<dt class="field-odd">Parameters</dt>
+<dd class="field-odd"><p><strong>X</strong> – The DataFrame for which the different features a re derived</p>
+</dd>
+<dt class="field-even">Returns</dt>
+<dd class="field-even"><p></p>
+</dd>
+</dl>
+</dd></dl>
+
+</dd></dl>
+
+</div>
+</div>
+
+
+          </div>
+        </div>
+      </div>
+      <div class="clearer"></div>
+    </div>
+    <div class="related" role="navigation" aria-label="related navigation">
+      <h3>Navigation</h3>
+      <ul>
+        <li class="right" style="margin-right: 10px">
+          <a href="genindex.html" title="General Index"
+             >index</a></li>
+        <li class="right" >
+          <a href="py-modindex.html" title="Python Module Index"
+             >modules</a> |</li>
+        <li class="right" >
+          <a href="gis.html" title="Geoinformation System"
+             >next</a> |</li>
+        <li class="right" >
+          <a href="dataframeselector.html" title="Data Selector"
+             >previous</a> |</li>
+        <li class="nav-item nav-item-0"><a href="ML_Data_Handler.html">Machine Learning Data Handler 1.2 documentation</a> &#187;</li> 
+      </ul>
+    </div>
+    <div class="footer" role="contentinfo">
+        &#169; Copyright 2020, Dominik Heinz.
+      Created using <a href="http://sphinx-doc.org/">Sphinx</a> 3.0.3.
+    </div>
+  </body>
+</html>

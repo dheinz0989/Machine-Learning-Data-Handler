@@ -1,0 +1,458 @@
+
+<!DOCTYPE html>
+
+<html>
+  <head>
+    <meta charset="utf-8" />
+    <title>Data Explorer &#8212; Machine Learning Data Handler 1.2 documentation</title>
+    <link rel="stylesheet" href="_static/sphinxdoc.css" type="text/css" />
+    <link rel="stylesheet" href="_static/pygments.css" type="text/css" />
+    <script id="documentation_options" data-url_root="./" src="_static/documentation_options.js"></script>
+    <script src="_static/jquery.js"></script>
+    <script src="_static/underscore.js"></script>
+    <script src="_static/doctools.js"></script>
+    <script src="_static/language_data.js"></script>
+    <link rel="index" title="Index" href="genindex.html" />
+    <link rel="search" title="Search" href="search.html" />
+    <link rel="next" title="Feature Builder" href="feature_builder.html" />
+    <link rel="prev" title="Welcome to Machine Learning Data Handler’s documentation!" href="ML_Data_Handler.html" /> 
+  </head><body>
+    <div class="related" role="navigation" aria-label="related navigation">
+      <h3>Navigation</h3>
+      <ul>
+        <li class="right" style="margin-right: 10px">
+          <a href="genindex.html" title="General Index"
+             accesskey="I">index</a></li>
+        <li class="right" >
+          <a href="py-modindex.html" title="Python Module Index"
+             >modules</a> |</li>
+        <li class="right" >
+          <a href="feature_builder.html" title="Feature Builder"
+             accesskey="N">next</a> |</li>
+        <li class="right" >
+          <a href="ML_Data_Handler.html" title="Welcome to Machine Learning Data Handler’s documentation!"
+             accesskey="P">previous</a> |</li>
+        <li class="nav-item nav-item-0"><a href="ML_Data_Handler.html">Machine Learning Data Handler 1.2 documentation</a> &#187;</li> 
+      </ul>
+    </div>
+      <div class="sphinxsidebar" role="navigation" aria-label="main navigation">
+        <div class="sphinxsidebarwrapper">
+  <h3><a href="ML_Data_Handler.html">Table of Contents</a></h3>
+  <ul>
+<li><a class="reference internal" href="#">Data Explorer</a><ul>
+<li><a class="reference internal" href="#module-explorer">Source Code</a></li>
+</ul>
+</li>
+</ul>
+
+  <h4>Previous topic</h4>
+  <p class="topless"><a href="ML_Data_Handler.html"
+                        title="previous chapter">Welcome to Machine Learning Data Handler’s documentation!</a></p>
+  <h4>Next topic</h4>
+  <p class="topless"><a href="feature_builder.html"
+                        title="next chapter">Feature Builder</a></p>
+  <div role="note" aria-label="source link">
+    <h3>This Page</h3>
+    <ul class="this-page-menu">
+      <li><a href="_sources/explorer.rst.txt"
+            rel="nofollow">Show Source</a></li>
+    </ul>
+   </div>
+<div id="searchbox" style="display: none" role="search">
+  <h3 id="searchlabel">Quick search</h3>
+    <div class="searchformwrapper">
+    <form class="search" action="search.html" method="get">
+      <input type="text" name="q" aria-labelledby="searchlabel" />
+      <input type="submit" value="Go" />
+    </form>
+    </div>
+</div>
+<script>$('#searchbox').show(0);</script>
+        </div>
+      </div>
+
+    <div class="document">
+      <div class="documentwrapper">
+        <div class="bodywrapper">
+          <div class="body" role="main">
+            
+  <div class="section" id="data-explorer">
+<h1>Data Explorer<a class="headerlink" href="#data-explorer" title="Permalink to this headline">¶</a></h1>
+<p>Description for basic attributes to be added here</p>
+<div class="section" id="module-explorer">
+<span id="source-code"></span><h2>Source Code<a class="headerlink" href="#module-explorer" title="Permalink to this headline">¶</a></h2>
+<p>This module provides a class to generate a data explorer object. It can handle different kinds of inputs and
+generate quick overview, statistics and plots. It includes some subclasses to generate views and statistics for
+different types of features. These include:</p>
+<blockquote>
+<div><ul class="simple">
+<li><p>Numerical</p></li>
+<li><p>Categorical</p></li>
+<li><p>Mixed Types</p></li>
+<li><p>GIS (Geo Data)</p></li>
+<li><p>Numerical by Time</p></li>
+</ul>
+</div></blockquote>
+<dl class="py class">
+<dt id="explorer.NumericalAnalyzer">
+<em class="property">class </em><code class="sig-prename descclassname">explorer.</code><code class="sig-name descname">NumericalAnalyzer</code><span class="sig-paren">(</span><em class="sig-param"><span class="n">data</span><span class="p">:</span> <span class="n">Union<span class="p">[</span>str<span class="p">, </span>pandas.core.frame.DataFrame<span class="p">]</span></span></em><span class="sig-paren">)</span><a class="reference internal" href="_modules/explorer.html#NumericalAnalyzer"><span class="viewcode-link">[source]</span></a><a class="headerlink" href="#explorer.NumericalAnalyzer" title="Permalink to this definition">¶</a></dt>
+<dd><p>Bases: <a class="reference internal" href="baseattrs.html#baseattrs.BaseStats" title="baseattrs.BaseStats"><code class="xref py py-class docutils literal notranslate"><span class="pre">baseattrs.BaseStats</span></code></a></p>
+<p>Provides basic visualization for numerical features</p>
+<dl class="py method">
+<dt id="explorer.NumericalAnalyzer.__init__">
+<code class="sig-name descname">__init__</code><span class="sig-paren">(</span><em class="sig-param"><span class="n">data</span><span class="p">:</span> <span class="n">Union<span class="p">[</span>str<span class="p">, </span>pandas.core.frame.DataFrame<span class="p">]</span></span></em><span class="sig-paren">)</span><a class="reference internal" href="_modules/explorer.html#NumericalAnalyzer.__init__"><span class="viewcode-link">[source]</span></a><a class="headerlink" href="#explorer.NumericalAnalyzer.__init__" title="Permalink to this definition">¶</a></dt>
+<dd><p>Initializes a NumericalAnalyzer object. Takes data file name or a pandas DataFrame as input</p>
+<dl class="field-list simple">
+<dt class="field-odd">Parameters</dt>
+<dd class="field-odd"><p><strong>data</strong> (<em>Union</em><em>[</em><em>str</em><em>, </em><em>pd.DataFrame</em><em>]</em>) – link to a file or a pandas DataFrame:</p>
+</dd>
+</dl>
+</dd></dl>
+
+<dl class="py method">
+<dt id="explorer.NumericalAnalyzer.pair_plot">
+<code class="sig-name descname">pair_plot</code><span class="sig-paren">(</span><em class="sig-param"><span class="o">**</span><span class="n">options</span><span class="p">:</span> <span class="n">Mapping<span class="p">[</span>str<span class="p">]</span></span></em><span class="sig-paren">)</span><a class="reference internal" href="_modules/explorer.html#NumericalAnalyzer.pair_plot"><span class="viewcode-link">[source]</span></a><a class="headerlink" href="#explorer.NumericalAnalyzer.pair_plot" title="Permalink to this definition">¶</a></dt>
+<dd><p>Generates a pair plot of all data</p>
+<dl class="field-list simple">
+<dt class="field-odd">Parameters</dt>
+<dd class="field-odd"><p><strong>options</strong> (<em>Mapping</em>) – options settings the plotter function</p>
+</dd>
+<dt class="field-even">Returns</dt>
+<dd class="field-even"><p></p>
+</dd>
+</dl>
+</dd></dl>
+
+<dl class="py method">
+<dt id="explorer.NumericalAnalyzer.corr">
+<code class="sig-name descname">corr</code><span class="sig-paren">(</span><em class="sig-param"><span class="o">**</span><span class="n">options</span></em><span class="sig-paren">)</span><a class="reference internal" href="_modules/explorer.html#NumericalAnalyzer.corr"><span class="viewcode-link">[source]</span></a><a class="headerlink" href="#explorer.NumericalAnalyzer.corr" title="Permalink to this definition">¶</a></dt>
+<dd><p>Generates a correlation heat map of all correlation between the data’s features</p>
+<dl class="field-list simple">
+<dt class="field-odd">Parameters</dt>
+<dd class="field-odd"><p><strong>options</strong> (<em>Mapping</em>) – options settings the plotter function</p>
+</dd>
+</dl>
+</dd></dl>
+
+</dd></dl>
+
+<dl class="py class">
+<dt id="explorer.CategoricalAnalyzer">
+<em class="property">class </em><code class="sig-prename descclassname">explorer.</code><code class="sig-name descname">CategoricalAnalyzer</code><span class="sig-paren">(</span><em class="sig-param"><span class="n">data</span><span class="p">:</span> <span class="n">Union<span class="p">[</span>str<span class="p">, </span>pandas.core.frame.DataFrame<span class="p">]</span></span></em><span class="sig-paren">)</span><a class="reference internal" href="_modules/explorer.html#CategoricalAnalyzer"><span class="viewcode-link">[source]</span></a><a class="headerlink" href="#explorer.CategoricalAnalyzer" title="Permalink to this definition">¶</a></dt>
+<dd><p>Bases: <a class="reference internal" href="baseattrs.html#baseattrs.BaseStats" title="baseattrs.BaseStats"><code class="xref py py-class docutils literal notranslate"><span class="pre">baseattrs.BaseStats</span></code></a></p>
+<p>Provides basic statistics and visualization for categorical features</p>
+<dl class="py method">
+<dt id="explorer.CategoricalAnalyzer.__init__">
+<code class="sig-name descname">__init__</code><span class="sig-paren">(</span><em class="sig-param"><span class="n">data</span><span class="p">:</span> <span class="n">Union<span class="p">[</span>str<span class="p">, </span>pandas.core.frame.DataFrame<span class="p">]</span></span></em><span class="sig-paren">)</span><a class="reference internal" href="_modules/explorer.html#CategoricalAnalyzer.__init__"><span class="viewcode-link">[source]</span></a><a class="headerlink" href="#explorer.CategoricalAnalyzer.__init__" title="Permalink to this definition">¶</a></dt>
+<dd><p>Initializes a CategoricalAnalyzer object. Takes data file name or a pandas DataFrame as input</p>
+<dl class="field-list simple">
+<dt class="field-odd">Parameters</dt>
+<dd class="field-odd"><p><strong>data</strong> (<em>Union</em><em>[</em><em>str</em><em>, </em><em>pd.DataFrame</em><em>]</em>) – link to a file or a pandas DataFrame</p>
+</dd>
+</dl>
+</dd></dl>
+
+<dl class="py method">
+<dt id="explorer.CategoricalAnalyzer.frequencies">
+<code class="sig-name descname">frequencies</code><span class="sig-paren">(</span><span class="sig-paren">)</span> &#x2192; Mapping<span class="p">[</span>str<span class="p">, </span>pandas.core.frame.DataFrame<span class="p">]</span><a class="reference internal" href="_modules/explorer.html#CategoricalAnalyzer.frequencies"><span class="viewcode-link">[source]</span></a><a class="headerlink" href="#explorer.CategoricalAnalyzer.frequencies" title="Permalink to this definition">¶</a></dt>
+<dd><p>For each column, calculates the different frequencies and saved them in a file</p>
+<dl class="field-list simple">
+<dt class="field-odd">Returns</dt>
+<dd class="field-odd"><p>a dictionary with each column name as key and the frequencies as value</p>
+</dd>
+</dl>
+</dd></dl>
+
+<dl class="py method">
+<dt id="explorer.CategoricalAnalyzer.cat_bar_plot">
+<code class="sig-name descname">cat_bar_plot</code><span class="sig-paren">(</span><em class="sig-param"><span class="o">**</span><span class="n">options</span></em><span class="sig-paren">)</span> &#x2192; None<a class="reference internal" href="_modules/explorer.html#CategoricalAnalyzer.cat_bar_plot"><span class="viewcode-link">[source]</span></a><a class="headerlink" href="#explorer.CategoricalAnalyzer.cat_bar_plot" title="Permalink to this definition">¶</a></dt>
+<dd><p>Generates a bar plot for all frequency values</p>
+<dl class="field-list simple">
+<dt class="field-odd">Parameters</dt>
+<dd class="field-odd"><p><strong>options</strong> (<em>Mapping</em>) – options settings the plotter function</p>
+</dd>
+</dl>
+</dd></dl>
+
+</dd></dl>
+
+<dl class="py class">
+<dt id="explorer.MixedDataAnalyser">
+<em class="property">class </em><code class="sig-prename descclassname">explorer.</code><code class="sig-name descname">MixedDataAnalyser</code><span class="sig-paren">(</span><em class="sig-param"><span class="n">data</span></em>, <em class="sig-param"><span class="n">nums</span></em>, <em class="sig-param"><span class="n">group</span></em><span class="sig-paren">)</span><a class="reference internal" href="_modules/explorer.html#MixedDataAnalyser"><span class="viewcode-link">[source]</span></a><a class="headerlink" href="#explorer.MixedDataAnalyser" title="Permalink to this definition">¶</a></dt>
+<dd><p>Bases: <a class="reference internal" href="#explorer.NumericalAnalyzer" title="explorer.NumericalAnalyzer"><code class="xref py py-class docutils literal notranslate"><span class="pre">explorer.NumericalAnalyzer</span></code></a>, <a class="reference internal" href="#explorer.CategoricalAnalyzer" title="explorer.CategoricalAnalyzer"><code class="xref py py-class docutils literal notranslate"><span class="pre">explorer.CategoricalAnalyzer</span></code></a></p>
+<p>Initializes an object to handle numerical and categorical features. At the current state, the code only consists of a prototype</p>
+<dl class="py method">
+<dt id="explorer.MixedDataAnalyser.__init__">
+<code class="sig-name descname">__init__</code><span class="sig-paren">(</span><em class="sig-param"><span class="n">data</span></em>, <em class="sig-param"><span class="n">nums</span></em>, <em class="sig-param"><span class="n">group</span></em><span class="sig-paren">)</span><a class="reference internal" href="_modules/explorer.html#MixedDataAnalyser.__init__"><span class="viewcode-link">[source]</span></a><a class="headerlink" href="#explorer.MixedDataAnalyser.__init__" title="Permalink to this definition">¶</a></dt>
+<dd><p>Initializes a NumericalAnalyzer object. Takes data file name or a pandas DataFrame as input</p>
+<dl class="field-list simple">
+<dt class="field-odd">Parameters</dt>
+<dd class="field-odd"><p><strong>data</strong> (<em>Union</em><em>[</em><em>str</em><em>, </em><em>pd.DataFrame</em><em>]</em>) – link to a file or a pandas DataFrame:</p>
+</dd>
+</dl>
+</dd></dl>
+
+</dd></dl>
+
+<dl class="py class">
+<dt id="explorer.DataExplorer">
+<em class="property">class </em><code class="sig-prename descclassname">explorer.</code><code class="sig-name descname">DataExplorer</code><span class="sig-paren">(</span><em class="sig-param"><span class="n">data_source</span><span class="p">:</span> <span class="n">Union<span class="p">[</span>str<span class="p">, </span>pandas.core.frame.DataFrame<span class="p">]</span></span></em>, <em class="sig-param"><span class="n">target</span><span class="p">:</span> <span class="n">str</span> <span class="o">=</span> <span class="default_value">''</span></em><span class="sig-paren">)</span><a class="reference internal" href="_modules/explorer.html#DataExplorer"><span class="viewcode-link">[source]</span></a><a class="headerlink" href="#explorer.DataExplorer" title="Permalink to this definition">¶</a></dt>
+<dd><p>Bases: <a class="reference internal" href="baseattrs.html#baseattrs.BasicDataAttributes" title="baseattrs.BasicDataAttributes"><code class="xref py py-class docutils literal notranslate"><span class="pre">baseattrs.BasicDataAttributes</span></code></a></p>
+<p>Initializes a Data Explorer object. This object can be used to quickly generate insights of different features.</p>
+<dl class="py method">
+<dt id="explorer.DataExplorer.__init__">
+<code class="sig-name descname">__init__</code><span class="sig-paren">(</span><em class="sig-param"><span class="n">data_source</span><span class="p">:</span> <span class="n">Union<span class="p">[</span>str<span class="p">, </span>pandas.core.frame.DataFrame<span class="p">]</span></span></em>, <em class="sig-param"><span class="n">target</span><span class="p">:</span> <span class="n">str</span> <span class="o">=</span> <span class="default_value">''</span></em><span class="sig-paren">)</span><a class="reference internal" href="_modules/explorer.html#DataExplorer.__init__"><span class="viewcode-link">[source]</span></a><a class="headerlink" href="#explorer.DataExplorer.__init__" title="Permalink to this definition">¶</a></dt>
+<dd><p>Initializes a Data Explorer Object. Takes a pandas DataFrame or a pointer to a data file and allows to quickly analyze it</p>
+<dl class="field-list simple">
+<dt class="field-odd">Parameters</dt>
+<dd class="field-odd"><ul class="simple">
+<li><p><strong>data_source</strong> (<em>Union</em><em>[</em><em>str</em><em>, </em><em>pd.DataFrame</em><em>]</em>) – link to a file or a pandas DataFrame</p></li>
+<li><p><strong>target</strong> (<em>str</em>) – target column which is the interest of ML modeling</p></li>
+</ul>
+</dd>
+</dl>
+</dd></dl>
+
+<dl class="py method">
+<dt id="explorer.DataExplorer.Numerical_Data">
+<em class="property">property </em><code class="sig-name descname">Numerical_Data</code><a class="headerlink" href="#explorer.DataExplorer.Numerical_Data" title="Permalink to this definition">¶</a></dt>
+<dd><p>Selects all numerical values and uses those as input values to create a Numerical_Data processor object.</p>
+<dl class="field-list simple">
+<dt class="field-odd">Returns</dt>
+<dd class="field-odd"><p>a numerical data analyzer</p>
+</dd>
+</dl>
+</dd></dl>
+
+<dl class="py method">
+<dt id="explorer.DataExplorer.Data_Mixed_Types">
+<em class="property">property </em><code class="sig-name descname">Data_Mixed_Types</code><a class="headerlink" href="#explorer.DataExplorer.Data_Mixed_Types" title="Permalink to this definition">¶</a></dt>
+<dd><p>A property which returns a data set of different types. This can be used to analyze relationships between different features of different types.</p>
+<dl class="field-list simple">
+<dt class="field-odd">Returns</dt>
+<dd class="field-odd"><p></p>
+</dd>
+</dl>
+</dd></dl>
+
+<dl class="py method">
+<dt id="explorer.DataExplorer.Categorical_Data">
+<em class="property">property </em><code class="sig-name descname">Categorical_Data</code><a class="headerlink" href="#explorer.DataExplorer.Categorical_Data" title="Permalink to this definition">¶</a></dt>
+<dd><p>A property which initializes a Categorical Analyzer for categorical values.
+Takes all categorical features and uses them in a Categorical Analyzer object.</p>
+<dl class="field-list simple">
+<dt class="field-odd">Returns</dt>
+<dd class="field-odd"><p>A Categorical Data Analyzer</p>
+</dd>
+<dt class="field-even">Return type</dt>
+<dd class="field-even"><p><a class="reference internal" href="#explorer.CategoricalAnalyzer" title="explorer.CategoricalAnalyzer">CategoricalAnalyzer</a></p>
+</dd>
+</dl>
+</dd></dl>
+
+<dl class="py method">
+<dt id="explorer.DataExplorer.Boolean_Data">
+<em class="property">property </em><code class="sig-name descname">Boolean_Data</code><a class="headerlink" href="#explorer.DataExplorer.Boolean_Data" title="Permalink to this definition">¶</a></dt>
+<dd><p>A property which initializes a Categorical Analyzer for boolean values.
+Takes all boolean columns and uses them in a Categorical Analyzer object.</p>
+<dl class="field-list simple">
+<dt class="field-odd">Returns</dt>
+<dd class="field-odd"><p>A Categorical Analyzer Object containing boolean values</p>
+</dd>
+<dt class="field-even">Return type</dt>
+<dd class="field-even"><p><a class="reference internal" href="#explorer.CategoricalAnalyzer" title="explorer.CategoricalAnalyzer">CategoricalAnalyzer</a></p>
+</dd>
+</dl>
+</dd></dl>
+
+<dl class="py method">
+<dt id="explorer.DataExplorer.String_Data">
+<em class="property">property </em><code class="sig-name descname">String_Data</code><a class="headerlink" href="#explorer.DataExplorer.String_Data" title="Permalink to this definition">¶</a></dt>
+<dd><p>A property which initializes a String Data Analyzer object. Takes all string columns and uses them in a Categorical Analyzer object.</p>
+<dl class="field-list simple">
+<dt class="field-odd">Returns</dt>
+<dd class="field-odd"><p>a Categorical Analyzer with all string features</p>
+</dd>
+<dt class="field-even">Return type</dt>
+<dd class="field-even"><p><a class="reference internal" href="#explorer.CategoricalAnalyzer" title="explorer.CategoricalAnalyzer">CategoricalAnalyzer</a></p>
+</dd>
+</dl>
+</dd></dl>
+
+<dl class="py method">
+<dt id="explorer.DataExplorer.Date_By_Data">
+<em class="property">property </em><code class="sig-name descname">Date_By_Data</code><a class="headerlink" href="#explorer.DataExplorer.Date_By_Data" title="Permalink to this definition">¶</a></dt>
+<dd><p>A property which returns a Data By Date object. This can be used to analyze columns by time.</p>
+<dl class="field-list simple">
+<dt class="field-odd">Returns</dt>
+<dd class="field-odd"><p></p>
+</dd>
+</dl>
+</dd></dl>
+
+<dl class="py method">
+<dt id="explorer.DataExplorer.GIS_Data">
+<em class="property">property </em><code class="sig-name descname">GIS_Data</code><a class="headerlink" href="#explorer.DataExplorer.GIS_Data" title="Permalink to this definition">¶</a></dt>
+<dd><p>A property which initializes a GIS Analyzer by taking the first and second entry of the gis feature list.</p>
+<dl class="field-list simple">
+<dt class="field-odd">Returns</dt>
+<dd class="field-odd"><p></p>
+</dd>
+</dl>
+</dd></dl>
+
+<dl class="py method">
+<dt id="explorer.DataExplorer.Gis_DataWithLabel">
+<em class="property">property </em><code class="sig-name descname">Gis_DataWithLabel</code><a class="headerlink" href="#explorer.DataExplorer.Gis_DataWithLabel" title="Permalink to this definition">¶</a></dt>
+<dd><p>A property which returns all gis features with a corresponding label. This is intended to check for clustering algorithms results</p>
+<dl class="field-list simple">
+<dt class="field-odd">Returns</dt>
+<dd class="field-odd"><p>a GisDatawithLabel object to analyze geo data and corresponding labels</p>
+</dd>
+</dl>
+</dd></dl>
+
+<dl class="py method">
+<dt id="explorer.DataExplorer.GIS_features">
+<em class="property">property </em><code class="sig-name descname">GIS_features</code><a class="headerlink" href="#explorer.DataExplorer.GIS_features" title="Permalink to this definition">¶</a></dt>
+<dd><p>A property which returns all gis features of the DataFrame</p>
+<dl class="field-list simple">
+<dt class="field-odd">Returns</dt>
+<dd class="field-odd"><p>a list of GIS features</p>
+</dd>
+</dl>
+</dd></dl>
+
+<dl class="py method">
+<dt id="explorer.DataExplorer.len_gis_features">
+<em class="property">property </em><code class="sig-name descname">len_gis_features</code><a class="headerlink" href="#explorer.DataExplorer.len_gis_features" title="Permalink to this definition">¶</a></dt>
+<dd><p>Returns the length of all GIS features.</p>
+<dl class="field-list simple">
+<dt class="field-odd">Returns</dt>
+<dd class="field-odd"><p>the length of all GIS features</p>
+</dd>
+<dt class="field-even">Return type</dt>
+<dd class="field-even"><p>int</p>
+</dd>
+</dl>
+</dd></dl>
+
+<dl class="py method">
+<dt id="explorer.DataExplorer.len_string_features">
+<em class="property">property </em><code class="sig-name descname">len_string_features</code><a class="headerlink" href="#explorer.DataExplorer.len_string_features" title="Permalink to this definition">¶</a></dt>
+<dd><p>Returns the length of all string features</p>
+<dl class="field-list simple">
+<dt class="field-odd">Returns</dt>
+<dd class="field-odd"><p>the length of all string features</p>
+</dd>
+<dt class="field-even">Return type</dt>
+<dd class="field-even"><p>int</p>
+</dd>
+</dl>
+</dd></dl>
+
+<dl class="py method">
+<dt id="explorer.DataExplorer.len_categorical_features">
+<em class="property">property </em><code class="sig-name descname">len_categorical_features</code><a class="headerlink" href="#explorer.DataExplorer.len_categorical_features" title="Permalink to this definition">¶</a></dt>
+<dd><p>Returns the length of all categorical features</p>
+<dl class="field-list simple">
+<dt class="field-odd">Returns</dt>
+<dd class="field-odd"><p>the length of all categorical features</p>
+</dd>
+<dt class="field-even">Return type</dt>
+<dd class="field-even"><p>int</p>
+</dd>
+</dl>
+</dd></dl>
+
+<dl class="py method">
+<dt id="explorer.DataExplorer.len_numerical_features">
+<em class="property">property </em><code class="sig-name descname">len_numerical_features</code><a class="headerlink" href="#explorer.DataExplorer.len_numerical_features" title="Permalink to this definition">¶</a></dt>
+<dd><p>Returns the length of all numerical features</p>
+<dl class="field-list simple">
+<dt class="field-odd">Returns</dt>
+<dd class="field-odd"><p>the length of all numerical features</p>
+</dd>
+<dt class="field-even">Return type</dt>
+<dd class="field-even"><p>int</p>
+</dd>
+</dl>
+</dd></dl>
+
+<dl class="py method">
+<dt id="explorer.DataExplorer.len_bool_features">
+<em class="property">property </em><code class="sig-name descname">len_bool_features</code><a class="headerlink" href="#explorer.DataExplorer.len_bool_features" title="Permalink to this definition">¶</a></dt>
+<dd><p>Returns the length of all boolean features</p>
+<dl class="field-list simple">
+<dt class="field-odd">Returns</dt>
+<dd class="field-odd"><p>the length of all boolean features</p>
+</dd>
+<dt class="field-even">Return type</dt>
+<dd class="field-even"><p>int</p>
+</dd>
+</dl>
+</dd></dl>
+
+<dl class="py method">
+<dt id="explorer.DataExplorer.len_date_features">
+<em class="property">property </em><code class="sig-name descname">len_date_features</code><a class="headerlink" href="#explorer.DataExplorer.len_date_features" title="Permalink to this definition">¶</a></dt>
+<dd><p>Returns the length of all date features</p>
+<dl class="field-list simple">
+<dt class="field-odd">Returns</dt>
+<dd class="field-odd"><p>the length of all date features</p>
+</dd>
+<dt class="field-even">Return type</dt>
+<dd class="field-even"><p>int</p>
+</dd>
+</dl>
+</dd></dl>
+
+<dl class="py method">
+<dt id="explorer.DataExplorer.plot_grid">
+<em class="property">static </em><code class="sig-name descname">plot_grid</code><span class="sig-paren">(</span><em class="sig-param"><span class="n">number</span><span class="p">:</span> <span class="n">int</span></em><span class="sig-paren">)</span> &#x2192; collections.namedtuple<a class="reference internal" href="_modules/explorer.html#DataExplorer.plot_grid"><span class="viewcode-link">[source]</span></a><a class="headerlink" href="#explorer.DataExplorer.plot_grid" title="Permalink to this definition">¶</a></dt>
+<dd><p>A function used to determine the number of grids when doing multiple graphics.</p>
+<dl class="field-list simple">
+<dt class="field-odd">Parameters</dt>
+<dd class="field-odd"><p><strong>number</strong> (<em>int</em>) – number of graphics to be performed</p>
+</dd>
+<dt class="field-even">Returns</dt>
+<dd class="field-even"><p>a namedtuple indicating the number of rows and number of columns</p>
+</dd>
+</dl>
+</dd></dl>
+
+</dd></dl>
+
+</div>
+</div>
+
+
+          </div>
+        </div>
+      </div>
+      <div class="clearer"></div>
+    </div>
+    <div class="related" role="navigation" aria-label="related navigation">
+      <h3>Navigation</h3>
+      <ul>
+        <li class="right" style="margin-right: 10px">
+          <a href="genindex.html" title="General Index"
+             >index</a></li>
+        <li class="right" >
+          <a href="py-modindex.html" title="Python Module Index"
+             >modules</a> |</li>
+        <li class="right" >
+          <a href="feature_builder.html" title="Feature Builder"
+             >next</a> |</li>
+        <li class="right" >
+          <a href="ML_Data_Handler.html" title="Welcome to Machine Learning Data Handler’s documentation!"
+             >previous</a> |</li>
+        <li class="nav-item nav-item-0"><a href="ML_Data_Handler.html">Machine Learning Data Handler 1.2 documentation</a> &#187;</li> 
+      </ul>
+    </div>
+    <div class="footer" role="contentinfo">
+        &#169; Copyright 2020, Dominik Heinz.
+      Created using <a href="http://sphinx-doc.org/">Sphinx</a> 3.0.3.
+    </div>
+  </body>
+</html>

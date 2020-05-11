@@ -1,0 +1,481 @@
+
+<!DOCTYPE html>
+
+<html>
+  <head>
+    <meta charset="utf-8" />
+    <title>Geoinformation System &#8212; Machine Learning Data Handler 1.2 documentation</title>
+    <link rel="stylesheet" href="_static/sphinxdoc.css" type="text/css" />
+    <link rel="stylesheet" href="_static/pygments.css" type="text/css" />
+    <script id="documentation_options" data-url_root="./" src="_static/documentation_options.js"></script>
+    <script src="_static/jquery.js"></script>
+    <script src="_static/underscore.js"></script>
+    <script src="_static/doctools.js"></script>
+    <script src="_static/language_data.js"></script>
+    <link rel="index" title="Index" href="genindex.html" />
+    <link rel="search" title="Search" href="search.html" />
+    <link rel="next" title="Utilities" href="utilities.html" />
+    <link rel="prev" title="Date and Time" href="date_and_time.html" /> 
+  </head><body>
+    <div class="related" role="navigation" aria-label="related navigation">
+      <h3>Navigation</h3>
+      <ul>
+        <li class="right" style="margin-right: 10px">
+          <a href="genindex.html" title="General Index"
+             accesskey="I">index</a></li>
+        <li class="right" >
+          <a href="py-modindex.html" title="Python Module Index"
+             >modules</a> |</li>
+        <li class="right" >
+          <a href="utilities.html" title="Utilities"
+             accesskey="N">next</a> |</li>
+        <li class="right" >
+          <a href="date_and_time.html" title="Date and Time"
+             accesskey="P">previous</a> |</li>
+        <li class="nav-item nav-item-0"><a href="ML_Data_Handler.html">Machine Learning Data Handler 1.2 documentation</a> &#187;</li> 
+      </ul>
+    </div>
+      <div class="sphinxsidebar" role="navigation" aria-label="main navigation">
+        <div class="sphinxsidebarwrapper">
+  <h3><a href="ML_Data_Handler.html">Table of Contents</a></h3>
+  <ul>
+<li><a class="reference internal" href="#">Geoinformation System</a><ul>
+<li><a class="reference internal" href="#module-gis">Source Code</a></li>
+</ul>
+</li>
+</ul>
+
+  <h4>Previous topic</h4>
+  <p class="topless"><a href="date_and_time.html"
+                        title="previous chapter">Date and Time</a></p>
+  <h4>Next topic</h4>
+  <p class="topless"><a href="utilities.html"
+                        title="next chapter">Utilities</a></p>
+  <div role="note" aria-label="source link">
+    <h3>This Page</h3>
+    <ul class="this-page-menu">
+      <li><a href="_sources/gis.rst.txt"
+            rel="nofollow">Show Source</a></li>
+    </ul>
+   </div>
+<div id="searchbox" style="display: none" role="search">
+  <h3 id="searchlabel">Quick search</h3>
+    <div class="searchformwrapper">
+    <form class="search" action="search.html" method="get">
+      <input type="text" name="q" aria-labelledby="searchlabel" />
+      <input type="submit" value="Go" />
+    </form>
+    </div>
+</div>
+<script>$('#searchbox').show(0);</script>
+        </div>
+      </div>
+
+    <div class="document">
+      <div class="documentwrapper">
+        <div class="bodywrapper">
+          <div class="body" role="main">
+            
+  <div class="section" id="geoinformation-system">
+<h1>Geoinformation System<a class="headerlink" href="#geoinformation-system" title="Permalink to this headline">¶</a></h1>
+<p>Description for basic attributes to be added here</p>
+<div class="section" id="module-gis">
+<span id="source-code"></span><h2>Source Code<a class="headerlink" href="#module-gis" title="Permalink to this headline">¶</a></h2>
+<p>This module contains source code to analyze geographical information (gis) data.
+It includes two classes where on inherits from the other. The class purposes are especially suited for
+visualization of the data</p>
+<p>Furthermore, ut contains methods to generate features out of Geographical Information System (GIS).
+Note that all of those classes are using the BaseEstimator and TransformerMixin classes from the scikit-learn bases classes.
+In order to use the <code class="docutils literal notranslate"><span class="pre">fit_transform</span></code> implemented by the scikit-learn, every single Feature Transformer needs to have a  <code class="docutils literal notranslate"><span class="pre">fit</span></code> and <code class="docutils literal notranslate"><span class="pre">transform</span></code> method.
+The <code class="docutils literal notranslate"><span class="pre">fit</span></code> methods returns the object itself and is therefore not documented</p>
+<dl class="py class">
+<dt id="gis.GisAnalyzer">
+<em class="property">class </em><code class="sig-prename descclassname">gis.</code><code class="sig-name descname">GisAnalyzer</code><span class="sig-paren">(</span><em class="sig-param"><span class="n">data</span><span class="p">:</span> <span class="n">Union<span class="p">[</span>str<span class="p">, </span>Sequence<span class="p">[</span>str<span class="p">]</span><span class="p">]</span></span></em>, <em class="sig-param"><span class="n">lat</span><span class="p">:</span> <span class="n">str</span> <span class="o">=</span> <span class="default_value">''</span></em>, <em class="sig-param"><span class="n">lon</span><span class="p">:</span> <span class="n">str</span> <span class="o">=</span> <span class="default_value">''</span></em><span class="sig-paren">)</span><a class="reference internal" href="_modules/gis.html#GisAnalyzer"><span class="viewcode-link">[source]</span></a><a class="headerlink" href="#gis.GisAnalyzer" title="Permalink to this definition">¶</a></dt>
+<dd><p>Bases: <a class="reference internal" href="baseattrs.html#baseattrs.BaseStats" title="baseattrs.BaseStats"><code class="xref py py-class docutils literal notranslate"><span class="pre">baseattrs.BaseStats</span></code></a></p>
+<p>A class used to visualise geographical data based on latitude and longitude columns</p>
+<dl class="py method">
+<dt id="gis.GisAnalyzer.__init__">
+<code class="sig-name descname">__init__</code><span class="sig-paren">(</span><em class="sig-param"><span class="n">data</span><span class="p">:</span> <span class="n">Union<span class="p">[</span>str<span class="p">, </span>Sequence<span class="p">[</span>str<span class="p">]</span><span class="p">]</span></span></em>, <em class="sig-param"><span class="n">lat</span><span class="p">:</span> <span class="n">str</span> <span class="o">=</span> <span class="default_value">''</span></em>, <em class="sig-param"><span class="n">lon</span><span class="p">:</span> <span class="n">str</span> <span class="o">=</span> <span class="default_value">''</span></em><span class="sig-paren">)</span><a class="reference internal" href="_modules/gis.html#GisAnalyzer.__init__"><span class="viewcode-link">[source]</span></a><a class="headerlink" href="#gis.GisAnalyzer.__init__" title="Permalink to this definition">¶</a></dt>
+<dd><p>Initializes a GIS Analyzer object. It expects a DataFrame as input. Furthermore, it has the <code class="docutils literal notranslate"><span class="pre">lat</span></code> and <code class="docutils literal notranslate"><span class="pre">lon</span></code> columns which are
+used for defining the latitude and longitude. They do not have to be set upon object creation but can be reset using the corresponding
+<code class="docutils literal notranslate"><span class="pre">set_lat</span></code> and <code class="docutils literal notranslate"><span class="pre">set_lon</span></code> methods.
+It also has three mapping objects indicating the map style, a color list and a grad list.</p>
+<dl class="field-list simple">
+<dt class="field-odd">Parameters</dt>
+<dd class="field-odd"><ul class="simple">
+<li><p><strong>data</strong> (<em>pd.DataFrame</em>) – the data holding the geographical latitude and longitude columns</p></li>
+<li><p><strong>lat</strong> (<em>str</em>) – the latitude feature column name</p></li>
+<li><p><strong>lon</strong> (<em>str</em>) – the longitude feature column name</p></li>
+</ul>
+</dd>
+</dl>
+</dd></dl>
+
+<dl class="py method">
+<dt id="gis.GisAnalyzer.set_lat">
+<code class="sig-name descname">set_lat</code><span class="sig-paren">(</span><em class="sig-param"><span class="n">lat</span><span class="p">:</span> <span class="n">str</span></em><span class="sig-paren">)</span> &#x2192; <a class="reference internal" href="#gis.GisAnalyzer" title="gis.GisAnalyzer">gis.GisAnalyzer</a><a class="reference internal" href="_modules/gis.html#GisAnalyzer.set_lat"><span class="viewcode-link">[source]</span></a><a class="headerlink" href="#gis.GisAnalyzer.set_lat" title="Permalink to this definition">¶</a></dt>
+<dd><p>Resets the name of the latitude column</p>
+<dl class="field-list simple">
+<dt class="field-odd">Parameters</dt>
+<dd class="field-odd"><p><strong>lat</strong> (<em>str</em>) – the label oft the latitude columns</p>
+</dd>
+<dt class="field-even">Returns</dt>
+<dd class="field-even"><p>the object with its <code class="docutils literal notranslate"><span class="pre">lat</span></code> attribute reset</p>
+</dd>
+</dl>
+</dd></dl>
+
+<dl class="py method">
+<dt id="gis.GisAnalyzer.set_lon">
+<code class="sig-name descname">set_lon</code><span class="sig-paren">(</span><em class="sig-param"><span class="n">lon</span><span class="p">:</span> <span class="n">str</span></em><span class="sig-paren">)</span> &#x2192; <a class="reference internal" href="#gis.GisAnalyzer" title="gis.GisAnalyzer">gis.GisAnalyzer</a><a class="reference internal" href="_modules/gis.html#GisAnalyzer.set_lon"><span class="viewcode-link">[source]</span></a><a class="headerlink" href="#gis.GisAnalyzer.set_lon" title="Permalink to this definition">¶</a></dt>
+<dd><p>Resets the name of the longitude column</p>
+<dl class="field-list simple">
+<dt class="field-odd">Parameters</dt>
+<dd class="field-odd"><p><strong>lon</strong> (<em>str</em>) – the label oft the longitude columns</p>
+</dd>
+<dt class="field-even">Returns</dt>
+<dd class="field-even"><p>the object with its <code class="docutils literal notranslate"><span class="pre">lon</span></code> attribute reset</p>
+</dd>
+</dl>
+</dd></dl>
+
+<dl class="py method">
+<dt id="gis.GisAnalyzer.initial_lat">
+<em class="property">property </em><code class="sig-name descname">initial_lat</code><a class="headerlink" href="#gis.GisAnalyzer.initial_lat" title="Permalink to this definition">¶</a></dt>
+<dd><p>A property yielding the first latitude entry.</p>
+<dl class="field-list simple">
+<dt class="field-odd">Returns</dt>
+<dd class="field-odd"><p>the first entry of the latitude column</p>
+</dd>
+</dl>
+</dd></dl>
+
+<dl class="py method">
+<dt id="gis.GisAnalyzer.initial_lon">
+<em class="property">property </em><code class="sig-name descname">initial_lon</code><a class="headerlink" href="#gis.GisAnalyzer.initial_lon" title="Permalink to this definition">¶</a></dt>
+<dd><p>A property yielding the first longitude entry</p>
+<dl class="field-list simple">
+<dt class="field-odd">Returns</dt>
+<dd class="field-odd"><p>the first entry of the longitude column</p>
+</dd>
+</dl>
+</dd></dl>
+
+<dl class="py method">
+<dt id="gis.GisAnalyzer.coordinates">
+<em class="property">property </em><code class="sig-name descname">coordinates</code><a class="headerlink" href="#gis.GisAnalyzer.coordinates" title="Permalink to this definition">¶</a></dt>
+<dd><p>A property putting the latitude and longitude to a list. Used as an alias to avoid writing [lat,lon] any time the GIS is plotted</p>
+<dl class="field-list simple">
+<dt class="field-odd">Returns</dt>
+<dd class="field-odd"><p>a list of the latitude and longitude</p>
+</dd>
+</dl>
+</dd></dl>
+
+<dl class="py method">
+<dt id="gis.GisAnalyzer._generate_base_map">
+<code class="sig-name descname">_generate_base_map</code><span class="sig-paren">(</span><em class="sig-param"><span class="n">style</span><span class="p">:</span> <span class="n">int</span></em>, <em class="sig-param"><span class="n">zoom_start</span><span class="p">:</span> <span class="n">int</span></em><span class="sig-paren">)</span> &#x2192; <a class="reference internal" href="#gis.GisAnalyzer" title="gis.GisAnalyzer">gis.GisAnalyzer</a><a class="reference internal" href="_modules/gis.html#GisAnalyzer._generate_base_map"><span class="viewcode-link">[source]</span></a><a class="headerlink" href="#gis.GisAnalyzer._generate_base_map" title="Permalink to this definition">¶</a></dt>
+<dd><p>Private method that generates a basic BaseMap and stores it in OBJECT.map</p>
+</dd></dl>
+
+<dl class="py method">
+<dt id="gis.GisAnalyzer.generate_heat_map">
+<code class="sig-name descname">generate_heat_map</code><span class="sig-paren">(</span><em class="sig-param"><span class="n">style</span><span class="p">:</span> <span class="n">int</span> <span class="o">=</span> <span class="default_value">6</span></em>, <em class="sig-param"><span class="n">zoom_start</span><span class="p">:</span> <span class="n">int</span> <span class="o">=</span> <span class="default_value">12</span></em><span class="sig-paren">)</span><a class="reference internal" href="_modules/gis.html#GisAnalyzer.generate_heat_map"><span class="viewcode-link">[source]</span></a><a class="headerlink" href="#gis.GisAnalyzer.generate_heat_map" title="Permalink to this definition">¶</a></dt>
+<dd><p>Creates a HeatMap with the coordinates found in the latitude and longitude columns.</p>
+<dl class="field-list simple">
+<dt class="field-odd">Parameters</dt>
+<dd class="field-odd"><ul class="simple">
+<li><p><strong>style</strong> (<em>int</em>) – indicates which style of the map to be used</p></li>
+<li><p><strong>zoom_start</strong> (<em>int</em>) – set the initial zoom of the map</p></li>
+</ul>
+</dd>
+<dt class="field-even">Returns</dt>
+<dd class="field-even"><p></p>
+</dd>
+</dl>
+</dd></dl>
+
+<dl class="py method">
+<dt id="gis.GisAnalyzer.generate_heat_map_with_time">
+<code class="sig-name descname">generate_heat_map_with_time</code><span class="sig-paren">(</span><em class="sig-param"><span class="n">style</span><span class="p">:</span> <span class="n">int</span> <span class="o">=</span> <span class="default_value">6</span></em>, <em class="sig-param"><span class="n">zoom_start</span><span class="p">:</span> <span class="n">int</span> <span class="o">=</span> <span class="default_value">12</span></em>, <em class="sig-param"><span class="n">time_var</span><span class="p">:</span> <span class="n">str</span> <span class="o">=</span> <span class="default_value">'hours'</span></em>, <em class="sig-param"><span class="n">time_max_val</span><span class="p">:</span> <span class="n">int</span> <span class="o">=</span> <span class="default_value">24</span></em><span class="sig-paren">)</span><a class="reference internal" href="_modules/gis.html#GisAnalyzer.generate_heat_map_with_time"><span class="viewcode-link">[source]</span></a><a class="headerlink" href="#gis.GisAnalyzer.generate_heat_map_with_time" title="Permalink to this definition">¶</a></dt>
+<dd><p>Generates a interactive HeatMap which enables a geographic visualization by time.</p>
+<dl class="field-list simple">
+<dt class="field-odd">Parameters</dt>
+<dd class="field-odd"><ul class="simple">
+<li><p><strong>style</strong> (<em>int</em>) – indicates which style of the map to be used</p></li>
+<li><p><strong>zoom_start</strong> (<em>int</em>) – set the initial zoom of the map</p></li>
+<li><p><strong>time_var</strong> (<em>str</em>) – the label of the time column by which the data is analyzed by</p></li>
+<li><p><strong>time_max_val</strong> (<em>int</em>) – the maximal time value to be shown</p></li>
+</ul>
+</dd>
+<dt class="field-even">Returns</dt>
+<dd class="field-even"><p></p>
+</dd>
+</dl>
+</dd></dl>
+
+<dl class="py method">
+<dt id="gis.GisAnalyzer.generate_map_cluster">
+<code class="sig-name descname">generate_map_cluster</code><span class="sig-paren">(</span><em class="sig-param"><span class="n">style</span><span class="o">=</span><span class="default_value">6</span></em>, <em class="sig-param"><span class="n">zoom_start</span><span class="o">=</span><span class="default_value">12</span></em>, <em class="sig-param"><span class="n">include_heat_map</span><span class="p">:</span> <span class="n">bool</span> <span class="o">=</span> <span class="default_value">True</span></em><span class="sig-paren">)</span><a class="reference internal" href="_modules/gis.html#GisAnalyzer.generate_map_cluster"><span class="viewcode-link">[source]</span></a><a class="headerlink" href="#gis.GisAnalyzer.generate_map_cluster" title="Permalink to this definition">¶</a></dt>
+<dd><p>Generates a map which includes cluster depending on the GIS distances between the different points. The Cluster itself depends on the zooming level</p>
+<dl class="field-list simple">
+<dt class="field-odd">Parameters</dt>
+<dd class="field-odd"><ul class="simple">
+<li><p><strong>style</strong> (<em>int</em>) – indicates which style of the map to be used</p></li>
+<li><p><strong>zoom_start</strong> (<em>int</em>) – set the initial zoom of the map</p></li>
+<li><p><strong>include_heat_map</strong> (<em>bool</em>) – a flag which indicates if an additional HeatMap shall be added to the Map</p></li>
+</ul>
+</dd>
+<dt class="field-even">Returns</dt>
+<dd class="field-even"><p></p>
+</dd>
+</dl>
+</dd></dl>
+
+<dl class="py method">
+<dt id="gis.GisAnalyzer.simple_plot">
+<code class="sig-name descname">simple_plot</code><span class="sig-paren">(</span><em class="sig-param"><span class="o">**</span><span class="n">options</span><span class="p">:</span> <span class="n">Mapping<span class="p">[</span>str<span class="p">]</span></span></em><span class="sig-paren">)</span><a class="reference internal" href="_modules/gis.html#GisAnalyzer.simple_plot"><span class="viewcode-link">[source]</span></a><a class="headerlink" href="#gis.GisAnalyzer.simple_plot" title="Permalink to this definition">¶</a></dt>
+<dd><p>Generates a simple scatter plot of the coordinates. The scatter is an abstraction of the data by not include the actual map.
+It can be used to quickly have a look on a basic map.</p>
+<dl class="field-list simple">
+<dt class="field-odd">Parameters</dt>
+<dd class="field-odd"><p><strong>options</strong> – the seaborn scatter plot options</p>
+</dd>
+<dt class="field-even">Returns</dt>
+<dd class="field-even"><p></p>
+</dd>
+</dl>
+</dd></dl>
+
+</dd></dl>
+
+<dl class="py class">
+<dt id="gis.GisAnalyzerWithClusterLabel">
+<em class="property">class </em><code class="sig-prename descclassname">gis.</code><code class="sig-name descname">GisAnalyzerWithClusterLabel</code><span class="sig-paren">(</span><em class="sig-param"><span class="n">data</span><span class="p">:</span> <span class="n">Union<span class="p">[</span>str<span class="p">, </span>pandas.core.frame.DataFrame<span class="p">]</span></span></em>, <em class="sig-param"><span class="n">lat</span><span class="p">:</span> <span class="n">str</span> <span class="o">=</span> <span class="default_value">''</span></em>, <em class="sig-param"><span class="n">lon</span><span class="p">:</span> <span class="n">str</span> <span class="o">=</span> <span class="default_value">''</span></em>, <em class="sig-param"><span class="n">cluster_label</span><span class="p">:</span> <span class="n">Union[str, Sequence, None]</span> <span class="o">=</span> <span class="default_value">None</span></em><span class="sig-paren">)</span><a class="reference internal" href="_modules/gis.html#GisAnalyzerWithClusterLabel"><span class="viewcode-link">[source]</span></a><a class="headerlink" href="#gis.GisAnalyzerWithClusterLabel" title="Permalink to this definition">¶</a></dt>
+<dd><p>Bases: <a class="reference internal" href="#gis.GisAnalyzer" title="gis.GisAnalyzer"><code class="xref py py-class docutils literal notranslate"><span class="pre">gis.GisAnalyzer</span></code></a></p>
+<p>A class derived from the GisAnalyzer used to visualise geographical data based on latitude and longitude columns and take into account cluster labels</p>
+<dl class="py method">
+<dt id="gis.GisAnalyzerWithClusterLabel.__init__">
+<code class="sig-name descname">__init__</code><span class="sig-paren">(</span><em class="sig-param"><span class="n">data</span><span class="p">:</span> <span class="n">Union<span class="p">[</span>str<span class="p">, </span>pandas.core.frame.DataFrame<span class="p">]</span></span></em>, <em class="sig-param"><span class="n">lat</span><span class="p">:</span> <span class="n">str</span> <span class="o">=</span> <span class="default_value">''</span></em>, <em class="sig-param"><span class="n">lon</span><span class="p">:</span> <span class="n">str</span> <span class="o">=</span> <span class="default_value">''</span></em>, <em class="sig-param"><span class="n">cluster_label</span><span class="p">:</span> <span class="n">Union[str, Sequence, None]</span> <span class="o">=</span> <span class="default_value">None</span></em><span class="sig-paren">)</span><a class="reference internal" href="_modules/gis.html#GisAnalyzerWithClusterLabel.__init__"><span class="viewcode-link">[source]</span></a><a class="headerlink" href="#gis.GisAnalyzerWithClusterLabel.__init__" title="Permalink to this definition">¶</a></dt>
+<dd><p>Initializes a GIS Analyzer object. It expects a DataFrame as input. Furthermore, it has the <code class="docutils literal notranslate"><span class="pre">lat</span></code> and <code class="docutils literal notranslate"><span class="pre">lon</span></code> columns which are
+used for defining the latitude and longitude. They do not have to be set upon object creation but can be reset using the corresponding
+<code class="docutils literal notranslate"><span class="pre">set_lat</span></code> and <code class="docutils literal notranslate"><span class="pre">set_lon</span></code> methods. Additionally, a set of labels can be indicated as well. The purpose hereby lies especially in visualizing
+geographic clusters.
+It also has three mapping objects indicating the map style, a color list and a grad list.</p>
+<dl class="field-list simple">
+<dt class="field-odd">Parameters</dt>
+<dd class="field-odd"><ul class="simple">
+<li><p><strong>data</strong> (<em>pd.DataFrame</em>) – the data holding the geographical latitude and longitude columns</p></li>
+<li><p><strong>lat</strong> (<em>str</em>) – the latitude feature column name</p></li>
+<li><p><strong>lon</strong> (<em>str</em>) – the longitude feature column name</p></li>
+<li><p><strong>cluster_label</strong> (<em>list</em>) – single or multiple column labels indicating the clustering label</p></li>
+</ul>
+</dd>
+</dl>
+</dd></dl>
+
+<dl class="py method">
+<dt id="gis.GisAnalyzerWithClusterLabel.simple_plot_by_cluster_labels">
+<code class="sig-name descname">simple_plot_by_cluster_labels</code><span class="sig-paren">(</span><em class="sig-param"><span class="o">**</span><span class="n">options</span><span class="p">:</span> <span class="n">Mapping<span class="p">[</span>str<span class="p">]</span></span></em><span class="sig-paren">)</span><a class="reference internal" href="_modules/gis.html#GisAnalyzerWithClusterLabel.simple_plot_by_cluster_labels"><span class="viewcode-link">[source]</span></a><a class="headerlink" href="#gis.GisAnalyzerWithClusterLabel.simple_plot_by_cluster_labels" title="Permalink to this definition">¶</a></dt>
+<dd><p>Plots the geographical data by all the different cluster labels.</p>
+<dl class="field-list simple">
+<dt class="field-odd">Parameters</dt>
+<dd class="field-odd"><p><strong>options</strong> (<em>dict</em>) – options used by the <code class="docutils literal notranslate"><span class="pre">simple_plot</span></code></p>
+</dd>
+<dt class="field-even">Returns</dt>
+<dd class="field-even"><p></p>
+</dd>
+</dl>
+</dd></dl>
+
+</dd></dl>
+
+<dl class="py class">
+<dt id="gis.GisBasicTransformer">
+<em class="property">class </em><code class="sig-prename descclassname">gis.</code><code class="sig-name descname">GisBasicTransformer</code><span class="sig-paren">(</span><em class="sig-param"><span class="n">lat</span><span class="p">:</span> <span class="n">str</span></em>, <em class="sig-param"><span class="n">lon</span><span class="p">:</span> <span class="n">str</span></em>, <em class="sig-param"><span class="n">round_factor</span><span class="p">:</span> <span class="n">int</span> <span class="o">=</span> <span class="default_value">0</span></em>, <em class="sig-param"><span class="n">radian</span><span class="p">:</span> <span class="n">bool</span> <span class="o">=</span> <span class="default_value">True</span></em><span class="sig-paren">)</span><a class="reference internal" href="_modules/gis.html#GisBasicTransformer"><span class="viewcode-link">[source]</span></a><a class="headerlink" href="#gis.GisBasicTransformer" title="Permalink to this definition">¶</a></dt>
+<dd><p>Bases: <code class="xref py py-class docutils literal notranslate"><span class="pre">gis._BaseClass</span></code>, <code class="xref py py-class docutils literal notranslate"><span class="pre">sklearn.base.BaseEstimator</span></code>, <code class="xref py py-class docutils literal notranslate"><span class="pre">sklearn.base.TransformerMixin</span></code></p>
+<p>Derives primitive feature transformation for GIS
+The primitive transformations are:</p>
+<ul class="simple">
+<li><p><code class="docutils literal notranslate"><span class="pre">round</span></code>: round the GIS to a specific digit length. This can be considered as a feature as it groups together points with similar values.
+It reduces information but reduces the dimension of the feature</p></li>
+<li><p><code class="docutils literal notranslate"><span class="pre">radians</span></code>: a simple transformation to get the radians of the GIS.</p></li>
+</ul>
+<dl class="py method">
+<dt id="gis.GisBasicTransformer.__init__">
+<code class="sig-name descname">__init__</code><span class="sig-paren">(</span><em class="sig-param"><span class="n">lat</span><span class="p">:</span> <span class="n">str</span></em>, <em class="sig-param"><span class="n">lon</span><span class="p">:</span> <span class="n">str</span></em>, <em class="sig-param"><span class="n">round_factor</span><span class="p">:</span> <span class="n">int</span> <span class="o">=</span> <span class="default_value">0</span></em>, <em class="sig-param"><span class="n">radian</span><span class="p">:</span> <span class="n">bool</span> <span class="o">=</span> <span class="default_value">True</span></em><span class="sig-paren">)</span><a class="reference internal" href="_modules/gis.html#GisBasicTransformer.__init__"><span class="viewcode-link">[source]</span></a><a class="headerlink" href="#gis.GisBasicTransformer.__init__" title="Permalink to this definition">¶</a></dt>
+<dd><p>Initializes a primitive feature creator object</p>
+<dl class="field-list simple">
+<dt class="field-odd">Parameters</dt>
+<dd class="field-odd"><ul class="simple">
+<li><p><strong>lat</strong> (<em>str</em>) – the column name of the latitude column</p></li>
+<li><p><strong>lon</strong> (<em>str</em>) – the column name of the longitude column</p></li>
+<li><p><strong>round_factor</strong> (<em>int</em>) – if set and &gt;0, it indicate the number of digits to round the geo data.</p></li>
+<li><p><strong>radian</strong> (<em>bool</em>) – a flag indicating if the radians shall be derived</p></li>
+</ul>
+</dd>
+</dl>
+</dd></dl>
+
+<dl class="py method">
+<dt id="gis.GisBasicTransformer.fit">
+<code class="sig-name descname">fit</code><span class="sig-paren">(</span><em class="sig-param"><span class="n">X</span></em>, <em class="sig-param"><span class="n">y</span><span class="o">=</span><span class="default_value">None</span></em>, <em class="sig-param"><span class="o">**</span><span class="n">kwargs</span></em><span class="sig-paren">)</span><a class="reference internal" href="_modules/gis.html#GisBasicTransformer.fit"><span class="viewcode-link">[source]</span></a><a class="headerlink" href="#gis.GisBasicTransformer.fit" title="Permalink to this definition">¶</a></dt>
+<dd></dd></dl>
+
+<dl class="py method">
+<dt id="gis.GisBasicTransformer.transform">
+<code class="sig-name descname">transform</code><span class="sig-paren">(</span><em class="sig-param"><span class="n">X</span><span class="p">:</span> <span class="n">pandas.core.frame.DataFrame</span></em><span class="sig-paren">)</span> &#x2192; pandas.core.frame.DataFrame<a class="reference internal" href="_modules/gis.html#GisBasicTransformer.transform"><span class="viewcode-link">[source]</span></a><a class="headerlink" href="#gis.GisBasicTransformer.transform" title="Permalink to this definition">¶</a></dt>
+<dd><p>Transforms the DataFrame. Checks the both arguments and applies the respective function if the condition hols (round &gt;0; radian = True)</p>
+<dl class="field-list simple">
+<dt class="field-odd">Parameters</dt>
+<dd class="field-odd"><p><strong>X</strong> – the original DataFrame</p>
+</dd>
+<dt class="field-even">Returns</dt>
+<dd class="field-even"><p></p>
+</dd>
+</dl>
+</dd></dl>
+
+</dd></dl>
+
+<dl class="py class">
+<dt id="gis.GisDistance">
+<em class="property">class </em><code class="sig-prename descclassname">gis.</code><code class="sig-name descname">GisDistance</code><span class="sig-paren">(</span><em class="sig-param"><span class="n">lat_1</span><span class="p">:</span> <span class="n">str</span></em>, <em class="sig-param"><span class="n">lon_1</span><span class="p">:</span> <span class="n">str</span></em>, <em class="sig-param"><span class="n">lat_2</span><span class="p">:</span> <span class="n">str</span></em>, <em class="sig-param"><span class="n">lon_2</span><span class="p">:</span> <span class="n">str</span></em>, <em class="sig-param"><span class="n">label</span><span class="p">:</span> <span class="n">str</span> <span class="o">=</span> <span class="default_value">'distance'</span></em><span class="sig-paren">)</span><a class="reference internal" href="_modules/gis.html#GisDistance"><span class="viewcode-link">[source]</span></a><a class="headerlink" href="#gis.GisDistance" title="Permalink to this definition">¶</a></dt>
+<dd><p>Bases: <code class="xref py py-class docutils literal notranslate"><span class="pre">gis._BaseClass</span></code>, <code class="xref py py-class docutils literal notranslate"><span class="pre">sklearn.base.BaseEstimator</span></code>, <code class="xref py py-class docutils literal notranslate"><span class="pre">sklearn.base.TransformerMixin</span></code></p>
+<p>Calculates the haversine distance between two geo points</p>
+<dl class="py method">
+<dt id="gis.GisDistance.__init__">
+<code class="sig-name descname">__init__</code><span class="sig-paren">(</span><em class="sig-param"><span class="n">lat_1</span><span class="p">:</span> <span class="n">str</span></em>, <em class="sig-param"><span class="n">lon_1</span><span class="p">:</span> <span class="n">str</span></em>, <em class="sig-param"><span class="n">lat_2</span><span class="p">:</span> <span class="n">str</span></em>, <em class="sig-param"><span class="n">lon_2</span><span class="p">:</span> <span class="n">str</span></em>, <em class="sig-param"><span class="n">label</span><span class="p">:</span> <span class="n">str</span> <span class="o">=</span> <span class="default_value">'distance'</span></em><span class="sig-paren">)</span><a class="reference internal" href="_modules/gis.html#GisDistance.__init__"><span class="viewcode-link">[source]</span></a><a class="headerlink" href="#gis.GisDistance.__init__" title="Permalink to this definition">¶</a></dt>
+<dd><p>Initializes an object which calculates the Haversine distance between two points</p>
+<dl class="field-list simple">
+<dt class="field-odd">Parameters</dt>
+<dd class="field-odd"><ul class="simple">
+<li><p><strong>lat_1</strong> (<em>str</em>) – the column name of the first point’s latitude column</p></li>
+<li><p><strong>lon_1</strong> (<em>str</em>) – the column name of the first point’s longitude column</p></li>
+<li><p><strong>lat_2</strong> (<em>str</em>) – the column name of the second point’s latitude column</p></li>
+<li><p><strong>lon_2</strong> (<em>str</em>) – the column name of the second point’s longitude column</p></li>
+<li><p><strong>label</strong> (<em>str</em>) – the column label of the newly created column capturing the distance</p></li>
+</ul>
+</dd>
+</dl>
+</dd></dl>
+
+<dl class="py method">
+<dt id="gis.GisDistance.fit">
+<code class="sig-name descname">fit</code><span class="sig-paren">(</span><em class="sig-param"><span class="n">X</span></em>, <em class="sig-param"><span class="n">y</span><span class="o">=</span><span class="default_value">None</span></em>, <em class="sig-param"><span class="o">**</span><span class="n">kwargs</span></em><span class="sig-paren">)</span><a class="reference internal" href="_modules/gis.html#GisDistance.fit"><span class="viewcode-link">[source]</span></a><a class="headerlink" href="#gis.GisDistance.fit" title="Permalink to this definition">¶</a></dt>
+<dd></dd></dl>
+
+<dl class="py method">
+<dt id="gis.GisDistance.haversine_distance">
+<code class="sig-name descname">haversine_distance</code><span class="sig-paren">(</span><em class="sig-param"><span class="n">row</span></em><span class="sig-paren">)</span><a class="reference internal" href="_modules/gis.html#GisDistance.haversine_distance"><span class="viewcode-link">[source]</span></a><a class="headerlink" href="#gis.GisDistance.haversine_distance" title="Permalink to this definition">¶</a></dt>
+<dd><p>The formulae for the haversine distance. It takes a DataFrame’s row as an input arguments, derives the four GIS points and applies the Formula to it.</p>
+<dl class="field-list simple">
+<dt class="field-odd">Parameters</dt>
+<dd class="field-odd"><p><strong>row</strong> (<em>pd.DataFrame</em>) – a DataFrame row</p>
+</dd>
+<dt class="field-even">Returns</dt>
+<dd class="field-even"><p>the haversine distance for the row</p>
+</dd>
+</dl>
+</dd></dl>
+
+<dl class="py method">
+<dt id="gis.GisDistance.transform">
+<code class="sig-name descname">transform</code><span class="sig-paren">(</span><em class="sig-param"><span class="n">X</span><span class="p">:</span> <span class="n">pandas.core.frame.DataFrame</span></em><span class="sig-paren">)</span> &#x2192; pandas.core.frame.DataFrame<a class="reference internal" href="_modules/gis.html#GisDistance.transform"><span class="viewcode-link">[source]</span></a><a class="headerlink" href="#gis.GisDistance.transform" title="Permalink to this definition">¶</a></dt>
+<dd><p>Applies the haversine_distance formula to all rows and saves the value in a newly generated column</p>
+<dl class="field-list simple">
+<dt class="field-odd">Parameters</dt>
+<dd class="field-odd"><p><strong>X</strong> – the original DataFrame</p>
+</dd>
+<dt class="field-even">Returns</dt>
+<dd class="field-even"><p></p>
+</dd>
+</dl>
+</dd></dl>
+
+</dd></dl>
+
+<dl class="py class">
+<dt id="gis.GisCluster">
+<em class="property">class </em><code class="sig-prename descclassname">gis.</code><code class="sig-name descname">GisCluster</code><span class="sig-paren">(</span><em class="sig-param"><span class="n">lat</span><span class="p">:</span> <span class="n">str</span></em>, <em class="sig-param"><span class="n">lon</span><span class="p">:</span> <span class="n">str</span></em>, <em class="sig-param"><span class="n">kmeans</span><span class="p">:</span> <span class="n">bool</span> <span class="o">=</span> <span class="default_value">True</span></em>, <em class="sig-param"><span class="n">kmeans_params</span><span class="p">:</span> <span class="n">Mapping<span class="p">[</span>str<span class="p">]</span></span> <span class="o">=</span> <span class="default_value">None</span></em>, <em class="sig-param"><span class="n">dbscan</span><span class="p">:</span> <span class="n">bool</span> <span class="o">=</span> <span class="default_value">True</span></em>, <em class="sig-param"><span class="n">dbscan_params</span><span class="p">:</span> <span class="n">Mapping<span class="p">[</span>str<span class="p">]</span></span> <span class="o">=</span> <span class="default_value">None</span></em>, <em class="sig-param"><span class="n">birch</span><span class="p">:</span> <span class="n">bool</span> <span class="o">=</span> <span class="default_value">True</span></em>, <em class="sig-param"><span class="n">birch_params</span><span class="p">:</span> <span class="n">Mapping<span class="p">[</span>str<span class="p">]</span></span> <span class="o">=</span> <span class="default_value">None</span></em>, <em class="sig-param"><span class="n">hdbscan</span><span class="p">:</span> <span class="n">bool</span> <span class="o">=</span> <span class="default_value">True</span></em>, <em class="sig-param"><span class="n">hdbscan_params</span><span class="p">:</span> <span class="n">Mapping<span class="p">[</span>str<span class="p">]</span></span> <span class="o">=</span> <span class="default_value">None</span></em>, <em class="sig-param"><span class="n">agglomerative</span><span class="p">:</span> <span class="n">bool</span> <span class="o">=</span> <span class="default_value">True</span></em>, <em class="sig-param"><span class="n">agglomerative_params</span><span class="p">:</span> <span class="n">Mapping<span class="p">[</span>str<span class="p">]</span></span> <span class="o">=</span> <span class="default_value">None</span></em><span class="sig-paren">)</span><a class="reference internal" href="_modules/gis.html#GisCluster"><span class="viewcode-link">[source]</span></a><a class="headerlink" href="#gis.GisCluster" title="Permalink to this definition">¶</a></dt>
+<dd><p>Bases: <code class="xref py py-class docutils literal notranslate"><span class="pre">gis._BaseClass</span></code>, <code class="xref py py-class docutils literal notranslate"><span class="pre">sklearn.base.BaseEstimator</span></code>, <code class="xref py py-class docutils literal notranslate"><span class="pre">sklearn.base.TransformerMixin</span></code></p>
+<p>Applies Machine Learning based clustering on the GIS data.</p>
+<dl class="py method">
+<dt id="gis.GisCluster.__init__">
+<code class="sig-name descname">__init__</code><span class="sig-paren">(</span><em class="sig-param"><span class="n">lat</span><span class="p">:</span> <span class="n">str</span></em>, <em class="sig-param"><span class="n">lon</span><span class="p">:</span> <span class="n">str</span></em>, <em class="sig-param"><span class="n">kmeans</span><span class="p">:</span> <span class="n">bool</span> <span class="o">=</span> <span class="default_value">True</span></em>, <em class="sig-param"><span class="n">kmeans_params</span><span class="p">:</span> <span class="n">Mapping<span class="p">[</span>str<span class="p">]</span></span> <span class="o">=</span> <span class="default_value">None</span></em>, <em class="sig-param"><span class="n">dbscan</span><span class="p">:</span> <span class="n">bool</span> <span class="o">=</span> <span class="default_value">True</span></em>, <em class="sig-param"><span class="n">dbscan_params</span><span class="p">:</span> <span class="n">Mapping<span class="p">[</span>str<span class="p">]</span></span> <span class="o">=</span> <span class="default_value">None</span></em>, <em class="sig-param"><span class="n">birch</span><span class="p">:</span> <span class="n">bool</span> <span class="o">=</span> <span class="default_value">True</span></em>, <em class="sig-param"><span class="n">birch_params</span><span class="p">:</span> <span class="n">Mapping<span class="p">[</span>str<span class="p">]</span></span> <span class="o">=</span> <span class="default_value">None</span></em>, <em class="sig-param"><span class="n">hdbscan</span><span class="p">:</span> <span class="n">bool</span> <span class="o">=</span> <span class="default_value">True</span></em>, <em class="sig-param"><span class="n">hdbscan_params</span><span class="p">:</span> <span class="n">Mapping<span class="p">[</span>str<span class="p">]</span></span> <span class="o">=</span> <span class="default_value">None</span></em>, <em class="sig-param"><span class="n">agglomerative</span><span class="p">:</span> <span class="n">bool</span> <span class="o">=</span> <span class="default_value">True</span></em>, <em class="sig-param"><span class="n">agglomerative_params</span><span class="p">:</span> <span class="n">Mapping<span class="p">[</span>str<span class="p">]</span></span> <span class="o">=</span> <span class="default_value">None</span></em><span class="sig-paren">)</span><a class="reference internal" href="_modules/gis.html#GisCluster.__init__"><span class="viewcode-link">[source]</span></a><a class="headerlink" href="#gis.GisCluster.__init__" title="Permalink to this definition">¶</a></dt>
+<dd><p>Creates an object that applies a possibly multitude of different clustering algorithms on the data</p>
+<dl class="field-list simple">
+<dt class="field-odd">Parameters</dt>
+<dd class="field-odd"><ul class="simple">
+<li><p><strong>lat</strong> (<em>str</em>) – the column name of the latitude column</p></li>
+<li><p><strong>lon</strong> (<em>str</em>) – the column name of the longitude column</p></li>
+<li><p><strong>kmeans</strong> (<em>bool</em>) – a flag indicating if the k-means clustering algorithm is applied</p></li>
+<li><p><strong>kmeans_params</strong> (<em>dict</em>) – indicates k-means clustering hyper parameters</p></li>
+<li><p><strong>dbscan</strong> (<em>bool</em>) – a flag indicating if the DBSCAN clustering algorithm is applied</p></li>
+<li><p><strong>dbscan_params</strong> (<em>dict</em>) – indicates DBSCAN clustering hyper parameters</p></li>
+<li><p><strong>birch</strong> (<em>bool</em>) – a flag indicating if the BIRCH clustering algorithm is applied</p></li>
+<li><p><strong>birch_params</strong> (<em>dict</em>) – indicates BIRCH clustering hyper parameters</p></li>
+<li><p><strong>hdbscan</strong> (<em>bool</em>) – a flag indicating if the HDBSCAN clustering algorithm is applied</p></li>
+<li><p><strong>hdbscan_params</strong> (<em>dict</em>) – indicates HDBSCAN clustering hyper parameters</p></li>
+<li><p><strong>agglomerative</strong> (<em>bool</em>) – a flag indicating if the Agglomerative clustering algorithm is applied</p></li>
+<li><p><strong>agglomerative_params</strong> (<em>dict</em>) – indicates Agglomerative clustering hyper parameters</p></li>
+</ul>
+</dd>
+</dl>
+</dd></dl>
+
+<dl class="py method">
+<dt id="gis.GisCluster.fit">
+<code class="sig-name descname">fit</code><span class="sig-paren">(</span><em class="sig-param"><span class="n">X</span></em>, <em class="sig-param"><span class="n">y</span><span class="o">=</span><span class="default_value">None</span></em>, <em class="sig-param"><span class="o">**</span><span class="n">kwargs</span></em><span class="sig-paren">)</span><a class="reference internal" href="_modules/gis.html#GisCluster.fit"><span class="viewcode-link">[source]</span></a><a class="headerlink" href="#gis.GisCluster.fit" title="Permalink to this definition">¶</a></dt>
+<dd></dd></dl>
+
+<dl class="py method">
+<dt id="gis.GisCluster.transform">
+<code class="sig-name descname">transform</code><span class="sig-paren">(</span><em class="sig-param"><span class="n">X</span><span class="p">:</span> <span class="n">pandas.core.frame.DataFrame</span></em><span class="sig-paren">)</span> &#x2192; pandas.core.frame.DataFrame<a class="reference internal" href="_modules/gis.html#GisCluster.transform"><span class="viewcode-link">[source]</span></a><a class="headerlink" href="#gis.GisCluster.transform" title="Permalink to this definition">¶</a></dt>
+<dd><p>Applies the clustering based on which algorithm with respective parameters have been specified.
+For each clustering algorithm set to True, the clustering is performed using the respective algorithm’s hyper parameters</p>
+<dl class="field-list simple">
+<dt class="field-odd">Parameters</dt>
+<dd class="field-odd"><p><strong>X</strong> – The initial DataFrame</p>
+</dd>
+<dt class="field-even">Returns</dt>
+<dd class="field-even"><p></p>
+</dd>
+</dl>
+</dd></dl>
+
+</dd></dl>
+
+</div>
+</div>
+
+
+          </div>
+        </div>
+      </div>
+      <div class="clearer"></div>
+    </div>
+    <div class="related" role="navigation" aria-label="related navigation">
+      <h3>Navigation</h3>
+      <ul>
+        <li class="right" style="margin-right: 10px">
+          <a href="genindex.html" title="General Index"
+             >index</a></li>
+        <li class="right" >
+          <a href="py-modindex.html" title="Python Module Index"
+             >modules</a> |</li>
+        <li class="right" >
+          <a href="utilities.html" title="Utilities"
+             >next</a> |</li>
+        <li class="right" >
+          <a href="date_and_time.html" title="Date and Time"
+             >previous</a> |</li>
+        <li class="nav-item nav-item-0"><a href="ML_Data_Handler.html">Machine Learning Data Handler 1.2 documentation</a> &#187;</li> 
+      </ul>
+    </div>
+    <div class="footer" role="contentinfo">
+        &#169; Copyright 2020, Dominik Heinz.
+      Created using <a href="http://sphinx-doc.org/">Sphinx</a> 3.0.3.
+    </div>
+  </body>
+</html>

@@ -1,0 +1,313 @@
+
+<!DOCTYPE html>
+
+<html>
+  <head>
+    <meta charset="utf-8" />
+    <title>Data PreProcessor &#8212; Machine Learning Data Handler 1.2 documentation</title>
+    <link rel="stylesheet" href="_static/sphinxdoc.css" type="text/css" />
+    <link rel="stylesheet" href="_static/pygments.css" type="text/css" />
+    <script id="documentation_options" data-url_root="./" src="_static/documentation_options.js"></script>
+    <script src="_static/jquery.js"></script>
+    <script src="_static/underscore.js"></script>
+    <script src="_static/doctools.js"></script>
+    <script src="_static/language_data.js"></script>
+    <link rel="index" title="Index" href="genindex.html" />
+    <link rel="search" title="Search" href="search.html" />
+    <link rel="next" title="Base Attributes" href="baseattrs.html" />
+    <link rel="prev" title="Feature Builder" href="feature_builder.html" /> 
+  </head><body>
+    <div class="related" role="navigation" aria-label="related navigation">
+      <h3>Navigation</h3>
+      <ul>
+        <li class="right" style="margin-right: 10px">
+          <a href="genindex.html" title="General Index"
+             accesskey="I">index</a></li>
+        <li class="right" >
+          <a href="py-modindex.html" title="Python Module Index"
+             >modules</a> |</li>
+        <li class="right" >
+          <a href="baseattrs.html" title="Base Attributes"
+             accesskey="N">next</a> |</li>
+        <li class="right" >
+          <a href="feature_builder.html" title="Feature Builder"
+             accesskey="P">previous</a> |</li>
+        <li class="nav-item nav-item-0"><a href="ML_Data_Handler.html">Machine Learning Data Handler 1.2 documentation</a> &#187;</li> 
+      </ul>
+    </div>
+      <div class="sphinxsidebar" role="navigation" aria-label="main navigation">
+        <div class="sphinxsidebarwrapper">
+  <h3><a href="ML_Data_Handler.html">Table of Contents</a></h3>
+  <ul>
+<li><a class="reference internal" href="#">Data PreProcessor</a><ul>
+<li><a class="reference internal" href="#module-preprocess">Source Code</a></li>
+</ul>
+</li>
+</ul>
+
+  <h4>Previous topic</h4>
+  <p class="topless"><a href="feature_builder.html"
+                        title="previous chapter">Feature Builder</a></p>
+  <h4>Next topic</h4>
+  <p class="topless"><a href="baseattrs.html"
+                        title="next chapter">Base Attributes</a></p>
+  <div role="note" aria-label="source link">
+    <h3>This Page</h3>
+    <ul class="this-page-menu">
+      <li><a href="_sources/preprocess.rst.txt"
+            rel="nofollow">Show Source</a></li>
+    </ul>
+   </div>
+<div id="searchbox" style="display: none" role="search">
+  <h3 id="searchlabel">Quick search</h3>
+    <div class="searchformwrapper">
+    <form class="search" action="search.html" method="get">
+      <input type="text" name="q" aria-labelledby="searchlabel" />
+      <input type="submit" value="Go" />
+    </form>
+    </div>
+</div>
+<script>$('#searchbox').show(0);</script>
+        </div>
+      </div>
+
+    <div class="document">
+      <div class="documentwrapper">
+        <div class="bodywrapper">
+          <div class="body" role="main">
+            
+  <div class="section" id="data-preprocessor">
+<h1>Data PreProcessor<a class="headerlink" href="#data-preprocessor" title="Permalink to this headline">¶</a></h1>
+<p>Description for basic attributes to be added here</p>
+<div class="section" id="module-preprocess">
+<span id="source-code"></span><h2>Source Code<a class="headerlink" href="#module-preprocess" title="Permalink to this headline">¶</a></h2>
+<p>This module provides a data class which can be used to perform standard pre_processing steps
+It inherits data attributes from the BasicDataAttributes class and extends them by adding
+Preprocessing methods, attributes and properties.
+It requires a config file in yaml format which adds a mapping for dictionary keywords and corresponding pre processor classes</p>
+<dl class="py class">
+<dt id="preprocess.DataPreProcessor">
+<em class="property">class </em><code class="sig-prename descclassname">preprocess.</code><code class="sig-name descname">DataPreProcessor</code><span class="sig-paren">(</span><em class="sig-param"><span class="n">data_source</span></em>, <em class="sig-param"><span class="n">target_name</span></em>, <em class="sig-param"><span class="n">config</span></em>, <em class="sig-param"><span class="n">features</span><span class="o">=</span><span class="default_value">None</span></em><span class="sig-paren">)</span><a class="reference internal" href="_modules/preprocess.html#DataPreProcessor"><span class="viewcode-link">[source]</span></a><a class="headerlink" href="#preprocess.DataPreProcessor" title="Permalink to this definition">¶</a></dt>
+<dd><p>Bases: <a class="reference internal" href="baseattrs.html#baseattrs.BasicDataAttributes" title="baseattrs.BasicDataAttributes"><code class="xref py py-class docutils literal notranslate"><span class="pre">baseattrs.BasicDataAttributes</span></code></a></p>
+<p>A class used to perform pre-processing steps to the input data.</p>
+<dl class="py method">
+<dt id="preprocess.DataPreProcessor.__init__">
+<code class="sig-name descname">__init__</code><span class="sig-paren">(</span><em class="sig-param"><span class="n">data_source</span></em>, <em class="sig-param"><span class="n">target_name</span></em>, <em class="sig-param"><span class="n">config</span></em>, <em class="sig-param"><span class="n">features</span><span class="o">=</span><span class="default_value">None</span></em><span class="sig-paren">)</span><a class="reference internal" href="_modules/preprocess.html#DataPreProcessor.__init__"><span class="viewcode-link">[source]</span></a><a class="headerlink" href="#preprocess.DataPreProcessor.__init__" title="Permalink to this definition">¶</a></dt>
+<dd><p>Initializes a Data Preprocessor object. It requires a data source which can either be a string to a file or a pandas DataFrame.
+Furthermore, it requires a target name for the target to predict.</p>
+<p>The last parameters is a dictionary containing a mapping to preprocessor class. The recommend way is to read a config.yaml file and pass the return value as a parameter
+to this object. The mapping file necessarily requires the following keywords:</p>
+<ul class="simple">
+<li><p><em>“mapping”</em> must be a primary key.</p></li>
+</ul>
+<p>Withing the mapping dictionary, the following second level keywords are mandatory:</p>
+<ul class="simple">
+<li><p><em>“imputer”</em></p></li>
+<li><p><em>“encoder”</em></p></li>
+<li><p><em>“scaler”</em></p></li>
+<li><p><em>“subset_selector”</em></p></li>
+<li><p><em>“categorical_encoder”</em></p></li>
+</ul>
+<p>The values obtained by the second level keywords are pointer to the corresponding preprocessor class.</p>
+<p>Example of a yaml mapping:</p>
+<div class="highlight-default notranslate"><div class="highlight"><pre><span></span><span class="n">mapping</span><span class="p">:</span>
+    <span class="n">scaler</span><span class="p">:</span>
+          <span class="s1">&#39;minmax&#39;</span><span class="p">:</span> <span class="n">MinMaxScaler</span>
+            <span class="s1">&#39;standard&#39;</span><span class="p">:</span> <span class="n">StandardScaler</span>
+    <span class="n">encoder</span><span class="p">:</span>
+            <span class="s1">&#39;onehot&#39;</span><span class="p">:</span> <span class="n">OneHotEncoder</span>
+            <span class="s1">&#39;label&#39;</span><span class="p">:</span> <span class="n">LabelEncoder</span>
+            <span class="s1">&#39;binarize&#39;</span><span class="p">:</span> <span class="n">Binarizer</span>
+    <span class="n">categorical_encoder</span><span class="p">:</span>
+            <span class="s1">&#39;onehot&#39;</span><span class="p">:</span> <span class="n">OneHotEncoder</span>
+            <span class="s1">&#39;label&#39;</span><span class="p">:</span> <span class="n">LabelEncoder</span>
+            <span class="s1">&#39;binarize&#39;</span><span class="p">:</span> <span class="n">Binarizer</span>
+    <span class="n">subset_selector</span><span class="p">:</span>
+            <span class="s1">&#39;name&#39;</span> <span class="p">:</span> <span class="n">NameSelector</span>
+            <span class="s1">&#39;type&#39;</span> <span class="p">:</span> <span class="n">TypeSelector</span>
+    <span class="n">imputer</span><span class="p">:</span>
+            <span class="s1">&#39;simple&#39;</span> <span class="p">:</span> <span class="n">SimpleImputer</span>
+            <span class="s1">&#39;knn&#39;</span> <span class="p">:</span> <span class="n">KNNImputer</span>
+</pre></div>
+</div>
+<dl class="field-list simple">
+<dt class="field-odd">Parameters</dt>
+<dd class="field-odd"><ul class="simple">
+<li><p><strong>data_source</strong> – provides a string to a file to be read or a plain pandas DataFrame</p></li>
+<li><p><strong>target_name</strong> – the label of the target to be analyzed</p></li>
+<li><p><strong>config</strong> – a config file containing mappings for preprocessor classes</p></li>
+<li><p><strong>features</strong> – optionally, the feature of interest can be defined here</p></li>
+</ul>
+</dd>
+</dl>
+<p># TODO make keys optionals</p>
+</dd></dl>
+
+<dl class="py method">
+<dt id="preprocess.DataPreProcessor.SubSetSelector">
+<em class="property">property </em><code class="sig-name descname">SubSetSelector</code><a class="headerlink" href="#preprocess.DataPreProcessor.SubSetSelector" title="Permalink to this definition">¶</a></dt>
+<dd><p>A property which returns the pandas DataFrame subset selector</p>
+<dl class="field-list simple">
+<dt class="field-odd">Returns</dt>
+<dd class="field-odd"><p>the SubSetSelector attribute</p>
+</dd>
+</dl>
+</dd></dl>
+
+<dl class="py method">
+<dt id="preprocess.DataPreProcessor.Scaler">
+<em class="property">property </em><code class="sig-name descname">Scaler</code><a class="headerlink" href="#preprocess.DataPreProcessor.Scaler" title="Permalink to this definition">¶</a></dt>
+<dd><p>A property which returns a Scaler instance for numerical data</p>
+<dl class="field-list simple">
+<dt class="field-odd">Returns</dt>
+<dd class="field-odd"><p>the Scaler attribute</p>
+</dd>
+</dl>
+</dd></dl>
+
+<dl class="py method">
+<dt id="preprocess.DataPreProcessor.Imputer">
+<em class="property">property </em><code class="sig-name descname">Imputer</code><a class="headerlink" href="#preprocess.DataPreProcessor.Imputer" title="Permalink to this definition">¶</a></dt>
+<dd><p>A property which returns a Imputer instance which replaces missing values.</p>
+<dl class="field-list simple">
+<dt class="field-odd">Returns</dt>
+<dd class="field-odd"><p>the Imputer attribute</p>
+</dd>
+</dl>
+</dd></dl>
+
+<dl class="py method">
+<dt id="preprocess.DataPreProcessor.Encoder">
+<em class="property">property </em><code class="sig-name descname">Encoder</code><a class="headerlink" href="#preprocess.DataPreProcessor.Encoder" title="Permalink to this definition">¶</a></dt>
+<dd><p>A property which returns a Encoder instance which encodes string values</p>
+<dl class="field-list simple">
+<dt class="field-odd">Returns</dt>
+<dd class="field-odd"><p>the Encoder attribute</p>
+</dd>
+</dl>
+</dd></dl>
+
+<dl class="py method">
+<dt id="preprocess.DataPreProcessor.Categorical_Encoder">
+<em class="property">property </em><code class="sig-name descname">Categorical_Encoder</code><a class="headerlink" href="#preprocess.DataPreProcessor.Categorical_Encoder" title="Permalink to this definition">¶</a></dt>
+<dd><p>A property which returns a Categorical_Encoder instance which encodes categorical values</p>
+<dl class="field-list simple">
+<dt class="field-odd">Returns</dt>
+<dd class="field-odd"><p>the Categorical_Encoder attribute</p>
+</dd>
+</dl>
+</dd></dl>
+
+<dl class="py method">
+<dt id="preprocess.DataPreProcessor.get_config_classes_by_key">
+<code class="sig-name descname">get_config_classes_by_key</code><span class="sig-paren">(</span><em class="sig-param"><span class="n">key</span></em><span class="sig-paren">)</span><a class="reference internal" href="_modules/preprocess.html#DataPreProcessor.get_config_classes_by_key"><span class="viewcode-link">[source]</span></a><a class="headerlink" href="#preprocess.DataPreProcessor.get_config_classes_by_key" title="Permalink to this definition">¶</a></dt>
+<dd><p>Takes a dictionary keys that points to Preprocessor classes as a raw string and converts the raw string to the
+corresponding Python classes</p>
+<dl class="field-list simple">
+<dt class="field-odd">Parameters</dt>
+<dd class="field-odd"><p><strong>key</strong> (<em>str</em>) – a dictionary key which points to a PreProcessor classes as a raw string</p>
+</dd>
+<dt class="field-even">Returns</dt>
+<dd class="field-even"><p>the converted dictionary</p>
+</dd>
+<dt class="field-odd">Return type</dt>
+<dd class="field-odd"><p>dict</p>
+</dd>
+</dl>
+</dd></dl>
+
+<dl class="py method">
+<dt id="preprocess.DataPreProcessor.create_pipeline">
+<code class="sig-name descname">create_pipeline</code><span class="sig-paren">(</span><span class="sig-paren">)</span><a class="reference internal" href="_modules/preprocess.html#DataPreProcessor.create_pipeline"><span class="viewcode-link">[source]</span></a><a class="headerlink" href="#preprocess.DataPreProcessor.create_pipeline" title="Permalink to this definition">¶</a></dt>
+<dd><p>Creates a data pre processing pipelines. For each data type, assembles the different data pre processing steps in a list.
+It then checks, which data type is non empty. If it is non-empty the pipeline step is added to the processing pipeline.
+It then returns the fully assembled pipeline.</p>
+<p>The current version of this function operates on the TypeSelector
+# TODO add a version for naming based pre processors
+# TODO change to column_Transformer</p>
+<dl class="field-list simple">
+<dt class="field-odd">Returns</dt>
+<dd class="field-odd"><p>a pipeline which can be used to fit_transform the original data</p>
+</dd>
+<dt class="field-even">Return type</dt>
+<dd class="field-even"><p>Pipeline</p>
+</dd>
+</dl>
+</dd></dl>
+
+<dl class="py method">
+<dt id="preprocess.DataPreProcessor.get_train_test_data">
+<code class="sig-name descname">get_train_test_data</code><span class="sig-paren">(</span><em class="sig-param"><span class="n">as_df</span><span class="o">=</span><span class="default_value">False</span></em>, <em class="sig-param"><span class="n">test_size</span><span class="o">=</span><span class="default_value">0.2</span></em>, <em class="sig-param"><span class="o">**</span><span class="n">options</span></em><span class="sig-paren">)</span><a class="reference internal" href="_modules/preprocess.html#DataPreProcessor.get_train_test_data"><span class="viewcode-link">[source]</span></a><a class="headerlink" href="#preprocess.DataPreProcessor.get_train_test_data" title="Permalink to this definition">¶</a></dt>
+<dd><p>Creates test and train data set based on the <code class="docutils literal notranslate"><span class="pre">create_pipeline</span></code> method.</p>
+<dl class="field-list simple">
+<dt class="field-odd">Parameters</dt>
+<dd class="field-odd"><ul class="simple">
+<li><p><strong>as_df</strong> (<em>bool</em>) – a flag indicating if the returned data is a pandas DataFrame</p></li>
+<li><p><strong>test_size</strong> (<em>float</em>) – the proportion of test size in the slitted data</p></li>
+<li><p><strong>options</strong> – Further options of the split_train_test function</p></li>
+</ul>
+</dd>
+<dt class="field-even">Returns</dt>
+<dd class="field-even"><p>a namedtuple with a <code class="docutils literal notranslate"><span class="pre">test</span></code> attribute containing the test data and a <code class="docutils literal notranslate"><span class="pre">train</span></code> attribute containing the training data</p>
+</dd>
+<dt class="field-odd">Return type</dt>
+<dd class="field-odd"><p>namedtuple</p>
+</dd>
+</dl>
+</dd></dl>
+
+</dd></dl>
+
+<dl class="py class">
+<dt id="preprocess.BooleanTransformer">
+<em class="property">class </em><code class="sig-prename descclassname">preprocess.</code><code class="sig-name descname">BooleanTransformer</code><a class="reference internal" href="_modules/preprocess.html#BooleanTransformer"><span class="viewcode-link">[source]</span></a><a class="headerlink" href="#preprocess.BooleanTransformer" title="Permalink to this definition">¶</a></dt>
+<dd><p>Bases: <code class="xref py py-class docutils literal notranslate"><span class="pre">sklearn.base.BaseEstimator</span></code>, <code class="xref py py-class docutils literal notranslate"><span class="pre">sklearn.base.TransformerMixin</span></code></p>
+<p>Transforms all boolean features to a numeric data type (1/0)</p>
+<dl class="py method">
+<dt id="preprocess.BooleanTransformer.fit">
+<code class="sig-name descname">fit</code><span class="sig-paren">(</span><em class="sig-param"><span class="n">X</span></em>, <em class="sig-param"><span class="n">y</span><span class="o">=</span><span class="default_value">None</span></em>, <em class="sig-param"><span class="o">**</span><span class="n">kwargs</span></em><span class="sig-paren">)</span><a class="reference internal" href="_modules/preprocess.html#BooleanTransformer.fit"><span class="viewcode-link">[source]</span></a><a class="headerlink" href="#preprocess.BooleanTransformer.fit" title="Permalink to this definition">¶</a></dt>
+<dd></dd></dl>
+
+<dl class="py method">
+<dt id="preprocess.BooleanTransformer.transform">
+<em class="property">static </em><code class="sig-name descname">transform</code><span class="sig-paren">(</span><em class="sig-param"><span class="n">X</span><span class="p">:</span> <span class="n">int</span></em><span class="sig-paren">)</span><a class="reference internal" href="_modules/preprocess.html#BooleanTransformer.transform"><span class="viewcode-link">[source]</span></a><a class="headerlink" href="#preprocess.BooleanTransformer.transform" title="Permalink to this definition">¶</a></dt>
+<dd><p>Converts all boolean features by replacing <code class="docutils literal notranslate"><span class="pre">True</span></code> values by <code class="docutils literal notranslate"><span class="pre">1</span></code> and <code class="docutils literal notranslate"><span class="pre">False</span></code> by 0.
+:param X: the Initial DataFrame
+:return:</p>
+</dd></dl>
+
+</dd></dl>
+
+</div>
+</div>
+
+
+          </div>
+        </div>
+      </div>
+      <div class="clearer"></div>
+    </div>
+    <div class="related" role="navigation" aria-label="related navigation">
+      <h3>Navigation</h3>
+      <ul>
+        <li class="right" style="margin-right: 10px">
+          <a href="genindex.html" title="General Index"
+             >index</a></li>
+        <li class="right" >
+          <a href="py-modindex.html" title="Python Module Index"
+             >modules</a> |</li>
+        <li class="right" >
+          <a href="baseattrs.html" title="Base Attributes"
+             >next</a> |</li>
+        <li class="right" >
+          <a href="feature_builder.html" title="Feature Builder"
+             >previous</a> |</li>
+        <li class="nav-item nav-item-0"><a href="ML_Data_Handler.html">Machine Learning Data Handler 1.2 documentation</a> &#187;</li> 
+      </ul>
+    </div>
+    <div class="footer" role="contentinfo">
+        &#169; Copyright 2020, Dominik Heinz.
+      Created using <a href="http://sphinx-doc.org/">Sphinx</a> 3.0.3.
+    </div>
+  </body>
+</html>

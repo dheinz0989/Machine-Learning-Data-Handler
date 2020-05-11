@@ -1,0 +1,319 @@
+
+<!DOCTYPE html>
+
+<html>
+  <head>
+    <meta charset="utf-8" />
+    <title>Utilities &#8212; Machine Learning Data Handler 1.2 documentation</title>
+    <link rel="stylesheet" href="_static/sphinxdoc.css" type="text/css" />
+    <link rel="stylesheet" href="_static/pygments.css" type="text/css" />
+    <script id="documentation_options" data-url_root="./" src="_static/documentation_options.js"></script>
+    <script src="_static/jquery.js"></script>
+    <script src="_static/underscore.js"></script>
+    <script src="_static/doctools.js"></script>
+    <script src="_static/language_data.js"></script>
+    <link rel="index" title="Index" href="genindex.html" />
+    <link rel="search" title="Search" href="search.html" />
+    <link rel="prev" title="Geoinformation System" href="gis.html" /> 
+  </head><body>
+    <div class="related" role="navigation" aria-label="related navigation">
+      <h3>Navigation</h3>
+      <ul>
+        <li class="right" style="margin-right: 10px">
+          <a href="genindex.html" title="General Index"
+             accesskey="I">index</a></li>
+        <li class="right" >
+          <a href="py-modindex.html" title="Python Module Index"
+             >modules</a> |</li>
+        <li class="right" >
+          <a href="gis.html" title="Geoinformation System"
+             accesskey="P">previous</a> |</li>
+        <li class="nav-item nav-item-0"><a href="ML_Data_Handler.html">Machine Learning Data Handler 1.2 documentation</a> &#187;</li> 
+      </ul>
+    </div>
+      <div class="sphinxsidebar" role="navigation" aria-label="main navigation">
+        <div class="sphinxsidebarwrapper">
+  <h3><a href="ML_Data_Handler.html">Table of Contents</a></h3>
+  <ul>
+<li><a class="reference internal" href="#">Utilities</a><ul>
+<li><a class="reference internal" href="#module-utilities">Source Code</a></li>
+</ul>
+</li>
+</ul>
+
+  <h4>Previous topic</h4>
+  <p class="topless"><a href="gis.html"
+                        title="previous chapter">Geoinformation System</a></p>
+  <div role="note" aria-label="source link">
+    <h3>This Page</h3>
+    <ul class="this-page-menu">
+      <li><a href="_sources/utilities.rst.txt"
+            rel="nofollow">Show Source</a></li>
+    </ul>
+   </div>
+<div id="searchbox" style="display: none" role="search">
+  <h3 id="searchlabel">Quick search</h3>
+    <div class="searchformwrapper">
+    <form class="search" action="search.html" method="get">
+      <input type="text" name="q" aria-labelledby="searchlabel" />
+      <input type="submit" value="Go" />
+    </form>
+    </div>
+</div>
+<script>$('#searchbox').show(0);</script>
+        </div>
+      </div>
+
+    <div class="document">
+      <div class="documentwrapper">
+        <div class="bodywrapper">
+          <div class="body" role="main">
+            
+  <div class="section" id="utilities">
+<h1>Utilities<a class="headerlink" href="#utilities" title="Permalink to this headline">¶</a></h1>
+<p>Description for data selector to be added here</p>
+<div class="section" id="module-utilities">
+<span id="source-code"></span><h2>Source Code<a class="headerlink" href="#module-utilities" title="Permalink to this headline">¶</a></h2>
+<p>This Module provides some Function which are considered util. They are not necessary to run the code but ease it a lot.</p>
+<dl class="simple">
+<dt>In total the following different Utilities classes are provided:</dt><dd><ul class="simple">
+<li><p>Logger: this class initializes a logging instance which can be used to log all activities.</p></li>
+<li><p>Decorators: this class provides a set of different Decorators which can be used to add functionalities to functions</p></li>
+<li><p>ClassAttrHandler: this class provides some functionalities with respect to classes and their respective attributes.</p></li>
+<li><p>Dict_to_Obj: converts a dictionary to an object notation</p></li>
+</ul>
+</dd>
+</dl>
+<dl class="py class">
+<dt id="utilities.Logger">
+<em class="property">class </em><code class="sig-prename descclassname">utilities.</code><code class="sig-name descname">Logger</code><a class="reference internal" href="_modules/utilities.html#Logger"><span class="viewcode-link">[source]</span></a><a class="headerlink" href="#utilities.Logger" title="Permalink to this definition">¶</a></dt>
+<dd><p>Bases: <code class="xref py py-class docutils literal notranslate"><span class="pre">object</span></code></p>
+<p>This class adds a logging instance which can be imported in other modules and used to track code and activities.
+It consists of a single function and is only embedded in a class for giving a namespace that clarifies that is is a logging instance.
+All logs to are written to stdout. Furthermore, logs can optionally be written to a logging file
+The logging file is identified via a timestamp and written into ./logs/</p>
+<p>Usage: Import this class at the beginning of a module. You can then access the log attribute and use it as a logging instance
+Example:</p>
+<div class="highlight-default notranslate"><div class="highlight"><pre><span></span><span class="o">&gt;</span> <span class="mi">1</span> <span class="kn">from</span> <span class="nn">Utilities</span> <span class="kn">import</span> <span class="n">Logger</span>
+<span class="o">&gt;</span> <span class="mi">2</span> <span class="n">log</span> <span class="o">=</span> <span class="n">Logger</span><span class="o">.</span><span class="n">log</span><span class="p">()</span>
+<span class="o">&gt;</span> <span class="mi">3</span> <span class="n">log</span><span class="o">.</span><span class="n">info</span><span class="p">(</span><span class="s1">&#39;Control is here&#39;</span><span class="p">)</span>
+<span class="o">&gt;</span> <span class="c1"># log prints &quot;Control is here&quot;</span>
+</pre></div>
+</div>
+<dl class="py method">
+<dt id="utilities.Logger.initialize_log">
+<em class="property">static </em><code class="sig-name descname">initialize_log</code><span class="sig-paren">(</span><em class="sig-param"><span class="n">write_to_file</span><span class="o">=</span><span class="default_value">False</span></em><span class="sig-paren">)</span><a class="reference internal" href="_modules/utilities.html#Logger.initialize_log"><span class="viewcode-link">[source]</span></a><a class="headerlink" href="#utilities.Logger.initialize_log" title="Permalink to this definition">¶</a></dt>
+<dd><p>Initializes a logging instance that writes to stout. It can optionally also write to a logging file</p>
+<dl class="field-list simple">
+<dt class="field-odd">Parameters</dt>
+<dd class="field-odd"><p><strong>write_to_file</strong> (<em>bool</em>) – indicates, if a subdirectory with “logs” is  created in which a logging file is written into</p>
+</dd>
+<dt class="field-even">Returns</dt>
+<dd class="field-even"><p></p>
+</dd>
+</dl>
+</dd></dl>
+
+</dd></dl>
+
+<dl class="py class">
+<dt id="utilities.Decorators">
+<em class="property">class </em><code class="sig-prename descclassname">utilities.</code><code class="sig-name descname">Decorators</code><a class="reference internal" href="_modules/utilities.html#Decorators"><span class="viewcode-link">[source]</span></a><a class="headerlink" href="#utilities.Decorators" title="Permalink to this definition">¶</a></dt>
+<dd><p>Bases: <code class="xref py py-class docutils literal notranslate"><span class="pre">object</span></code></p>
+<p>This class provides a set of functionality with respect to decorate functions. These decorators are considered
+util as they prevent to repeat the same code, add functionality to a function on the fly, allows a lot of type
+and input checking and so on.</p>
+<p>All the functions defined inside this class take a function as an input and return a decorated function.</p>
+<dl class="py method">
+<dt id="utilities.Decorators.run_time">
+<em class="property">static </em><code class="sig-name descname">run_time</code><span class="sig-paren">(</span><em class="sig-param"><span class="n">func</span></em><span class="sig-paren">)</span><a class="reference internal" href="_modules/utilities.html#Decorators.run_time"><span class="viewcode-link">[source]</span></a><a class="headerlink" href="#utilities.Decorators.run_time" title="Permalink to this definition">¶</a></dt>
+<dd><p>When decorating a function with this decorator, it indicates the function’s run time in a hh:mm:ss after
+the function returns.</p>
+<p>Example:</p>
+<div class="highlight-default notranslate"><div class="highlight"><pre><span></span><span class="o">&gt;</span> <span class="c1"># Assume the function needs exactly 1 minute, 13.534 seconds to execute</span>
+<span class="o">&gt;</span> <span class="nd">@Decorators</span><span class="o">.</span><span class="n">run_time</span>
+<span class="o">&gt;</span> <span class="mi">1</span> <span class="k">def</span> <span class="nf">foo</span><span class="p">(</span><span class="n">x</span><span class="p">):</span>
+<span class="o">&gt;</span> <span class="mi">2</span>   <span class="o">...</span>
+<span class="o">&gt;</span> <span class="o">...</span>
+<span class="o">&gt;</span> <span class="mi">7</span> <span class="n">foo</span><span class="p">(</span><span class="mi">10</span><span class="p">)</span>
+<span class="o">&gt;</span> <span class="c1">#console prints &quot;00:01:13,534&quot;</span>
+</pre></div>
+</div>
+<dl class="field-list simple">
+<dt class="field-odd">Parameters</dt>
+<dd class="field-odd"><p><strong>func</strong> – function to decorate</p>
+</dd>
+<dt class="field-even">Returns</dt>
+<dd class="field-even"><p>decorated function which indicates function run time</p>
+</dd>
+</dl>
+</dd></dl>
+
+<dl class="py method">
+<dt id="utilities.Decorators.show_args">
+<em class="property">static </em><code class="sig-name descname">show_args</code><span class="sig-paren">(</span><em class="sig-param"><span class="n">func</span></em><span class="sig-paren">)</span><a class="reference internal" href="_modules/utilities.html#Decorators.show_args"><span class="viewcode-link">[source]</span></a><a class="headerlink" href="#utilities.Decorators.show_args" title="Permalink to this definition">¶</a></dt>
+<dd><p>When decorating a function with this decorator, it indicates the arguments passed to the function.</p>
+<p>Example:</p>
+<div class="highlight-default notranslate"><div class="highlight"><pre><span></span><span class="o">&gt;</span> <span class="nd">@Decorators</span><span class="o">.</span><span class="n">show_args</span>
+<span class="o">&gt;</span> <span class="mi">1</span> <span class="k">def</span> <span class="nf">foo</span><span class="p">(</span><span class="n">x</span><span class="p">):</span>
+<span class="o">&gt;</span>       <span class="o">....</span>
+<span class="o">&gt;</span>    <span class="mi">10</span> <span class="n">foo</span><span class="p">(</span><span class="mi">10</span><span class="p">)</span>
+<span class="o">&gt;</span>    <span class="mi">11</span> <span class="c1">#console prints &quot;Executing &#39;foo&#39; with args 10 and &#39;&#39;&quot;</span>
+</pre></div>
+</div>
+<dl class="field-list simple">
+<dt class="field-odd">Parameters</dt>
+<dd class="field-odd"><p><strong>func</strong> – function to decorate</p>
+</dd>
+<dt class="field-even">Returns</dt>
+<dd class="field-even"><p>decorated function which indicates function’s arguments</p>
+</dd>
+</dl>
+</dd></dl>
+
+<dl class="py method">
+<dt id="utilities.Decorators.accepted_arguments_within_class_methods">
+<em class="property">static </em><code class="sig-name descname">accepted_arguments_within_class_methods</code><span class="sig-paren">(</span><em class="sig-param"><span class="n">accepted_args</span></em><span class="sig-paren">)</span><a class="reference internal" href="_modules/utilities.html#Decorators.accepted_arguments_within_class_methods"><span class="viewcode-link">[source]</span></a><a class="headerlink" href="#utilities.Decorators.accepted_arguments_within_class_methods" title="Permalink to this definition">¶</a></dt>
+<dd><p>When decorating a function with this decorator, the function’s arguments are checked against a list of valid arguments.
+If an invalid argument is encountered, the function is not executed. This decorator is basically the same as “accepted_arguments”
+decorator except that it is aimed for functions within classes (i.e. containing a “self” parameter). In these setup, the class instance
+itself is passed as the first argument. Therefore, this Decorator only checks the second till last argument for correctness.</p>
+<p>Example:</p>
+<div class="highlight-default notranslate"><div class="highlight"><pre><span></span><span class="o">&gt;</span> <span class="mi">1</span> <span class="k">class</span> <span class="nc">Foo</span><span class="p">:</span>
+<span class="o">&gt;</span> <span class="mi">2</span>   <span class="o">...</span>
+<span class="o">&gt;</span> <span class="o">...</span>
+<span class="o">&gt;</span> <span class="mi">10</span>   <span class="nd">@Decorators</span><span class="o">.</span><span class="n">accepted_arguments_within_class_methods</span><span class="p">([</span><span class="mi">0</span><span class="p">,</span><span class="mi">1</span><span class="p">])</span>
+<span class="o">&gt;</span> <span class="mi">11</span>   <span class="k">def</span> <span class="nf">bar</span><span class="p">(</span><span class="bp">self</span><span class="p">):</span>
+<span class="o">&gt;</span> <span class="mi">12</span>         <span class="o">...</span>
+<span class="o">&gt;</span> <span class="o">...</span>
+<span class="o">&gt;</span> <span class="mi">18</span> <span class="n">foo</span><span class="o">=</span><span class="n">Foo</span><span class="p">(</span><span class="mi">1</span><span class="p">)</span>
+<span class="o">&gt;</span> <span class="mi">19</span> <span class="n">foo</span><span class="o">.</span><span class="n">bar</span><span class="p">()</span>
+<span class="o">&gt;</span> <span class="c1"># console prints: Encountered a non-valid argument.</span>
+<span class="o">&gt;</span> <span class="c1"># console prints: Valid arguments are: [0,1]</span>
+</pre></div>
+</div>
+<dl class="field-list simple">
+<dt class="field-odd">Parameters</dt>
+<dd class="field-odd"><p><strong>accepted_args</strong> (<em>list</em>) – list of accepted arguments by the function</p>
+</dd>
+<dt class="field-even">Returns</dt>
+<dd class="field-even"><p>a decorated function which checks the aguments</p>
+</dd>
+</dl>
+</dd></dl>
+
+<dl class="py method">
+<dt id="utilities.Decorators.counter">
+<em class="property">static </em><code class="sig-name descname">counter</code><span class="sig-paren">(</span><em class="sig-param"><span class="n">func</span></em><span class="sig-paren">)</span><a class="reference internal" href="_modules/utilities.html#Decorators.counter"><span class="viewcode-link">[source]</span></a><a class="headerlink" href="#utilities.Decorators.counter" title="Permalink to this definition">¶</a></dt>
+<dd><p>When decorating a function with this decorator, it indicates how often the function has been called.</p>
+<p>Example:</p>
+<div class="highlight-default notranslate"><div class="highlight"><pre><span></span><span class="o">&gt;</span>   <span class="nd">@Decorators</span><span class="o">.</span><span class="n">counter</span>
+<span class="o">&gt;</span>   <span class="mi">1</span> <span class="k">def</span> <span class="nf">foo</span><span class="p">(</span><span class="n">x</span><span class="p">):</span>
+<span class="o">&gt;</span>       <span class="o">....</span>
+<span class="o">&gt;</span>   <span class="mi">10</span> <span class="n">foo</span><span class="p">(</span><span class="mi">10</span><span class="p">)</span>
+<span class="o">&gt;</span>   <span class="mi">11</span> <span class="c1">#console prints &quot;Executing &#39;foo&#39; with args 10 and &#39;&#39;&quot;</span>
+</pre></div>
+</div>
+<dl class="field-list simple">
+<dt class="field-odd">Parameters</dt>
+<dd class="field-odd"><p><strong>func</strong> – function to decorate</p>
+</dd>
+<dt class="field-even">Returns</dt>
+<dd class="field-even"><p>decorated function which indicates how often the function has been called</p>
+</dd>
+</dl>
+</dd></dl>
+
+<dl class="py method">
+<dt id="utilities.Decorators.argument_in_dictionary_key">
+<em class="property">static </em><code class="sig-name descname">argument_in_dictionary_key</code><span class="sig-paren">(</span><em class="sig-param"><span class="n">dictionary</span><span class="p">:</span> <span class="n">dict</span></em><span class="sig-paren">)</span><a class="reference internal" href="_modules/utilities.html#Decorators.argument_in_dictionary_key"><span class="viewcode-link">[source]</span></a><a class="headerlink" href="#utilities.Decorators.argument_in_dictionary_key" title="Permalink to this definition">¶</a></dt>
+<dd><p>When decorating a function with this decorator, the function’s arguments are checked against a list of valid arguments.
+If an invalid argument is encoutered, the function is not executed.</p>
+<p>Example:</p>
+<div class="highlight-default notranslate"><div class="highlight"><pre><span></span><span class="o">&gt;</span> <span class="nd">@Decorators</span><span class="o">.</span><span class="n">accepted_arguments</span><span class="p">([</span><span class="mi">0</span><span class="p">,</span><span class="mi">1</span><span class="p">])</span>
+<span class="o">&gt;</span> <span class="mi">1</span> <span class="k">def</span> <span class="nf">foo</span><span class="p">(</span><span class="n">x</span><span class="p">):</span>
+<span class="o">&gt;</span>    <span class="o">...</span>
+<span class="o">&gt;</span> <span class="mi">7</span> <span class="n">foo</span><span class="p">(</span><span class="mi">10</span><span class="p">)</span>
+<span class="o">&gt;</span> <span class="c1"># console prints: Encountered a non-valid argument.</span>
+<span class="o">&gt;</span> <span class="c1"># console prints: Valid arguments are: [0,1]</span>
+</pre></div>
+</div>
+<dl class="field-list simple">
+<dt class="field-odd">Parameters</dt>
+<dd class="field-odd"><p><strong>accepted_args</strong> (<em>list</em>) – list of accepted arguments by the function</p>
+</dd>
+<dt class="field-even">Returns</dt>
+<dd class="field-even"><p>a decorated function which checks the aguments</p>
+</dd>
+</dl>
+</dd></dl>
+
+</dd></dl>
+
+<dl class="py class">
+<dt id="utilities.YamlParser">
+<em class="property">class </em><code class="sig-prename descclassname">utilities.</code><code class="sig-name descname">YamlParser</code><span class="sig-paren">(</span><em class="sig-param"><span class="n">yaml_file</span></em><span class="sig-paren">)</span><a class="reference internal" href="_modules/utilities.html#YamlParser"><span class="viewcode-link">[source]</span></a><a class="headerlink" href="#utilities.YamlParser" title="Permalink to this definition">¶</a></dt>
+<dd><p>Bases: <code class="xref py py-class docutils literal notranslate"><span class="pre">object</span></code></p>
+<dl class="py method">
+<dt id="utilities.YamlParser.__init__">
+<code class="sig-name descname">__init__</code><span class="sig-paren">(</span><em class="sig-param"><span class="n">yaml_file</span></em><span class="sig-paren">)</span><a class="reference internal" href="_modules/utilities.html#YamlParser.__init__"><span class="viewcode-link">[source]</span></a><a class="headerlink" href="#utilities.YamlParser.__init__" title="Permalink to this definition">¶</a></dt>
+<dd><p>Initialize self.  See help(type(self)) for accurate signature.</p>
+</dd></dl>
+
+<dl class="py method">
+<dt id="utilities.YamlParser.read">
+<code class="sig-name descname">read</code><span class="sig-paren">(</span><span class="sig-paren">)</span><a class="reference internal" href="_modules/utilities.html#YamlParser.read"><span class="viewcode-link">[source]</span></a><a class="headerlink" href="#utilities.YamlParser.read" title="Permalink to this definition">¶</a></dt>
+<dd></dd></dl>
+
+<dl class="py method">
+<dt id="utilities.YamlParser.get_classes_by_key">
+<code class="sig-name descname">get_classes_by_key</code><span class="sig-paren">(</span><em class="sig-param"><span class="n">key</span></em><span class="sig-paren">)</span><a class="reference internal" href="_modules/utilities.html#YamlParser.get_classes_by_key"><span class="viewcode-link">[source]</span></a><a class="headerlink" href="#utilities.YamlParser.get_classes_by_key" title="Permalink to this definition">¶</a></dt>
+<dd></dd></dl>
+
+<dl class="py method">
+<dt id="utilities.YamlParser.get_file">
+<code class="sig-name descname">get_file</code><span class="sig-paren">(</span><span class="sig-paren">)</span><a class="reference internal" href="_modules/utilities.html#YamlParser.get_file"><span class="viewcode-link">[source]</span></a><a class="headerlink" href="#utilities.YamlParser.get_file" title="Permalink to this definition">¶</a></dt>
+<dd></dd></dl>
+
+<dl class="py method">
+<dt id="utilities.YamlParser.str_to_class">
+<em class="property">static </em><code class="sig-name descname">str_to_class</code><span class="sig-paren">(</span><em class="sig-param"><span class="n">classname</span></em><span class="sig-paren">)</span><a class="reference internal" href="_modules/utilities.html#YamlParser.str_to_class"><span class="viewcode-link">[source]</span></a><a class="headerlink" href="#utilities.YamlParser.str_to_class" title="Permalink to this definition">¶</a></dt>
+<dd></dd></dl>
+
+<dl class="py method">
+<dt id="utilities.YamlParser.convert_nested_dictionary_class">
+<em class="property">static </em><code class="sig-name descname">convert_nested_dictionary_class</code><span class="sig-paren">(</span><em class="sig-param"><span class="n">d</span></em><span class="sig-paren">)</span><a class="reference internal" href="_modules/utilities.html#YamlParser.convert_nested_dictionary_class"><span class="viewcode-link">[source]</span></a><a class="headerlink" href="#utilities.YamlParser.convert_nested_dictionary_class" title="Permalink to this definition">¶</a></dt>
+<dd></dd></dl>
+
+</dd></dl>
+
+</div>
+</div>
+
+
+          </div>
+        </div>
+      </div>
+      <div class="clearer"></div>
+    </div>
+    <div class="related" role="navigation" aria-label="related navigation">
+      <h3>Navigation</h3>
+      <ul>
+        <li class="right" style="margin-right: 10px">
+          <a href="genindex.html" title="General Index"
+             >index</a></li>
+        <li class="right" >
+          <a href="py-modindex.html" title="Python Module Index"
+             >modules</a> |</li>
+        <li class="right" >
+          <a href="gis.html" title="Geoinformation System"
+             >previous</a> |</li>
+        <li class="nav-item nav-item-0"><a href="ML_Data_Handler.html">Machine Learning Data Handler 1.2 documentation</a> &#187;</li> 
+      </ul>
+    </div>
+    <div class="footer" role="contentinfo">
+        &#169; Copyright 2020, Dominik Heinz.
+      Created using <a href="http://sphinx-doc.org/">Sphinx</a> 3.0.3.
+    </div>
+  </body>
+</html>

@@ -1,0 +1,264 @@
+
+<!DOCTYPE html>
+
+<html>
+  <head>
+    <meta charset="utf-8" />
+    <title>Feature Builder &#8212; Machine Learning Data Handler 1.2 documentation</title>
+    <link rel="stylesheet" href="_static/sphinxdoc.css" type="text/css" />
+    <link rel="stylesheet" href="_static/pygments.css" type="text/css" />
+    <script id="documentation_options" data-url_root="./" src="_static/documentation_options.js"></script>
+    <script src="_static/jquery.js"></script>
+    <script src="_static/underscore.js"></script>
+    <script src="_static/doctools.js"></script>
+    <script src="_static/language_data.js"></script>
+    <link rel="index" title="Index" href="genindex.html" />
+    <link rel="search" title="Search" href="search.html" />
+    <link rel="next" title="Data PreProcessor" href="preprocess.html" />
+    <link rel="prev" title="Data Explorer" href="explorer.html" /> 
+  </head><body>
+    <div class="related" role="navigation" aria-label="related navigation">
+      <h3>Navigation</h3>
+      <ul>
+        <li class="right" style="margin-right: 10px">
+          <a href="genindex.html" title="General Index"
+             accesskey="I">index</a></li>
+        <li class="right" >
+          <a href="py-modindex.html" title="Python Module Index"
+             >modules</a> |</li>
+        <li class="right" >
+          <a href="preprocess.html" title="Data PreProcessor"
+             accesskey="N">next</a> |</li>
+        <li class="right" >
+          <a href="explorer.html" title="Data Explorer"
+             accesskey="P">previous</a> |</li>
+        <li class="nav-item nav-item-0"><a href="ML_Data_Handler.html">Machine Learning Data Handler 1.2 documentation</a> &#187;</li> 
+      </ul>
+    </div>
+      <div class="sphinxsidebar" role="navigation" aria-label="main navigation">
+        <div class="sphinxsidebarwrapper">
+  <h3><a href="ML_Data_Handler.html">Table of Contents</a></h3>
+  <ul>
+<li><a class="reference internal" href="#">Feature Builder</a><ul>
+<li><a class="reference internal" href="#module-feature_builder">Source Code</a></li>
+</ul>
+</li>
+</ul>
+
+  <h4>Previous topic</h4>
+  <p class="topless"><a href="explorer.html"
+                        title="previous chapter">Data Explorer</a></p>
+  <h4>Next topic</h4>
+  <p class="topless"><a href="preprocess.html"
+                        title="next chapter">Data PreProcessor</a></p>
+  <div role="note" aria-label="source link">
+    <h3>This Page</h3>
+    <ul class="this-page-menu">
+      <li><a href="_sources/feature_builder.rst.txt"
+            rel="nofollow">Show Source</a></li>
+    </ul>
+   </div>
+<div id="searchbox" style="display: none" role="search">
+  <h3 id="searchlabel">Quick search</h3>
+    <div class="searchformwrapper">
+    <form class="search" action="search.html" method="get">
+      <input type="text" name="q" aria-labelledby="searchlabel" />
+      <input type="submit" value="Go" />
+    </form>
+    </div>
+</div>
+<script>$('#searchbox').show(0);</script>
+        </div>
+      </div>
+
+    <div class="document">
+      <div class="documentwrapper">
+        <div class="bodywrapper">
+          <div class="body" role="main">
+            
+  <div class="section" id="feature-builder">
+<h1>Feature Builder<a class="headerlink" href="#feature-builder" title="Permalink to this headline">¶</a></h1>
+<div class="toctree-wrapper compound">
+</div>
+<p>Description for basic attributes to be added here</p>
+<div class="section" id="module-feature_builder">
+<span id="source-code"></span><h2>Source Code<a class="headerlink" href="#module-feature_builder" title="Permalink to this headline">¶</a></h2>
+<p>This module provides classes to generate a feature builder instance.
+It imports Feature builder classes for special data as Geo Data or Time columns. It is intended to build meaningful features out of them
+and return the resulting DataFrame</p>
+<dl class="py class">
+<dt id="feature_builder.FeatureBuilder">
+<em class="property">class </em><code class="sig-prename descclassname">feature_builder.</code><code class="sig-name descname">FeatureBuilder</code><span class="sig-paren">(</span><em class="sig-param"><span class="n">data_source</span><span class="p">:</span> <span class="n">Union<span class="p">[</span>str<span class="p">, </span>pandas.core.frame.DataFrame<span class="p">]</span></span></em><span class="sig-paren">)</span><a class="reference internal" href="_modules/feature_builder.html#FeatureBuilder"><span class="viewcode-link">[source]</span></a><a class="headerlink" href="#feature_builder.FeatureBuilder" title="Permalink to this definition">¶</a></dt>
+<dd><p>Bases: <a class="reference internal" href="baseattrs.html#baseattrs.BasicDataAttributes" title="baseattrs.BasicDataAttributes"><code class="xref py py-class docutils literal notranslate"><span class="pre">baseattrs.BasicDataAttributes</span></code></a></p>
+<p>Main class to generate a feature builder. It has methods to apply the classes defined in the module. It is intended
+to generate feature of special data type. At the moment, following feature classes are implemented:</p>
+<blockquote>
+<div><ul class="simple">
+<li><p>time</p></li>
+<li><p>gis</p></li>
+</ul>
+</div></blockquote>
+<p>In future version, other classes as text is going to be implemented</p>
+<p>Usage: the idea of this class is to have pipelines generator for the above-mentioned data types.
+In order to add and convert time features, the following implementation is used:</p>
+<div class="highlight-default notranslate"><div class="highlight"><pre><span></span><span class="o">&gt;</span> <span class="c1"># Initialize a feature builder &quot;builder&quot;</span>
+<span class="o">&gt;</span> <span class="c1"># adding two generic time features</span>
+<span class="o">&gt;</span> <span class="mi">1</span> <span class="n">builder</span><span class="o">.</span><span class="n">Time</span><span class="o">.</span><span class="n">add_</span><span class="o">...</span>
+<span class="o">&gt;</span> <span class="mi">2</span> <span class="n">builder</span><span class="o">.</span><span class="n">Time</span><span class="o">.</span><span class="n">add_</span><span class="o">..</span>
+<span class="o">&gt;</span> <span class="c1"># and then wrap the pipeline and rut it via</span>
+<span class="o">&gt;</span> <span class="mi">3</span> <span class="n">builder</span><span class="o">.</span><span class="n">wrap_and_run_current_pipeline</span><span class="p">()</span>
+</pre></div>
+</div>
+<dl class="py method">
+<dt id="feature_builder.FeatureBuilder.__init__">
+<code class="sig-name descname">__init__</code><span class="sig-paren">(</span><em class="sig-param"><span class="n">data_source</span><span class="p">:</span> <span class="n">Union<span class="p">[</span>str<span class="p">, </span>pandas.core.frame.DataFrame<span class="p">]</span></span></em><span class="sig-paren">)</span><a class="reference internal" href="_modules/feature_builder.html#FeatureBuilder.__init__"><span class="viewcode-link">[source]</span></a><a class="headerlink" href="#feature_builder.FeatureBuilder.__init__" title="Permalink to this definition">¶</a></dt>
+<dd><p>Initializes a feature builder object. As its parent classes, only a pointer to a file or a pandas DataFrame is required for initialization</p>
+<p>Other attributes are as follows</p>
+<p>The main feature builder classes:</p>
+<ul class="simple">
+<li><p><code class="docutils literal notranslate"><span class="pre">Time</span></code>: is an attribute which allows to build pipeline for creating time related features</p></li>
+<li><p><code class="docutils literal notranslate"><span class="pre">GIS</span></code>: is an attribute which allows to build pipeline for creating gis related features</p></li>
+</ul>
+<p>After applying feature transformation:</p>
+<ul class="simple">
+<li><p><code class="docutils literal notranslate"><span class="pre">transformed_input</span></code>: is pandas DataFrame containing the derived features</p></li>
+<li><p><code class="docutils literal notranslate"><span class="pre">transformed_features</span></code>: are all new columns derived within the feature creation</p></li>
+</ul>
+<p>Pipeline information:</p>
+<ul class="simple">
+<li><p><code class="docutils literal notranslate"><span class="pre">wrapped_pipeline</span></code>: is an attribute, which contains all information when a pipeline of <code class="docutils literal notranslate"><span class="pre">Time</span></code> or <code class="docutils literal notranslate"><span class="pre">GIS</span></code> has been wrapped</p></li>
+<li><p><code class="docutils literal notranslate"><span class="pre">_current_feature_family_in_pipeline</span></code>: gives information, to which feature class the current pipeline belongs to. Only time and gis is allowed at the moment</p></li>
+</ul>
+<dl class="field-list simple">
+<dt class="field-odd">Parameters</dt>
+<dd class="field-odd"><p><strong>data_source</strong> (<em>Union</em><em>[</em><em>str</em><em>, </em><em>pd.DataFrame</em><em>]</em>) – the source of the data</p>
+</dd>
+</dl>
+</dd></dl>
+
+<dl class="py method">
+<dt id="feature_builder.FeatureBuilder.set_current_pipeline_feature_family">
+<code class="sig-name descname">set_current_pipeline_feature_family</code><span class="sig-paren">(</span><em class="sig-param"><span class="n">value</span><span class="p">:</span> <span class="n">str</span></em><span class="sig-paren">)</span> &#x2192; <a class="reference internal" href="#feature_builder.FeatureBuilder" title="feature_builder.FeatureBuilder">feature_builder.FeatureBuilder</a><a class="reference internal" href="_modules/feature_builder.html#FeatureBuilder.set_current_pipeline_feature_family"><span class="viewcode-link">[source]</span></a><a class="headerlink" href="#feature_builder.FeatureBuilder.set_current_pipeline_feature_family" title="Permalink to this definition">¶</a></dt>
+<dd><p>Resets the features of the current pipeline. Use this function to switch between different pipeline generators and wrap and run them</p>
+<dl class="field-list simple">
+<dt class="field-odd">Parameters</dt>
+<dd class="field-odd"><p><strong>value</strong> (<em>str</em>) – a feature family</p>
+</dd>
+<dt class="field-even">Returns</dt>
+<dd class="field-even"><p></p>
+</dd>
+</dl>
+</dd></dl>
+
+<dl class="py method">
+<dt id="feature_builder.FeatureBuilder.get_transformer_feature_names">
+<em class="property">static </em><code class="sig-name descname">get_transformer_feature_names</code><span class="sig-paren">(</span><em class="sig-param"><span class="n">column_transformer</span><span class="p">:</span> <span class="n">sklearn.compose._column_transformer.ColumnTransformer</span></em><span class="sig-paren">)</span> &#x2192; List<span class="p">[</span>str<span class="p">]</span><a class="reference internal" href="_modules/feature_builder.html#FeatureBuilder.get_transformer_feature_names"><span class="viewcode-link">[source]</span></a><a class="headerlink" href="#feature_builder.FeatureBuilder.get_transformer_feature_names" title="Permalink to this definition">¶</a></dt>
+<dd><p>Gets all generated feature names of a feature transformer column after column transformation</p>
+<dl class="field-list simple">
+<dt class="field-odd">Parameters</dt>
+<dd class="field-odd"><p><strong>column_transformer</strong> (<em>ColumnTransformer</em>) – a transformer of a column transformer pipeline</p>
+</dd>
+<dt class="field-even">Returns</dt>
+<dd class="field-even"><p>all feature names of the newly generated DataFrame:</p>
+</dd>
+<dt class="field-odd">Return type</dt>
+<dd class="field-odd"><p>list</p>
+</dd>
+</dl>
+</dd></dl>
+
+<dl class="py method">
+<dt id="feature_builder.FeatureBuilder.wrap_pip">
+<code class="sig-name descname">wrap_pip</code><span class="sig-paren">(</span><span class="sig-paren">)</span> &#x2192; <a class="reference internal" href="#feature_builder.FeatureBuilder" title="feature_builder.FeatureBuilder">feature_builder.FeatureBuilder</a><a class="reference internal" href="_modules/feature_builder.html#FeatureBuilder.wrap_pip"><span class="viewcode-link">[source]</span></a><a class="headerlink" href="#feature_builder.FeatureBuilder.wrap_pip" title="Permalink to this definition">¶</a></dt>
+<dd><p>Wraps the pipeline of the feature whose value is currently set in the <code class="docutils literal notranslate"><span class="pre">_current_feature_family_in_pipeline</span></code> and wraps it into the
+wrapped pipeline attribute as a ColumnTransformer object</p>
+<dl class="field-list simple">
+<dt class="field-odd">Returns</dt>
+<dd class="field-odd"><p></p>
+</dd>
+</dl>
+</dd></dl>
+
+<dl class="py method">
+<dt id="feature_builder.FeatureBuilder.run_wrapped_pipeline">
+<code class="sig-name descname">run_wrapped_pipeline</code><span class="sig-paren">(</span><span class="sig-paren">)</span> &#x2192; Optional<span class="p">[</span><a class="reference internal" href="#feature_builder.FeatureBuilder" title="feature_builder.FeatureBuilder">feature_builder.FeatureBuilder</a><span class="p">]</span><a class="reference internal" href="_modules/feature_builder.html#FeatureBuilder.run_wrapped_pipeline"><span class="viewcode-link">[source]</span></a><a class="headerlink" href="#feature_builder.FeatureBuilder.run_wrapped_pipeline" title="Permalink to this definition">¶</a></dt>
+<dd><p>If a pipeline has been wrapped and saved into the wrapped_pipeline attribute, it takes this wrapped pipeline and executes it. It then returns
+a DataFrame after all transformation steps have been applied</p>
+<p>Caution: Temporary results are not saved within this pipeline. For instance, if two pipeline steps transform a given column and the
+second transformation steps depends on the transformation results of the first step, the steps might fall.</p>
+<p>Example:</p>
+<div class="highlight-default notranslate"><div class="highlight"><pre><span></span><span class="o">&gt;</span> <span class="c1"># A first transformer converts a date in a string format to date format</span>
+<span class="o">&gt;</span> <span class="mi">1</span> <span class="n">builder</span><span class="o">.</span><span class="n">Time</span><span class="o">.</span><span class="n">add_str_to_time</span><span class="p">(</span><span class="s1">&#39;Month&#39;</span><span class="p">,</span> <span class="s2">&quot;%Y-%m&quot;</span><span class="p">)</span>
+<span class="o">&gt;</span> <span class="c1"># A second transformer derives basic features of a datetime column.</span>
+<span class="o">&gt;</span> <span class="c1"># It therefore expects the column to be in a datetime format:</span>
+<span class="o">&gt;</span> <span class="mi">2</span> <span class="n">builder</span><span class="o">.</span><span class="n">Time</span><span class="o">.</span><span class="n">add_basic_features</span><span class="p">(</span><span class="s1">&#39;Month&#39;</span><span class="p">)</span>
+<span class="o">&gt;</span> <span class="c1"># Setting the wrapper to the Time feature, wrapping and running will result in an error</span>
+<span class="o">&gt;</span> <span class="mi">3</span> <span class="n">builder</span><span class="o">.</span><span class="n">set_current_feature_dimension</span><span class="p">(</span><span class="s1">&#39;time&#39;</span><span class="p">)</span>
+<span class="o">&gt;</span> <span class="mi">4</span> <span class="n">builder</span><span class="o">.</span><span class="n">wrap_pip</span><span class="p">()</span>
+<span class="o">&gt;</span> <span class="mi">5</span> <span class="n">builder</span><span class="o">.</span><span class="n">run_wrapped_pipeline</span><span class="p">()</span>
+</pre></div>
+</div>
+<p>This happens because the result of the first transformer (changing the data type) is not taken into account by the second transformer</p>
+<p>In order to evade the error, the pipeline needs to be wrapped and run separately as follows:</p>
+<div class="highlight-default notranslate"><div class="highlight"><pre><span></span><span class="o">&gt;</span> <span class="mi">1</span> <span class="n">builder</span><span class="o">.</span><span class="n">Time</span><span class="o">.</span><span class="n">add_str_to_time</span><span class="p">(</span><span class="s1">&#39;Month&#39;</span><span class="p">,</span> <span class="s2">&quot;%Y-%m&quot;</span><span class="p">)</span>
+<span class="o">&gt;</span> <span class="mi">2</span> <span class="n">builder</span><span class="o">.</span><span class="n">wrap_pip</span><span class="p">()</span><span class="o">.</span><span class="n">run_wrapped_pipeline</span><span class="p">()</span>
+<span class="o">&gt;</span> <span class="mi">3</span> <span class="n">builder</span><span class="o">.</span><span class="n">Time</span><span class="o">.</span><span class="n">add_basic_features</span><span class="p">(</span><span class="s1">&#39;Month&#39;</span><span class="p">)</span>
+<span class="o">&gt;</span> <span class="mi">4</span> <span class="n">builder</span><span class="o">.</span><span class="n">wrap_pip</span><span class="p">()</span><span class="o">.</span><span class="n">run_wrapped_pipeline</span><span class="p">()</span>
+</pre></div>
+</div>
+<dl class="field-list simple">
+<dt class="field-odd">Returns</dt>
+<dd class="field-odd"><p></p>
+</dd>
+</dl>
+</dd></dl>
+
+<dl class="py method">
+<dt id="feature_builder.FeatureBuilder.wrap_and_run_current_pipeline">
+<code class="sig-name descname">wrap_and_run_current_pipeline</code><span class="sig-paren">(</span><span class="sig-paren">)</span><a class="reference internal" href="_modules/feature_builder.html#FeatureBuilder.wrap_and_run_current_pipeline"><span class="viewcode-link">[source]</span></a><a class="headerlink" href="#feature_builder.FeatureBuilder.wrap_and_run_current_pipeline" title="Permalink to this definition">¶</a></dt>
+<dd><p>Wraps the current pipeline steps and executes all steps.</p>
+<p>This function is saver to use as temporary results are saved and the following operations are performed on the temporary data.
+Therefore, two chaining transformations where one depends on the other will run through.</p>
+<p>This function is the recommend approach to run a pipeline in order to guarantee that all temporary results are saved in a tmp file taken into account.</p>
+<dl class="field-list simple">
+<dt class="field-odd">Returns</dt>
+<dd class="field-odd"><p></p>
+</dd>
+</dl>
+</dd></dl>
+
+</dd></dl>
+
+</div>
+</div>
+
+
+          </div>
+        </div>
+      </div>
+      <div class="clearer"></div>
+    </div>
+    <div class="related" role="navigation" aria-label="related navigation">
+      <h3>Navigation</h3>
+      <ul>
+        <li class="right" style="margin-right: 10px">
+          <a href="genindex.html" title="General Index"
+             >index</a></li>
+        <li class="right" >
+          <a href="py-modindex.html" title="Python Module Index"
+             >modules</a> |</li>
+        <li class="right" >
+          <a href="preprocess.html" title="Data PreProcessor"
+             >next</a> |</li>
+        <li class="right" >
+          <a href="explorer.html" title="Data Explorer"
+             >previous</a> |</li>
+        <li class="nav-item nav-item-0"><a href="ML_Data_Handler.html">Machine Learning Data Handler 1.2 documentation</a> &#187;</li> 
+      </ul>
+    </div>
+    <div class="footer" role="contentinfo">
+        &#169; Copyright 2020, Dominik Heinz.
+      Created using <a href="http://sphinx-doc.org/">Sphinx</a> 3.0.3.
+    </div>
+  </body>
+</html>
