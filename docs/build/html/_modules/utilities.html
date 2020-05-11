@@ -5,9 +5,8 @@
   <head>
     <meta charset="utf-8" />
     <title>utilities &#8212; Machine Learning Data Handler 1.2 documentation</title>
-    <link rel="stylesheet" href="../_static/nature.css" type="text/css" />
+    <link rel="stylesheet" href="../_static/sphinxdoc.css" type="text/css" />
     <link rel="stylesheet" href="../_static/pygments.css" type="text/css" />
-    <link rel="stylesheet" type="text/css" href="../_static/graphviz.css" />
     <script id="documentation_options" data-url_root="../" src="../_static/documentation_options.js"></script>
     <script src="../_static/jquery.js"></script>
     <script src="../_static/underscore.js"></script>
@@ -28,7 +27,21 @@
         <li class="nav-item nav-item-0"><a href="../ML_Data_Handler.html">Machine Learning Data Handler 1.2 documentation</a> &#187;</li>
           <li class="nav-item nav-item-1"><a href="index.html" accesskey="U">Module code</a> &#187;</li> 
       </ul>
-    </div>  
+    </div>
+      <div class="sphinxsidebar" role="navigation" aria-label="main navigation">
+        <div class="sphinxsidebarwrapper">
+<div id="searchbox" style="display: none" role="search">
+  <h3 id="searchlabel">Quick search</h3>
+    <div class="searchformwrapper">
+    <form class="search" action="../search.html" method="get">
+      <input type="text" name="q" aria-labelledby="searchlabel" />
+      <input type="submit" value="Go" />
+    </form>
+    </div>
+</div>
+<script>$('#searchbox').show(0);</script>
+        </div>
+      </div>
 
     <div class="document">
       <div class="documentwrapper">
@@ -61,7 +74,7 @@
 <span class="p">]</span>
 
 
-<div class="viewcode-block" id="Logger"><a class="viewcode-back" href="../ML_Data_Handler.html#utilities.Logger">[docs]</a><span class="k">class</span> <span class="nc">Logger</span><span class="p">:</span>
+<div class="viewcode-block" id="Logger"><a class="viewcode-back" href="../utilities.html#utilities.Logger">[docs]</a><span class="k">class</span> <span class="nc">Logger</span><span class="p">:</span>
     <span class="sd">&quot;&quot;&quot;</span>
 <span class="sd">    This class adds a logging instance which can be imported in other modules and used to track code and activities.</span>
 <span class="sd">    It consists of a single function and is only embedded in a class for giving a namespace that clarifies that is is a logging instance.</span>
@@ -77,7 +90,7 @@
 <span class="sd">    &gt; # log prints &quot;Control is here&quot;</span>
 <span class="sd">    &quot;&quot;&quot;</span>
 
-<div class="viewcode-block" id="Logger.initialize_log"><a class="viewcode-back" href="../ML_Data_Handler.html#utilities.Logger.initialize_log">[docs]</a>    <span class="nd">@staticmethod</span>
+<div class="viewcode-block" id="Logger.initialize_log"><a class="viewcode-back" href="../utilities.html#utilities.Logger.initialize_log">[docs]</a>    <span class="nd">@staticmethod</span>
     <span class="k">def</span> <span class="nf">initialize_log</span><span class="p">(</span><span class="n">write_to_file</span><span class="o">=</span><span class="kc">False</span><span class="p">):</span>
         <span class="sd">&quot;&quot;&quot;</span>
 <span class="sd">        Initializes a logging instance that writes to stout. It can optionally also write to a logging file</span>
@@ -108,7 +121,7 @@
 <span class="n">log</span> <span class="o">=</span> <span class="n">Logger</span><span class="o">.</span><span class="n">initialize_log</span><span class="p">()</span>
 
 
-<div class="viewcode-block" id="Decorators"><a class="viewcode-back" href="../ML_Data_Handler.html#utilities.Decorators">[docs]</a><span class="k">class</span> <span class="nc">Decorators</span><span class="p">:</span>
+<div class="viewcode-block" id="Decorators"><a class="viewcode-back" href="../utilities.html#utilities.Decorators">[docs]</a><span class="k">class</span> <span class="nc">Decorators</span><span class="p">:</span>
     <span class="sd">&quot;&quot;&quot;</span>
 <span class="sd">    This class provides a set of functionality with respect to decorate functions. These decorators are considered</span>
 <span class="sd">    util as they prevent to repeat the same code, add functionality to a function on the fly, allows a lot of type</span>
@@ -117,7 +130,7 @@
 <span class="sd">    All the functions defined inside this class take a function as an input and return a decorated function.</span>
 <span class="sd">    &quot;&quot;&quot;</span>
 
-<div class="viewcode-block" id="Decorators.run_time"><a class="viewcode-back" href="../ML_Data_Handler.html#utilities.Decorators.run_time">[docs]</a>    <span class="nd">@staticmethod</span>
+<div class="viewcode-block" id="Decorators.run_time"><a class="viewcode-back" href="../utilities.html#utilities.Decorators.run_time">[docs]</a>    <span class="nd">@staticmethod</span>
     <span class="k">def</span> <span class="nf">run_time</span><span class="p">(</span><span class="n">func</span><span class="p">):</span>
         <span class="sd">&quot;&quot;&quot;</span>
 <span class="sd">        When decorating a function with this decorator, it indicates the function&#39;s run time in a hh:mm:ss after</span>
@@ -157,7 +170,7 @@
 
         <span class="k">return</span> <span class="n">wrapper</span></div>
 
-<div class="viewcode-block" id="Decorators.show_args"><a class="viewcode-back" href="../ML_Data_Handler.html#utilities.Decorators.show_args">[docs]</a>    <span class="nd">@staticmethod</span>
+<div class="viewcode-block" id="Decorators.show_args"><a class="viewcode-back" href="../utilities.html#utilities.Decorators.show_args">[docs]</a>    <span class="nd">@staticmethod</span>
     <span class="k">def</span> <span class="nf">show_args</span><span class="p">(</span><span class="n">func</span><span class="p">):</span>
         <span class="sd">&#39;&#39;&#39;</span>
 <span class="sd">        When decorating a function with this decorator, it indicates the arguments passed to the function.</span>
@@ -181,7 +194,7 @@
             <span class="k">return</span> <span class="n">ret</span>
         <span class="k">return</span> <span class="n">wrapper</span></div>
 
-<div class="viewcode-block" id="Decorators.accepted_arguments_within_class_methods"><a class="viewcode-back" href="../ML_Data_Handler.html#utilities.Decorators.accepted_arguments_within_class_methods">[docs]</a>    <span class="nd">@staticmethod</span>
+<div class="viewcode-block" id="Decorators.accepted_arguments_within_class_methods"><a class="viewcode-back" href="../utilities.html#utilities.Decorators.accepted_arguments_within_class_methods">[docs]</a>    <span class="nd">@staticmethod</span>
     <span class="k">def</span> <span class="nf">accepted_arguments_within_class_methods</span><span class="p">(</span><span class="n">accepted_args</span><span class="p">):</span>
         <span class="sd">&#39;&#39;&#39;</span>
 <span class="sd">        When decorating a function with this decorator, the function&#39;s arguments are checked against a list of valid arguments.</span>
@@ -222,7 +235,7 @@
 
         <span class="k">return</span> <span class="n">decorator</span></div>
 
-<div class="viewcode-block" id="Decorators.counter"><a class="viewcode-back" href="../ML_Data_Handler.html#utilities.Decorators.counter">[docs]</a>    <span class="nd">@staticmethod</span>
+<div class="viewcode-block" id="Decorators.counter"><a class="viewcode-back" href="../utilities.html#utilities.Decorators.counter">[docs]</a>    <span class="nd">@staticmethod</span>
     <span class="k">def</span> <span class="nf">counter</span><span class="p">(</span><span class="n">func</span><span class="p">):</span>
         <span class="sd">&#39;&#39;&#39;</span>
 <span class="sd">        When decorating a function with this decorator, it indicates how often the function has been called.</span>
@@ -248,7 +261,7 @@
         <span class="n">wrapper</span><span class="o">.</span><span class="n">count</span> <span class="o">=</span> <span class="mi">0</span>
         <span class="k">return</span> <span class="n">wrapper</span></div>
 
-<div class="viewcode-block" id="Decorators.argument_in_dictionary_key"><a class="viewcode-back" href="../ML_Data_Handler.html#utilities.Decorators.argument_in_dictionary_key">[docs]</a>    <span class="nd">@staticmethod</span>
+<div class="viewcode-block" id="Decorators.argument_in_dictionary_key"><a class="viewcode-back" href="../utilities.html#utilities.Decorators.argument_in_dictionary_key">[docs]</a>    <span class="nd">@staticmethod</span>
     <span class="k">def</span> <span class="nf">argument_in_dictionary_key</span><span class="p">(</span><span class="n">dictionary</span><span class="p">:</span> <span class="nb">dict</span><span class="p">):</span>
         <span class="sd">&#39;&#39;&#39;</span>
 <span class="sd">        When decorating a function with this decorator, the function&#39;s arguments are checked against a list of valid arguments.</span>
@@ -287,27 +300,27 @@
         <span class="k">return</span> <span class="n">decorator</span></div></div>
 
 
-<div class="viewcode-block" id="YamlParser"><a class="viewcode-back" href="../ML_Data_Handler.html#utilities.YamlParser">[docs]</a><span class="k">class</span> <span class="nc">YamlParser</span><span class="p">:</span>
-<div class="viewcode-block" id="YamlParser.__init__"><a class="viewcode-back" href="../ML_Data_Handler.html#utilities.YamlParser.__init__">[docs]</a>    <span class="k">def</span> <span class="fm">__init__</span><span class="p">(</span><span class="bp">self</span><span class="p">,</span> <span class="n">yaml_file</span><span class="p">):</span>
+<div class="viewcode-block" id="YamlParser"><a class="viewcode-back" href="../utilities.html#utilities.YamlParser">[docs]</a><span class="k">class</span> <span class="nc">YamlParser</span><span class="p">:</span>
+<div class="viewcode-block" id="YamlParser.__init__"><a class="viewcode-back" href="../utilities.html#utilities.YamlParser.__init__">[docs]</a>    <span class="k">def</span> <span class="fm">__init__</span><span class="p">(</span><span class="bp">self</span><span class="p">,</span> <span class="n">yaml_file</span><span class="p">):</span>
         <span class="bp">self</span><span class="o">.</span><span class="n">yaml_file</span> <span class="o">=</span> <span class="n">yaml_file</span>
         <span class="bp">self</span><span class="o">.</span><span class="n">file_content</span> <span class="o">=</span> <span class="kc">None</span></div>
 
-<div class="viewcode-block" id="YamlParser.read"><a class="viewcode-back" href="../ML_Data_Handler.html#utilities.YamlParser.read">[docs]</a>    <span class="k">def</span> <span class="nf">read</span><span class="p">(</span><span class="bp">self</span><span class="p">):</span>
+<div class="viewcode-block" id="YamlParser.read"><a class="viewcode-back" href="../utilities.html#utilities.YamlParser.read">[docs]</a>    <span class="k">def</span> <span class="nf">read</span><span class="p">(</span><span class="bp">self</span><span class="p">):</span>
         <span class="k">with</span> <span class="nb">open</span><span class="p">(</span><span class="bp">self</span><span class="o">.</span><span class="n">yaml_file</span><span class="p">,</span> <span class="s1">&#39;r&#39;</span><span class="p">)</span> <span class="k">as</span> <span class="n">stream</span><span class="p">:</span>
             <span class="bp">self</span><span class="o">.</span><span class="n">file_content</span> <span class="o">=</span> <span class="n">yaml</span><span class="o">.</span><span class="n">safe_load</span><span class="p">(</span><span class="n">stream</span><span class="p">)</span>
         <span class="k">return</span> <span class="bp">self</span></div>
 
-<div class="viewcode-block" id="YamlParser.get_classes_by_key"><a class="viewcode-back" href="../ML_Data_Handler.html#utilities.YamlParser.get_classes_by_key">[docs]</a>    <span class="k">def</span> <span class="nf">get_classes_by_key</span><span class="p">(</span><span class="bp">self</span><span class="p">,</span> <span class="n">key</span><span class="p">):</span>
+<div class="viewcode-block" id="YamlParser.get_classes_by_key"><a class="viewcode-back" href="../utilities.html#utilities.YamlParser.get_classes_by_key">[docs]</a>    <span class="k">def</span> <span class="nf">get_classes_by_key</span><span class="p">(</span><span class="bp">self</span><span class="p">,</span> <span class="n">key</span><span class="p">):</span>
         <span class="k">return</span> <span class="bp">self</span><span class="o">.</span><span class="n">convert_nested_dictionary_class</span><span class="p">(</span><span class="bp">self</span><span class="o">.</span><span class="n">file_content</span><span class="p">[</span><span class="n">key</span><span class="p">])</span></div>
 
-<div class="viewcode-block" id="YamlParser.get_file"><a class="viewcode-back" href="../ML_Data_Handler.html#utilities.YamlParser.get_file">[docs]</a>    <span class="k">def</span> <span class="nf">get_file</span><span class="p">(</span><span class="bp">self</span><span class="p">):</span>
+<div class="viewcode-block" id="YamlParser.get_file"><a class="viewcode-back" href="../utilities.html#utilities.YamlParser.get_file">[docs]</a>    <span class="k">def</span> <span class="nf">get_file</span><span class="p">(</span><span class="bp">self</span><span class="p">):</span>
         <span class="k">return</span> <span class="bp">self</span><span class="o">.</span><span class="n">file_content</span></div>
 
-<div class="viewcode-block" id="YamlParser.str_to_class"><a class="viewcode-back" href="../ML_Data_Handler.html#utilities.YamlParser.str_to_class">[docs]</a>    <span class="nd">@staticmethod</span>
+<div class="viewcode-block" id="YamlParser.str_to_class"><a class="viewcode-back" href="../utilities.html#utilities.YamlParser.str_to_class">[docs]</a>    <span class="nd">@staticmethod</span>
     <span class="k">def</span> <span class="nf">str_to_class</span><span class="p">(</span><span class="n">classname</span><span class="p">):</span>
         <span class="k">return</span> <span class="nb">getattr</span><span class="p">(</span><span class="n">sys</span><span class="o">.</span><span class="n">modules</span><span class="p">[</span><span class="vm">__name__</span><span class="p">],</span> <span class="n">classname</span><span class="p">)</span></div>
 
-<div class="viewcode-block" id="YamlParser.convert_nested_dictionary_class"><a class="viewcode-back" href="../ML_Data_Handler.html#utilities.YamlParser.convert_nested_dictionary_class">[docs]</a>    <span class="nd">@staticmethod</span>
+<div class="viewcode-block" id="YamlParser.convert_nested_dictionary_class"><a class="viewcode-back" href="../utilities.html#utilities.YamlParser.convert_nested_dictionary_class">[docs]</a>    <span class="nd">@staticmethod</span>
     <span class="k">def</span> <span class="nf">convert_nested_dictionary_class</span><span class="p">(</span><span class="n">d</span><span class="p">):</span>
         <span class="k">for</span> <span class="n">k</span><span class="p">,</span> <span class="n">v</span> <span class="ow">in</span> <span class="n">d</span><span class="o">.</span><span class="n">items</span><span class="p">():</span>
             <span class="k">if</span> <span class="nb">isinstance</span><span class="p">(</span><span class="n">v</span><span class="p">,</span> <span class="nb">dict</span><span class="p">):</span>
@@ -329,20 +342,6 @@
 </pre></div>
 
           </div>
-        </div>
-      </div>
-      <div class="sphinxsidebar" role="navigation" aria-label="main navigation">
-        <div class="sphinxsidebarwrapper">
-<div id="searchbox" style="display: none" role="search">
-  <h3 id="searchlabel">Quick search</h3>
-    <div class="searchformwrapper">
-    <form class="search" action="../search.html" method="get">
-      <input type="text" name="q" aria-labelledby="searchlabel" />
-      <input type="submit" value="Go" />
-    </form>
-    </div>
-</div>
-<script>$('#searchbox').show(0);</script>
         </div>
       </div>
       <div class="clearer"></div>

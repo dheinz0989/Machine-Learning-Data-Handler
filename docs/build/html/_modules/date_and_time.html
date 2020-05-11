@@ -5,9 +5,8 @@
   <head>
     <meta charset="utf-8" />
     <title>date_and_time &#8212; Machine Learning Data Handler 1.2 documentation</title>
-    <link rel="stylesheet" href="../_static/nature.css" type="text/css" />
+    <link rel="stylesheet" href="../_static/sphinxdoc.css" type="text/css" />
     <link rel="stylesheet" href="../_static/pygments.css" type="text/css" />
-    <link rel="stylesheet" type="text/css" href="../_static/graphviz.css" />
     <script id="documentation_options" data-url_root="../" src="../_static/documentation_options.js"></script>
     <script src="../_static/jquery.js"></script>
     <script src="../_static/underscore.js"></script>
@@ -28,7 +27,21 @@
         <li class="nav-item nav-item-0"><a href="../ML_Data_Handler.html">Machine Learning Data Handler 1.2 documentation</a> &#187;</li>
           <li class="nav-item nav-item-1"><a href="index.html" accesskey="U">Module code</a> &#187;</li> 
       </ul>
-    </div>  
+    </div>
+      <div class="sphinxsidebar" role="navigation" aria-label="main navigation">
+        <div class="sphinxsidebarwrapper">
+<div id="searchbox" style="display: none" role="search">
+  <h3 id="searchlabel">Quick search</h3>
+    <div class="searchformwrapper">
+    <form class="search" action="../search.html" method="get">
+      <input type="text" name="q" aria-labelledby="searchlabel" />
+      <input type="submit" value="Go" />
+    </form>
+    </div>
+</div>
+<script>$('#searchbox').show(0);</script>
+        </div>
+      </div>
 
     <div class="document">
       <div class="documentwrapper">
@@ -78,12 +91,12 @@
 <span class="p">]</span>
 
 
-<div class="viewcode-block" id="DateByAnalyzer"><a class="viewcode-back" href="../ML_Data_Handler.html#date_and_time.DateByAnalyzer">[docs]</a><span class="k">class</span> <span class="nc">DateByAnalyzer</span><span class="p">(</span><span class="n">BaseStats</span><span class="p">):</span>
+<div class="viewcode-block" id="DateByAnalyzer"><a class="viewcode-back" href="../date_and_time.html#date_and_time.DateByAnalyzer">[docs]</a><span class="k">class</span> <span class="nc">DateByAnalyzer</span><span class="p">(</span><span class="n">BaseStats</span><span class="p">):</span>
     <span class="sd">&quot;&quot;&quot;</span>
 <span class="sd">    A class which can be used to plot features (x_cols) by Time</span>
 <span class="sd">    &quot;&quot;&quot;</span>
 
-<div class="viewcode-block" id="DateByAnalyzer.__init__"><a class="viewcode-back" href="../ML_Data_Handler.html#date_and_time.DateByAnalyzer.__init__">[docs]</a>    <span class="k">def</span> <span class="fm">__init__</span><span class="p">(</span>
+<div class="viewcode-block" id="DateByAnalyzer.__init__"><a class="viewcode-back" href="../date_and_time.html#date_and_time.DateByAnalyzer.__init__">[docs]</a>    <span class="k">def</span> <span class="fm">__init__</span><span class="p">(</span>
         <span class="bp">self</span><span class="p">,</span>
         <span class="n">data</span><span class="p">:</span> <span class="n">Union</span><span class="p">[</span><span class="nb">str</span><span class="p">,</span> <span class="n">DataFrame</span><span class="p">],</span>
         <span class="n">x_cols</span><span class="p">:</span> <span class="n">Union</span><span class="p">[</span><span class="nb">str</span><span class="p">,</span> <span class="n">Sequence</span><span class="p">[</span><span class="nb">str</span><span class="p">]],</span>
@@ -102,7 +115,7 @@
         <span class="bp">self</span><span class="o">.</span><span class="n">x</span> <span class="o">=</span> <span class="bp">self</span><span class="o">.</span><span class="n">date_cols</span><span class="p">[</span><span class="mi">0</span><span class="p">]</span>
         <span class="bp">self</span><span class="o">.</span><span class="n">date</span> <span class="o">=</span> <span class="bp">self</span><span class="o">.</span><span class="n">x_cols</span><span class="p">[</span><span class="mi">0</span><span class="p">]</span></div>
 
-<div class="viewcode-block" id="DateByAnalyzer.rolling_mean_plot"><a class="viewcode-back" href="../ML_Data_Handler.html#date_and_time.DateByAnalyzer.rolling_mean_plot">[docs]</a>    <span class="k">def</span> <span class="nf">rolling_mean_plot</span><span class="p">(</span><span class="bp">self</span><span class="p">,</span> <span class="n">n_roll</span><span class="p">:</span> <span class="nb">int</span> <span class="o">=</span> <span class="mi">6</span><span class="p">,</span> <span class="o">**</span><span class="n">options</span><span class="p">:</span> <span class="n">Dict</span><span class="p">):</span>
+<div class="viewcode-block" id="DateByAnalyzer.rolling_mean_plot"><a class="viewcode-back" href="../date_and_time.html#date_and_time.DateByAnalyzer.rolling_mean_plot">[docs]</a>    <span class="k">def</span> <span class="nf">rolling_mean_plot</span><span class="p">(</span><span class="bp">self</span><span class="p">,</span> <span class="n">n_roll</span><span class="p">:</span> <span class="nb">int</span> <span class="o">=</span> <span class="mi">6</span><span class="p">,</span> <span class="o">**</span><span class="n">options</span><span class="p">:</span> <span class="n">Dict</span><span class="p">):</span>
         <span class="sd">&quot;&quot;&quot;</span>
 <span class="sd">        Plots a rolling mean over time of the x column</span>
 
@@ -115,7 +128,7 @@
         <span class="n">sns</span><span class="o">.</span><span class="n">lineplot</span><span class="p">(</span><span class="n">data</span><span class="o">=</span><span class="n">data</span><span class="p">,</span> <span class="n">palette</span><span class="o">=</span><span class="s2">&quot;tab10&quot;</span><span class="p">,</span> <span class="n">linewidth</span><span class="o">=</span><span class="mf">2.5</span><span class="p">)</span></div>
         <span class="c1"># sns.lineplot(self.data[self.current_date], self.data[self.current_date], **options)</span>
 
-<div class="viewcode-block" id="DateByAnalyzer.rel_plot"><a class="viewcode-back" href="../ML_Data_Handler.html#date_and_time.DateByAnalyzer.rel_plot">[docs]</a>    <span class="k">def</span> <span class="nf">rel_plot</span><span class="p">(</span><span class="bp">self</span><span class="p">,</span> <span class="o">**</span><span class="n">options</span><span class="p">):</span>
+<div class="viewcode-block" id="DateByAnalyzer.rel_plot"><a class="viewcode-back" href="../date_and_time.html#date_and_time.DateByAnalyzer.rel_plot">[docs]</a>    <span class="k">def</span> <span class="nf">rel_plot</span><span class="p">(</span><span class="bp">self</span><span class="p">,</span> <span class="o">**</span><span class="n">options</span><span class="p">):</span>
         <span class="sd">&quot;&quot;&quot;</span>
 <span class="sd">        Generates a relationship plot between x column by the date.</span>
 
@@ -125,21 +138,19 @@
         <span class="n">sns</span><span class="o">.</span><span class="n">relplot</span><span class="p">(</span><span class="n">x</span><span class="o">=</span><span class="bp">self</span><span class="o">.</span><span class="n">x</span><span class="p">,</span> <span class="n">y</span><span class="o">=</span><span class="bp">self</span><span class="o">.</span><span class="n">date</span><span class="p">,</span> <span class="n">data</span><span class="o">=</span><span class="bp">self</span><span class="o">.</span><span class="n">data</span><span class="p">,</span> <span class="o">**</span><span class="n">options</span><span class="p">)</span></div></div>
 
 
-
-
-<div class="viewcode-block" id="UnixTimeStampConverter"><a class="viewcode-back" href="../ML_Data_Handler.html#date_and_time.UnixTimeStampConverter">[docs]</a><span class="k">class</span> <span class="nc">UnixTimeStampConverter</span><span class="p">(</span><span class="n">BaseEstimator</span><span class="p">,</span> <span class="n">TransformerMixin</span><span class="p">):</span>
+<div class="viewcode-block" id="UnixTimeStampConverter"><a class="viewcode-back" href="../date_and_time.html#date_and_time.UnixTimeStampConverter">[docs]</a><span class="k">class</span> <span class="nc">UnixTimeStampConverter</span><span class="p">(</span><span class="n">BaseEstimator</span><span class="p">,</span> <span class="n">TransformerMixin</span><span class="p">):</span>
     <span class="sd">&quot;&quot;&quot;</span>
 <span class="sd">    Converts the Unix Time Stamp of a feature to a datetime Object</span>
 <span class="sd">    &quot;&quot;&quot;</span>
 
-<div class="viewcode-block" id="UnixTimeStampConverter.__init__"><a class="viewcode-back" href="../ML_Data_Handler.html#date_and_time.UnixTimeStampConverter.__init__">[docs]</a>    <span class="k">def</span> <span class="fm">__init__</span><span class="p">(</span><span class="bp">self</span><span class="p">,</span> <span class="n">features</span><span class="p">:</span> <span class="n">Union</span><span class="p">[</span><span class="nb">str</span><span class="p">,</span> <span class="n">Sequence</span><span class="p">]):</span>
+<div class="viewcode-block" id="UnixTimeStampConverter.__init__"><a class="viewcode-back" href="../date_and_time.html#date_and_time.UnixTimeStampConverter.__init__">[docs]</a>    <span class="k">def</span> <span class="fm">__init__</span><span class="p">(</span><span class="bp">self</span><span class="p">,</span> <span class="n">features</span><span class="p">:</span> <span class="n">Union</span><span class="p">[</span><span class="nb">str</span><span class="p">,</span> <span class="n">Sequence</span><span class="p">]):</span>
         <span class="bp">self</span><span class="o">.</span><span class="n">features</span> <span class="o">=</span> <span class="n">features</span> <span class="k">if</span> <span class="nb">isinstance</span><span class="p">(</span><span class="n">features</span><span class="p">,</span> <span class="nb">list</span><span class="p">)</span> <span class="k">else</span> <span class="p">[</span><span class="n">features</span><span class="p">]</span>
         <span class="bp">self</span><span class="o">.</span><span class="n">feature_names</span> <span class="o">=</span> <span class="p">[]</span></div>
 
-<div class="viewcode-block" id="UnixTimeStampConverter.fit"><a class="viewcode-back" href="../ML_Data_Handler.html#date_and_time.UnixTimeStampConverter.fit">[docs]</a>    <span class="k">def</span> <span class="nf">fit</span><span class="p">(</span><span class="bp">self</span><span class="p">,</span> <span class="n">X</span><span class="p">,</span> <span class="n">y</span><span class="o">=</span><span class="kc">None</span><span class="p">,</span> <span class="o">**</span><span class="n">kwargs</span><span class="p">)</span> <span class="o">-&gt;</span> <span class="n">UnixTimeStampConverter</span><span class="p">:</span>
+<div class="viewcode-block" id="UnixTimeStampConverter.fit"><a class="viewcode-back" href="../date_and_time.html#date_and_time.UnixTimeStampConverter.fit">[docs]</a>    <span class="k">def</span> <span class="nf">fit</span><span class="p">(</span><span class="bp">self</span><span class="p">,</span> <span class="n">X</span><span class="p">,</span> <span class="n">y</span><span class="o">=</span><span class="kc">None</span><span class="p">,</span> <span class="o">**</span><span class="n">kwargs</span><span class="p">)</span> <span class="o">-&gt;</span> <span class="n">UnixTimeStampConverter</span><span class="p">:</span>
         <span class="k">return</span> <span class="bp">self</span></div>
 
-<div class="viewcode-block" id="UnixTimeStampConverter.transform"><a class="viewcode-back" href="../ML_Data_Handler.html#date_and_time.UnixTimeStampConverter.transform">[docs]</a>    <span class="k">def</span> <span class="nf">transform</span><span class="p">(</span><span class="bp">self</span><span class="p">,</span> <span class="n">X</span><span class="p">:</span> <span class="n">pd</span><span class="o">.</span><span class="n">DataFrame</span><span class="p">)</span> <span class="o">-&gt;</span> <span class="n">pd</span><span class="o">.</span><span class="n">DataFrame</span><span class="p">:</span>
+<div class="viewcode-block" id="UnixTimeStampConverter.transform"><a class="viewcode-back" href="../date_and_time.html#date_and_time.UnixTimeStampConverter.transform">[docs]</a>    <span class="k">def</span> <span class="nf">transform</span><span class="p">(</span><span class="bp">self</span><span class="p">,</span> <span class="n">X</span><span class="p">:</span> <span class="n">pd</span><span class="o">.</span><span class="n">DataFrame</span><span class="p">)</span> <span class="o">-&gt;</span> <span class="n">pd</span><span class="o">.</span><span class="n">DataFrame</span><span class="p">:</span>
         <span class="sd">&quot;&quot;&quot;</span>
 <span class="sd">        Transforms a Unix Timestamp to a Pandas DataFrame ``datetime`` object</span>
 
@@ -153,12 +164,12 @@
         <span class="k">return</span> <span class="n">X</span></div></div>
 
 
-<div class="viewcode-block" id="TimeDifference"><a class="viewcode-back" href="../ML_Data_Handler.html#date_and_time.TimeDifference">[docs]</a><span class="k">class</span> <span class="nc">TimeDifference</span><span class="p">(</span><span class="n">BaseEstimator</span><span class="p">,</span> <span class="n">TransformerMixin</span><span class="p">):</span>
+<div class="viewcode-block" id="TimeDifference"><a class="viewcode-back" href="../date_and_time.html#date_and_time.TimeDifference">[docs]</a><span class="k">class</span> <span class="nc">TimeDifference</span><span class="p">(</span><span class="n">BaseEstimator</span><span class="p">,</span> <span class="n">TransformerMixin</span><span class="p">):</span>
     <span class="sd">&quot;&quot;&quot;</span>
 <span class="sd">    Returns the difference in time between two different time columns.</span>
 <span class="sd">    &quot;&quot;&quot;</span>
 
-<div class="viewcode-block" id="TimeDifference.__init__"><a class="viewcode-back" href="../ML_Data_Handler.html#date_and_time.TimeDifference.__init__">[docs]</a>    <span class="k">def</span> <span class="fm">__init__</span><span class="p">(</span>
+<div class="viewcode-block" id="TimeDifference.__init__"><a class="viewcode-back" href="../date_and_time.html#date_and_time.TimeDifference.__init__">[docs]</a>    <span class="k">def</span> <span class="fm">__init__</span><span class="p">(</span>
         <span class="bp">self</span><span class="p">,</span>
         <span class="n">x_time</span><span class="p">:</span> <span class="nb">str</span><span class="p">,</span>
         <span class="n">y_time</span><span class="p">:</span> <span class="nb">str</span><span class="p">,</span>
@@ -201,10 +212,10 @@
         <span class="bp">self</span><span class="o">.</span><span class="n">components</span> <span class="o">=</span> <span class="n">components</span>
         <span class="bp">self</span><span class="o">.</span><span class="n">feature_names</span> <span class="o">=</span> <span class="p">[]</span></div>
 
-<div class="viewcode-block" id="TimeDifference.fit"><a class="viewcode-back" href="../ML_Data_Handler.html#date_and_time.TimeDifference.fit">[docs]</a>    <span class="k">def</span> <span class="nf">fit</span><span class="p">(</span><span class="bp">self</span><span class="p">,</span> <span class="n">X</span><span class="p">,</span> <span class="n">y</span><span class="o">=</span><span class="kc">None</span><span class="p">,</span> <span class="o">**</span><span class="n">kwargs</span><span class="p">)</span> <span class="o">-&gt;</span> <span class="n">TimeDifference</span><span class="p">:</span>
+<div class="viewcode-block" id="TimeDifference.fit"><a class="viewcode-back" href="../date_and_time.html#date_and_time.TimeDifference.fit">[docs]</a>    <span class="k">def</span> <span class="nf">fit</span><span class="p">(</span><span class="bp">self</span><span class="p">,</span> <span class="n">X</span><span class="p">,</span> <span class="n">y</span><span class="o">=</span><span class="kc">None</span><span class="p">,</span> <span class="o">**</span><span class="n">kwargs</span><span class="p">)</span> <span class="o">-&gt;</span> <span class="n">TimeDifference</span><span class="p">:</span>
         <span class="k">return</span> <span class="bp">self</span></div>
 
-<div class="viewcode-block" id="TimeDifference.transform"><a class="viewcode-back" href="../ML_Data_Handler.html#date_and_time.TimeDifference.transform">[docs]</a>    <span class="k">def</span> <span class="nf">transform</span><span class="p">(</span><span class="bp">self</span><span class="p">,</span> <span class="n">X</span><span class="p">:</span> <span class="n">pd</span><span class="o">.</span><span class="n">DataFrame</span><span class="p">)</span> <span class="o">-&gt;</span> <span class="n">pd</span><span class="o">.</span><span class="n">DataFrame</span><span class="p">:</span>
+<div class="viewcode-block" id="TimeDifference.transform"><a class="viewcode-back" href="../date_and_time.html#date_and_time.TimeDifference.transform">[docs]</a>    <span class="k">def</span> <span class="nf">transform</span><span class="p">(</span><span class="bp">self</span><span class="p">,</span> <span class="n">X</span><span class="p">:</span> <span class="n">pd</span><span class="o">.</span><span class="n">DataFrame</span><span class="p">)</span> <span class="o">-&gt;</span> <span class="n">pd</span><span class="o">.</span><span class="n">DataFrame</span><span class="p">:</span>
         <span class="sd">&quot;&quot;&quot;</span>
 <span class="sd">        Transforms the DataFrame by creating new columns yielding the time difference.</span>
 <span class="sd">        Iterates over all boolean arguments and applies a transformation is the boolean flag is set to True.</span>
@@ -237,12 +248,12 @@
         <span class="k">return</span> <span class="n">X</span></div></div>
 
 
-<div class="viewcode-block" id="StringToTimeConverter"><a class="viewcode-back" href="../ML_Data_Handler.html#date_and_time.StringToTimeConverter">[docs]</a><span class="k">class</span> <span class="nc">StringToTimeConverter</span><span class="p">(</span><span class="n">BaseEstimator</span><span class="p">,</span> <span class="n">TransformerMixin</span><span class="p">):</span>
+<div class="viewcode-block" id="StringToTimeConverter"><a class="viewcode-back" href="../date_and_time.html#date_and_time.StringToTimeConverter">[docs]</a><span class="k">class</span> <span class="nc">StringToTimeConverter</span><span class="p">(</span><span class="n">BaseEstimator</span><span class="p">,</span> <span class="n">TransformerMixin</span><span class="p">):</span>
     <span class="sd">&quot;&quot;&quot;</span>
 <span class="sd">    Converts a time column expressed as a string to a Datetime object</span>
 <span class="sd">    &quot;&quot;&quot;</span>
 
-<div class="viewcode-block" id="StringToTimeConverter.__init__"><a class="viewcode-back" href="../ML_Data_Handler.html#date_and_time.StringToTimeConverter.__init__">[docs]</a>    <span class="k">def</span> <span class="fm">__init__</span><span class="p">(</span><span class="bp">self</span><span class="p">,</span> <span class="n">features</span><span class="p">:</span> <span class="n">Union</span><span class="p">[</span><span class="nb">str</span><span class="p">,</span> <span class="n">Sequence</span><span class="p">],</span> <span class="n">format_string</span><span class="p">:</span> <span class="nb">str</span><span class="p">):</span>
+<div class="viewcode-block" id="StringToTimeConverter.__init__"><a class="viewcode-back" href="../date_and_time.html#date_and_time.StringToTimeConverter.__init__">[docs]</a>    <span class="k">def</span> <span class="fm">__init__</span><span class="p">(</span><span class="bp">self</span><span class="p">,</span> <span class="n">features</span><span class="p">:</span> <span class="n">Union</span><span class="p">[</span><span class="nb">str</span><span class="p">,</span> <span class="n">Sequence</span><span class="p">],</span> <span class="n">format_string</span><span class="p">:</span> <span class="nb">str</span><span class="p">):</span>
         <span class="sd">&quot;&quot;&quot;</span>
 <span class="sd">        Initializes an object to convert string column to a datetime column</span>
 
@@ -255,7 +266,7 @@
         <span class="bp">self</span><span class="o">.</span><span class="n">format_string</span> <span class="o">=</span> <span class="n">format_string</span>
         <span class="bp">self</span><span class="o">.</span><span class="n">feature_names</span> <span class="o">=</span> <span class="p">[]</span></div>
 
-<div class="viewcode-block" id="StringToTimeConverter.as_date_time"><a class="viewcode-back" href="../ML_Data_Handler.html#date_and_time.StringToTimeConverter.as_date_time">[docs]</a>    <span class="nd">@staticmethod</span>
+<div class="viewcode-block" id="StringToTimeConverter.as_date_time"><a class="viewcode-back" href="../date_and_time.html#date_and_time.StringToTimeConverter.as_date_time">[docs]</a>    <span class="nd">@staticmethod</span>
     <span class="k">def</span> <span class="nf">as_date_time</span><span class="p">(</span><span class="n">date_str</span><span class="p">:</span> <span class="nb">str</span><span class="p">,</span> <span class="n">format_string</span><span class="p">:</span> <span class="nb">str</span> <span class="o">=</span> <span class="s2">&quot;%Y-%m-</span><span class="si">%d</span><span class="s2">&quot;</span><span class="p">)</span> <span class="o">-&gt;</span> <span class="n">datetime</span><span class="p">:</span>
         <span class="sd">&quot;&quot;&quot;</span>
 <span class="sd">        Converts a date string to a Python datetime object. Format string is YYYY-MM-DD</span>
@@ -269,10 +280,10 @@
 <span class="sd">        &quot;&quot;&quot;</span>
         <span class="k">return</span> <span class="n">datetime</span><span class="o">.</span><span class="n">strptime</span><span class="p">(</span><span class="n">date_str</span><span class="p">,</span> <span class="n">format_string</span><span class="p">)</span></div>
 
-<div class="viewcode-block" id="StringToTimeConverter.fit"><a class="viewcode-back" href="../ML_Data_Handler.html#date_and_time.StringToTimeConverter.fit">[docs]</a>    <span class="k">def</span> <span class="nf">fit</span><span class="p">(</span><span class="bp">self</span><span class="p">,</span> <span class="n">X</span><span class="p">,</span> <span class="n">y</span><span class="o">=</span><span class="kc">None</span><span class="p">,</span> <span class="o">**</span><span class="n">kwargs</span><span class="p">):</span>
+<div class="viewcode-block" id="StringToTimeConverter.fit"><a class="viewcode-back" href="../date_and_time.html#date_and_time.StringToTimeConverter.fit">[docs]</a>    <span class="k">def</span> <span class="nf">fit</span><span class="p">(</span><span class="bp">self</span><span class="p">,</span> <span class="n">X</span><span class="p">,</span> <span class="n">y</span><span class="o">=</span><span class="kc">None</span><span class="p">,</span> <span class="o">**</span><span class="n">kwargs</span><span class="p">):</span>
         <span class="k">return</span> <span class="bp">self</span></div>
 
-<div class="viewcode-block" id="StringToTimeConverter.transform"><a class="viewcode-back" href="../ML_Data_Handler.html#date_and_time.StringToTimeConverter.transform">[docs]</a>    <span class="k">def</span> <span class="nf">transform</span><span class="p">(</span><span class="bp">self</span><span class="p">,</span> <span class="n">X</span><span class="p">:</span> <span class="n">pd</span><span class="o">.</span><span class="n">DataFrame</span><span class="p">)</span> <span class="o">-&gt;</span> <span class="n">pd</span><span class="o">.</span><span class="n">DataFrame</span><span class="p">:</span>
+<div class="viewcode-block" id="StringToTimeConverter.transform"><a class="viewcode-back" href="../date_and_time.html#date_and_time.StringToTimeConverter.transform">[docs]</a>    <span class="k">def</span> <span class="nf">transform</span><span class="p">(</span><span class="bp">self</span><span class="p">,</span> <span class="n">X</span><span class="p">:</span> <span class="n">pd</span><span class="o">.</span><span class="n">DataFrame</span><span class="p">)</span> <span class="o">-&gt;</span> <span class="n">pd</span><span class="o">.</span><span class="n">DataFrame</span><span class="p">:</span>
         <span class="sd">&quot;&quot;&quot;</span>
 <span class="sd">        Transforms the DataFrame columns to an datetime object.</span>
 
@@ -290,13 +301,12 @@
         <span class="k">return</span> <span class="n">X</span></div></div>
 
 
-<div class="viewcode-block" id="TimeFeatureBasic"><a class="viewcode-back" href="../ML_Data_Handler.html#date_and_time.TimeFeatureBasic">[docs]</a><span class="k">class</span> <span class="nc">TimeFeatureBasic</span><span class="p">(</span><span class="n">BaseEstimator</span><span class="p">,</span> <span class="n">TransformerMixin</span><span class="p">):</span>
+<div class="viewcode-block" id="TimeFeatureBasic"><a class="viewcode-back" href="../date_and_time.html#date_and_time.TimeFeatureBasic">[docs]</a><span class="k">class</span> <span class="nc">TimeFeatureBasic</span><span class="p">(</span><span class="n">BaseEstimator</span><span class="p">,</span> <span class="n">TransformerMixin</span><span class="p">):</span>
     <span class="sd">&quot;&quot;&quot;</span>
-<span class="sd">    Derives Time features properties in the DataFra e column</span>
+<span class="sd">    Derives Time features properties in the DataFrame column</span>
 <span class="sd">    &quot;&quot;&quot;</span>
 
-    <span class="c1"># TODO Implement weekend</span>
-<div class="viewcode-block" id="TimeFeatureBasic.__init__"><a class="viewcode-back" href="../ML_Data_Handler.html#date_and_time.TimeFeatureBasic.__init__">[docs]</a>    <span class="k">def</span> <span class="fm">__init__</span><span class="p">(</span>
+<div class="viewcode-block" id="TimeFeatureBasic.__init__"><a class="viewcode-back" href="../date_and_time.html#date_and_time.TimeFeatureBasic.__init__">[docs]</a>    <span class="k">def</span> <span class="fm">__init__</span><span class="p">(</span>
         <span class="bp">self</span><span class="p">,</span>
         <span class="n">time_features</span><span class="p">:</span> <span class="n">Union</span><span class="p">[</span><span class="nb">str</span><span class="p">,</span> <span class="n">Sequence</span><span class="p">],</span>
         <span class="n">delete_original_column</span><span class="p">:</span> <span class="nb">bool</span> <span class="o">=</span> <span class="kc">True</span><span class="p">,</span>
@@ -308,9 +318,9 @@
         <span class="n">hour</span><span class="p">:</span> <span class="nb">bool</span> <span class="o">=</span> <span class="kc">True</span><span class="p">,</span>
         <span class="n">minute</span><span class="p">:</span> <span class="nb">bool</span> <span class="o">=</span> <span class="kc">True</span><span class="p">,</span>
         <span class="n">week</span><span class="p">:</span> <span class="nb">bool</span> <span class="o">=</span> <span class="kc">True</span><span class="p">,</span>
-        <span class="n">weekend</span><span class="p">:</span> <span class="nb">bool</span> <span class="o">=</span> <span class="kc">True</span><span class="p">,</span>
         <span class="n">weekofyear</span><span class="p">:</span> <span class="nb">bool</span> <span class="o">=</span> <span class="kc">True</span><span class="p">,</span>
         <span class="n">quarter</span><span class="p">:</span> <span class="nb">bool</span> <span class="o">=</span> <span class="kc">True</span><span class="p">,</span>
+        <span class="n">is_weekend</span><span class="p">:</span> <span class="nb">bool</span> <span class="o">=</span> <span class="kc">True</span><span class="p">,</span>
         <span class="n">is_leap_year</span><span class="p">:</span> <span class="nb">bool</span> <span class="o">=</span> <span class="kc">True</span><span class="p">,</span>
         <span class="n">is_month_end</span><span class="p">:</span> <span class="nb">bool</span> <span class="o">=</span> <span class="kc">True</span><span class="p">,</span>
         <span class="n">is_month_start</span><span class="p">:</span> <span class="nb">bool</span> <span class="o">=</span> <span class="kc">True</span><span class="p">,</span>
@@ -324,44 +334,43 @@
 
 <span class="sd">        :param delete_original_column: a flag indicating if the original column is dropped from the resulting DataFrame</span>
 <span class="sd">        :type delete_original_column: bool</span>
-<span class="sd">        :param month: a flag indicating if the datetime&#39;s ``month`` is derived</span>
+<span class="sd">        :param month: a flag indicating if the datetime&#39;s *month* is derived</span>
 <span class="sd">        :type month: bool</span>
-<span class="sd">        :param year: a flag indicating if the datetime&#39;s ``year`` is derived</span>
+<span class="sd">        :param year: a flag indicating if the datetime&#39;s *year* is derived</span>
 <span class="sd">        :type year: bool</span>
-<span class="sd">        :param day: a flag indicating if the datetime&#39;s ``day`` is derived</span>
+<span class="sd">        :param day: a flag indicating if the datetime&#39;s *day* is derived</span>
 <span class="sd">        :type day: bool</span>
-<span class="sd">        :param dayofweek: a flag indicating if the datetime&#39;s ``day of the week`` is derived</span>
+<span class="sd">        :param dayofweek: a flag indicating if the datetime&#39;s *day of the week* is derived</span>
 <span class="sd">        :type dayofweek: bool</span>
-<span class="sd">        :param dayofyear: a flag indicating if the datetime&#39;s ``day of the year`` is derived</span>
+<span class="sd">        :param dayofyear: a flag indicating if the datetime&#39;s *day of the year* is derived</span>
 <span class="sd">        :type dayofyear: bool</span>
-<span class="sd">        :param hour: a flag indicating if the datetime&#39;s ``hour`` is derived</span>
+<span class="sd">        :param hour: a flag indicating if the datetime&#39;s *hour* is derived</span>
 <span class="sd">        :type hour: bool</span>
-<span class="sd">        :param minute: a flag indicating if the datetime&#39;s ``minute`` is derived</span>
+<span class="sd">        :param minute: a flag indicating if the datetime&#39;s *minute* is derived</span>
 <span class="sd">        :type minute: bool</span>
-<span class="sd">        :param week: a flag indicating if the datetime&#39;s ``week`` is derived</span>
+<span class="sd">        :param week: a flag indicating if the datetime&#39;s *week* is derived</span>
 <span class="sd">        :type week: bool</span>
-<span class="sd">        :param weekend: a flag indicating if the datetime is during a weekend</span>
-<span class="sd">        :type weekend: bool</span>
-<span class="sd">        :param weekofyear:  a flag indicating if the datetime&#39;s ``week of year` is derived</span>
+<span class="sd">        :param is_weekend: a flag indicating if the datetime is during a *weekend*</span>
+<span class="sd">        :type is_weekend: bool</span>
+<span class="sd">        :param weekofyear:  a flag indicating if the datetime&#39;s *week of year* is derived</span>
 <span class="sd">        :type weekofyear: bool</span>
-<span class="sd">        :param quarter: a flag indicating if the datetime&#39;s ``quarter`` is derived</span>
+<span class="sd">        :param quarter: a flag indicating if the datetime&#39;s *quarter* is derived</span>
 <span class="sd">        :type quarter: bool</span>
-<span class="sd">        :param is_leap_year: a flag indicating if the datetime&#39;s  derives, if it is a leap year</span>
+<span class="sd">        :param is_leap_year: a flag indicating if the datetime&#39;s  derives, if it is a *leap year*</span>
 <span class="sd">        :type is_leap_year: bool</span>
-<span class="sd">        :param is_month_end: a flag indicating if the datetime&#39;s  derives, if it is the month&#39;s last day</span>
+<span class="sd">        :param is_month_end: a flag indicating if the datetime&#39;s  derives, if it is the *month&#39;s last day*</span>
 <span class="sd">        :type is_month_end: bool</span>
-<span class="sd">        :param is_month_start: a flag indicating if the datetime&#39;s  derives, if it is the month&#39;s first day</span>
+<span class="sd">        :param is_month_start: a flag indicating if the datetime&#39;s  derives, if it is the *month&#39;s first day*</span>
 <span class="sd">        :type is_quarter_start: bool</span>
-<span class="sd">        :param is_quarter_start: a flag indicating if the datetime&#39;s  derives, if it is the quarter&#39;s first day</span>
+<span class="sd">        :param is_quarter_start: a flag indicating if the datetime&#39;s  derives, if it is the *quarter&#39;s first day*</span>
 <span class="sd">        :type is_month_start: bool</span>
-<span class="sd">        :param is_quarter_end: a flag indicating if the datetime&#39;s  derives, if it is the quarter&#39;s last day</span>
+<span class="sd">        :param is_quarter_end: a flag indicating if the datetime&#39;s  derives, if it is the *quarter&#39;s last day*</span>
 <span class="sd">        :type is_quarter_end: bool</span>
-<span class="sd">        :param is_year_start: a flag indicating if the datetime&#39;s  derives, if it is the year&#39;s first day</span>
+<span class="sd">        :param is_year_start: a flag indicating if the datetime&#39;s  derives, if it is the *year&#39;s first day*</span>
 <span class="sd">        :type is_year_start: bool</span>
-<span class="sd">        :param is_year_end: a flag indicating if the datetime&#39;s  derives, if it is the year&#39;s last day</span>
+<span class="sd">        :param is_year_end: a flag indicating if the datetime&#39;s  derives, if it is the *year&#39;s last day*</span>
 <span class="sd">        :type is_year_end: bool</span>
 <span class="sd">        &quot;&quot;&quot;</span>
-
         <span class="bp">self</span><span class="o">.</span><span class="n">time_features</span> <span class="o">=</span> <span class="p">(</span>
             <span class="n">time_features</span> <span class="k">if</span> <span class="nb">isinstance</span><span class="p">(</span><span class="n">time_features</span><span class="p">,</span> <span class="nb">list</span><span class="p">)</span> <span class="k">else</span> <span class="p">[</span><span class="n">time_features</span><span class="p">]</span>
         <span class="p">)</span>
@@ -374,9 +383,9 @@
         <span class="bp">self</span><span class="o">.</span><span class="n">hour</span> <span class="o">=</span> <span class="n">hour</span>
         <span class="bp">self</span><span class="o">.</span><span class="n">minute</span> <span class="o">=</span> <span class="n">minute</span>
         <span class="bp">self</span><span class="o">.</span><span class="n">week</span> <span class="o">=</span> <span class="n">week</span>
-        <span class="c1"># self.weekend = weekend</span>
         <span class="bp">self</span><span class="o">.</span><span class="n">weekofyear</span> <span class="o">=</span> <span class="n">weekofyear</span>
         <span class="bp">self</span><span class="o">.</span><span class="n">quarter</span> <span class="o">=</span> <span class="n">quarter</span>
+        <span class="bp">self</span><span class="o">.</span><span class="n">is_weekend</span> <span class="o">=</span> <span class="n">is_weekend</span>
         <span class="bp">self</span><span class="o">.</span><span class="n">is_leap_year</span> <span class="o">=</span> <span class="n">is_leap_year</span>
         <span class="bp">self</span><span class="o">.</span><span class="n">is_month_end</span> <span class="o">=</span> <span class="n">is_month_end</span>
         <span class="bp">self</span><span class="o">.</span><span class="n">is_month_start</span> <span class="o">=</span> <span class="n">is_month_start</span>
@@ -386,10 +395,14 @@
         <span class="bp">self</span><span class="o">.</span><span class="n">is_year_end</span> <span class="o">=</span> <span class="n">is_year_end</span>
         <span class="bp">self</span><span class="o">.</span><span class="n">feature_names</span> <span class="o">=</span> <span class="p">[]</span></div>
 
-<div class="viewcode-block" id="TimeFeatureBasic.fit"><a class="viewcode-back" href="../ML_Data_Handler.html#date_and_time.TimeFeatureBasic.fit">[docs]</a>    <span class="k">def</span> <span class="nf">fit</span><span class="p">(</span><span class="bp">self</span><span class="p">,</span> <span class="n">X</span><span class="p">,</span> <span class="n">y</span><span class="o">=</span><span class="kc">None</span><span class="p">,</span> <span class="o">**</span><span class="n">kwargs</span><span class="p">):</span>
+<div class="viewcode-block" id="TimeFeatureBasic.fit"><a class="viewcode-back" href="../date_and_time.html#date_and_time.TimeFeatureBasic.fit">[docs]</a>    <span class="k">def</span> <span class="nf">fit</span><span class="p">(</span><span class="bp">self</span><span class="p">,</span> <span class="n">X</span><span class="p">,</span> <span class="n">y</span><span class="o">=</span><span class="kc">None</span><span class="p">,</span> <span class="o">**</span><span class="n">kwargs</span><span class="p">):</span>
         <span class="k">return</span> <span class="bp">self</span></div>
 
-<div class="viewcode-block" id="TimeFeatureBasic.transform"><a class="viewcode-back" href="../ML_Data_Handler.html#date_and_time.TimeFeatureBasic.transform">[docs]</a>    <span class="k">def</span> <span class="nf">transform</span><span class="p">(</span><span class="bp">self</span><span class="p">,</span> <span class="n">X</span><span class="p">:</span> <span class="n">pd</span><span class="o">.</span><span class="n">DataFrame</span><span class="p">)</span> <span class="o">-&gt;</span> <span class="n">pd</span><span class="o">.</span><span class="n">DataFrame</span><span class="p">:</span>
+<div class="viewcode-block" id="TimeFeatureBasic._is_weekend"><a class="viewcode-back" href="../date_and_time.html#date_and_time.TimeFeatureBasic._is_weekend">[docs]</a>    <span class="nd">@staticmethod</span>
+    <span class="k">def</span> <span class="nf">_is_weekend</span><span class="p">(</span><span class="n">feature</span><span class="p">):</span>
+        <span class="k">return</span> <span class="n">feature</span><span class="o">.</span><span class="n">dt</span><span class="o">.</span><span class="n">dayofweek</span> <span class="o">&gt;=</span> <span class="mi">5</span></div>
+
+<div class="viewcode-block" id="TimeFeatureBasic.transform"><a class="viewcode-back" href="../date_and_time.html#date_and_time.TimeFeatureBasic.transform">[docs]</a>    <span class="k">def</span> <span class="nf">transform</span><span class="p">(</span><span class="bp">self</span><span class="p">,</span> <span class="n">X</span><span class="p">:</span> <span class="n">pd</span><span class="o">.</span><span class="n">DataFrame</span><span class="p">)</span> <span class="o">-&gt;</span> <span class="n">pd</span><span class="o">.</span><span class="n">DataFrame</span><span class="p">:</span>
         <span class="sd">&quot;&quot;&quot;</span>
 <span class="sd">        Iterates over all boolean columns. If they are set to True, the respective feature is derived</span>
 
@@ -410,8 +423,6 @@
                 <span class="n">X</span><span class="p">[</span><span class="n">ftr</span> <span class="o">+</span> <span class="s2">&quot;_dayofyear&quot;</span><span class="p">]</span> <span class="o">=</span> <span class="n">X</span><span class="p">[</span><span class="n">ftr</span><span class="p">]</span><span class="o">.</span><span class="n">dt</span><span class="o">.</span><span class="n">dayofyear</span>
             <span class="k">if</span> <span class="bp">self</span><span class="o">.</span><span class="n">week</span><span class="p">:</span>
                 <span class="n">X</span><span class="p">[</span><span class="n">ftr</span> <span class="o">+</span> <span class="s2">&quot;_week&quot;</span><span class="p">]</span> <span class="o">=</span> <span class="n">X</span><span class="p">[</span><span class="n">ftr</span><span class="p">]</span><span class="o">.</span><span class="n">dt</span><span class="o">.</span><span class="n">week</span>
-            <span class="c1"># if self.weekend:</span>
-            <span class="c1">#    X[ftr + &#39;_weekend&#39;] = X[ftr].dt.weekend</span>
             <span class="k">if</span> <span class="bp">self</span><span class="o">.</span><span class="n">weekofyear</span><span class="p">:</span>
                 <span class="n">X</span><span class="p">[</span><span class="n">ftr</span> <span class="o">+</span> <span class="s2">&quot;_weekofyear&quot;</span><span class="p">]</span> <span class="o">=</span> <span class="n">X</span><span class="p">[</span><span class="n">ftr</span><span class="p">]</span><span class="o">.</span><span class="n">dt</span><span class="o">.</span><span class="n">weekofyear</span>
             <span class="k">if</span> <span class="bp">self</span><span class="o">.</span><span class="n">hour</span><span class="p">:</span>
@@ -420,6 +431,8 @@
                 <span class="n">X</span><span class="p">[</span><span class="n">ftr</span> <span class="o">+</span> <span class="s2">&quot;_minute&quot;</span><span class="p">]</span> <span class="o">=</span> <span class="n">X</span><span class="p">[</span><span class="n">ftr</span><span class="p">]</span><span class="o">.</span><span class="n">dt</span><span class="o">.</span><span class="n">minute</span>
             <span class="k">if</span> <span class="bp">self</span><span class="o">.</span><span class="n">quarter</span><span class="p">:</span>
                 <span class="n">X</span><span class="p">[</span><span class="n">ftr</span> <span class="o">+</span> <span class="s2">&quot;_quarter&quot;</span><span class="p">]</span> <span class="o">=</span> <span class="n">X</span><span class="p">[</span><span class="n">ftr</span><span class="p">]</span><span class="o">.</span><span class="n">dt</span><span class="o">.</span><span class="n">quarter</span>
+            <span class="k">if</span> <span class="bp">self</span><span class="o">.</span><span class="n">is_weekend</span><span class="p">:</span>
+                <span class="n">X</span><span class="p">[</span><span class="n">ftr</span> <span class="o">+</span> <span class="s1">&#39;_is_weekend&#39;</span><span class="p">]</span> <span class="o">=</span> <span class="n">X</span><span class="p">[</span><span class="n">ftr</span><span class="p">]</span><span class="o">.</span><span class="n">dt</span><span class="o">.</span><span class="n">dayofweek</span> <span class="o">&gt;=</span> <span class="mi">5</span>
             <span class="k">if</span> <span class="bp">self</span><span class="o">.</span><span class="n">is_leap_year</span><span class="p">:</span>
                 <span class="n">X</span><span class="p">[</span><span class="n">ftr</span> <span class="o">+</span> <span class="s2">&quot;_is_leap_year&quot;</span><span class="p">]</span> <span class="o">=</span> <span class="n">X</span><span class="p">[</span><span class="n">ftr</span><span class="p">]</span><span class="o">.</span><span class="n">dt</span><span class="o">.</span><span class="n">is_leap_year</span>
             <span class="k">if</span> <span class="bp">self</span><span class="o">.</span><span class="n">is_month_end</span><span class="p">:</span>
@@ -441,20 +454,6 @@
 </pre></div>
 
           </div>
-        </div>
-      </div>
-      <div class="sphinxsidebar" role="navigation" aria-label="main navigation">
-        <div class="sphinxsidebarwrapper">
-<div id="searchbox" style="display: none" role="search">
-  <h3 id="searchlabel">Quick search</h3>
-    <div class="searchformwrapper">
-    <form class="search" action="../search.html" method="get">
-      <input type="text" name="q" aria-labelledby="searchlabel" />
-      <input type="submit" value="Go" />
-    </form>
-    </div>
-</div>
-<script>$('#searchbox').show(0);</script>
         </div>
       </div>
       <div class="clearer"></div>

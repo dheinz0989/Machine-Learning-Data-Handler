@@ -5,9 +5,8 @@
   <head>
     <meta charset="utf-8" />
     <title>preprocess &#8212; Machine Learning Data Handler 1.2 documentation</title>
-    <link rel="stylesheet" href="../_static/nature.css" type="text/css" />
+    <link rel="stylesheet" href="../_static/sphinxdoc.css" type="text/css" />
     <link rel="stylesheet" href="../_static/pygments.css" type="text/css" />
-    <link rel="stylesheet" type="text/css" href="../_static/graphviz.css" />
     <script id="documentation_options" data-url_root="../" src="../_static/documentation_options.js"></script>
     <script src="../_static/jquery.js"></script>
     <script src="../_static/underscore.js"></script>
@@ -28,7 +27,21 @@
         <li class="nav-item nav-item-0"><a href="../ML_Data_Handler.html">Machine Learning Data Handler 1.2 documentation</a> &#187;</li>
           <li class="nav-item nav-item-1"><a href="index.html" accesskey="U">Module code</a> &#187;</li> 
       </ul>
-    </div>  
+    </div>
+      <div class="sphinxsidebar" role="navigation" aria-label="main navigation">
+        <div class="sphinxsidebarwrapper">
+<div id="searchbox" style="display: none" role="search">
+  <h3 id="searchlabel">Quick search</h3>
+    <div class="searchformwrapper">
+    <form class="search" action="../search.html" method="get">
+      <input type="text" name="q" aria-labelledby="searchlabel" />
+      <input type="submit" value="Go" />
+    </form>
+    </div>
+</div>
+<script>$('#searchbox').show(0);</script>
+        </div>
+      </div>
 
     <div class="document">
       <div class="documentwrapper">
@@ -67,12 +80,12 @@
 <span class="n">log</span> <span class="o">=</span> <span class="n">Logger</span><span class="o">.</span><span class="n">initialize_log</span><span class="p">()</span>
 
 
-<div class="viewcode-block" id="DataPreProcessor"><a class="viewcode-back" href="../ML_Data_Handler.html#preprocess.DataPreProcessor">[docs]</a><span class="k">class</span> <span class="nc">DataPreProcessor</span><span class="p">(</span><span class="n">BasicDataAttributes</span><span class="p">):</span>
+<div class="viewcode-block" id="DataPreProcessor"><a class="viewcode-back" href="../preprocess.html#preprocess.DataPreProcessor">[docs]</a><span class="k">class</span> <span class="nc">DataPreProcessor</span><span class="p">(</span><span class="n">BasicDataAttributes</span><span class="p">):</span>
     <span class="sd">&quot;&quot;&quot;</span>
 <span class="sd">    A class used to perform pre-processing steps to the input data.</span>
 <span class="sd">    &quot;&quot;&quot;</span>
 
-<div class="viewcode-block" id="DataPreProcessor.__init__"><a class="viewcode-back" href="../ML_Data_Handler.html#preprocess.DataPreProcessor.__init__">[docs]</a>    <span class="k">def</span> <span class="fm">__init__</span><span class="p">(</span>
+<div class="viewcode-block" id="DataPreProcessor.__init__"><a class="viewcode-back" href="../preprocess.html#preprocess.DataPreProcessor.__init__">[docs]</a>    <span class="k">def</span> <span class="fm">__init__</span><span class="p">(</span>
         <span class="bp">self</span><span class="p">,</span> <span class="n">data_source</span><span class="p">,</span> <span class="n">target_name</span><span class="p">,</span> <span class="n">config</span><span class="p">,</span> <span class="n">features</span><span class="o">=</span><span class="kc">None</span><span class="p">,</span>
     <span class="p">):</span>
         <span class="sd">&quot;&quot;&quot;</span>
@@ -82,36 +95,38 @@
 <span class="sd">        The last parameters is a dictionary containing a mapping to preprocessor class. The recommend way is to read a config.yaml file and pass the return value as a parameter</span>
 <span class="sd">        to this object. The mapping file necessarily requires the following keywords:</span>
 
-<span class="sd">            &gt;&gt; &quot;mapping&quot; must be a primary key.</span>
+<span class="sd">        - *&quot;mapping&quot;* must be a primary key.</span>
+
 <span class="sd">        Withing the mapping dictionary, the following second level keywords are mandatory:</span>
-<span class="sd">            &gt;&gt; &quot;imputer&quot;</span>
-<span class="sd">            &gt;&gt; &quot;encoder&quot;</span>
-<span class="sd">            &gt;&gt; &quot;scaler&quot;</span>
-<span class="sd">            &gt;&gt; &quot;subset_selector&quot;</span>
-<span class="sd">            &gt;&gt; &quot;categorical_encoder&quot;</span>
+
+<span class="sd">        - *&quot;imputer&quot;*</span>
+<span class="sd">        - *&quot;encoder&quot;*</span>
+<span class="sd">        - *&quot;scaler&quot;*</span>
+<span class="sd">        - *&quot;subset_selector&quot;*</span>
+<span class="sd">        - *&quot;categorical_encoder&quot;*</span>
 
 <span class="sd">        The values obtained by the second level keywords are pointer to the corresponding preprocessor class.</span>
 
-<span class="sd">            Example of a yaml mapping:</span>
+<span class="sd">        Example of a yaml mapping::</span>
 
-<span class="sd">            &gt;&gt; mapping:</span>
-<span class="sd">            &gt;&gt;     scaler:</span>
-<span class="sd">            &gt;&gt;           &#39;minmax&#39;: MinMaxScaler</span>
-<span class="sd">            &gt;&gt;             &#39;standard&#39;: StandardScaler</span>
-<span class="sd">            &gt;&gt;     encoder:</span>
-<span class="sd">            &gt;&gt;             &#39;onehot&#39;: OneHotEncoder</span>
-<span class="sd">            &gt;&gt;             &#39;label&#39;: LabelEncoder</span>
-<span class="sd">            &gt;&gt;             &#39;binarize&#39;: Binarizer</span>
-<span class="sd">            &gt;&gt;     categorical_encoder:</span>
-<span class="sd">            &gt;&gt;             &#39;onehot&#39;: OneHotEncoder</span>
-<span class="sd">            &gt;&gt;             &#39;label&#39;: LabelEncoder</span>
-<span class="sd">            &gt;&gt;             &#39;binarize&#39;: Binarizer</span>
-<span class="sd">            &gt;&gt;     subset_selector:</span>
-<span class="sd">            &gt;&gt;             &#39;name&#39; : NameSelector</span>
-<span class="sd">            &gt;&gt;             &#39;type&#39; : TypeSelector</span>
-<span class="sd">            &gt;&gt;     imputer:</span>
-<span class="sd">            &gt;&gt;             simple : SimpleImputer</span>
-<span class="sd">            &gt;&gt;             knn : KNNImputer</span>
+<span class="sd">         mapping:</span>
+<span class="sd">             scaler:</span>
+<span class="sd">                   &#39;minmax&#39;: MinMaxScaler</span>
+<span class="sd">                     &#39;standard&#39;: StandardScaler</span>
+<span class="sd">             encoder:</span>
+<span class="sd">                     &#39;onehot&#39;: OneHotEncoder</span>
+<span class="sd">                     &#39;label&#39;: LabelEncoder</span>
+<span class="sd">                     &#39;binarize&#39;: Binarizer</span>
+<span class="sd">             categorical_encoder:</span>
+<span class="sd">                     &#39;onehot&#39;: OneHotEncoder</span>
+<span class="sd">                     &#39;label&#39;: LabelEncoder</span>
+<span class="sd">                     &#39;binarize&#39;: Binarizer</span>
+<span class="sd">             subset_selector:</span>
+<span class="sd">                     &#39;name&#39; : NameSelector</span>
+<span class="sd">                     &#39;type&#39; : TypeSelector</span>
+<span class="sd">             imputer:</span>
+<span class="sd">                     &#39;simple&#39; : SimpleImputer</span>
+<span class="sd">                     &#39;knn&#39; : KNNImputer</span>
 
 
 <span class="sd">        :param data_source: provides a string to a file to be read or a plain pandas DataFrame</span>
@@ -156,16 +171,17 @@
 <span class="sd">        The value to reset must be a dictionary key in the ``subset_selector`` dictionary</span>
 
 <span class="sd">            Example:</span>
-<span class="sd">            Given the following configuration file entries:</span>
+<span class="sd">            Given the following configuration file entries::</span>
 
-<span class="sd">            &gt;&gt; mapping:</span>
-<span class="sd">            &gt;&gt;    subset_selector:</span>
-<span class="sd">            &gt;&gt;            &#39;name&#39; : NameSelector</span>
-<span class="sd">            &gt;&gt;            &#39;type&#39; : TypeSelector</span>
+<span class="sd">            mapping:</span>
+<span class="sd">                subset_selector:</span>
+<span class="sd">                        &#39;name&#39; : NameSelector</span>
+<span class="sd">                        &#39;type&#39; : TypeSelector</span>
 
-<span class="sd">            and an DataPreProcessor object:</span>
-<span class="sd">            &gt;&gt; preprocessor = DataPreProcessor(data)</span>
-<span class="sd">            &gt;&gt; preprocessor.ingest()</span>
+<span class="sd">            and an DataPreProcessor object::</span>
+
+<span class="sd">            preprocessor = DataPreProcessor(data)</span>
+<span class="sd">            preprocessor.ingest()</span>
 
 <span class="sd">            The SubSetSelector property can be set using:</span>
 
@@ -395,7 +411,7 @@
         <span class="k">else</span><span class="p">:</span>
             <span class="k">raise</span> <span class="ne">NotImplementedError</span><span class="p">(</span><span class="s2">&quot;A function to set the imp&quot;</span><span class="p">)</span>
 
-<div class="viewcode-block" id="DataPreProcessor.get_config_classes_by_key"><a class="viewcode-back" href="../ML_Data_Handler.html#preprocess.DataPreProcessor.get_config_classes_by_key">[docs]</a>    <span class="k">def</span> <span class="nf">get_config_classes_by_key</span><span class="p">(</span><span class="bp">self</span><span class="p">,</span> <span class="n">key</span><span class="p">):</span>
+<div class="viewcode-block" id="DataPreProcessor.get_config_classes_by_key"><a class="viewcode-back" href="../preprocess.html#preprocess.DataPreProcessor.get_config_classes_by_key">[docs]</a>    <span class="k">def</span> <span class="nf">get_config_classes_by_key</span><span class="p">(</span><span class="bp">self</span><span class="p">,</span> <span class="n">key</span><span class="p">):</span>
         <span class="sd">&quot;&quot;&quot;</span>
 <span class="sd">        Takes a dictionary keys that points to Preprocessor classes as a raw string and converts the raw string to the</span>
 <span class="sd">        corresponding Python classes</span>
@@ -407,7 +423,7 @@
 <span class="sd">        &quot;&quot;&quot;</span>
         <span class="k">return</span> <span class="bp">self</span><span class="o">.</span><span class="n">convert_nested_dictionary_class</span><span class="p">(</span><span class="bp">self</span><span class="o">.</span><span class="n">_Config</span><span class="p">[</span><span class="n">key</span><span class="p">])</span></div>
 
-<div class="viewcode-block" id="DataPreProcessor.create_pipeline"><a class="viewcode-back" href="../ML_Data_Handler.html#preprocess.DataPreProcessor.create_pipeline">[docs]</a>    <span class="k">def</span> <span class="nf">create_pipeline</span><span class="p">(</span><span class="bp">self</span><span class="p">):</span>
+<div class="viewcode-block" id="DataPreProcessor.create_pipeline"><a class="viewcode-back" href="../preprocess.html#preprocess.DataPreProcessor.create_pipeline">[docs]</a>    <span class="k">def</span> <span class="nf">create_pipeline</span><span class="p">(</span><span class="bp">self</span><span class="p">):</span>
         <span class="sd">&quot;&quot;&quot;</span>
 <span class="sd">        Creates a data pre processing pipelines. For each data type, assembles the different data pre processing steps in a list.</span>
 <span class="sd">        It then checks, which data type is non empty. If it is non-empty the pipeline step is added to the processing pipeline.</span>
@@ -415,6 +431,7 @@
 
 <span class="sd">        The current version of this function operates on the TypeSelector</span>
 <span class="sd">        # TODO add a version for naming based pre processors</span>
+<span class="sd">        # TODO change to column_Transformer</span>
 
 <span class="sd">        :return: a pipeline which can be used to fit_transform the original data</span>
 <span class="sd">        :rtype: Pipeline</span>
@@ -481,7 +498,7 @@
         <span class="p">)</span>
         <span class="k">return</span> <span class="n">pipeline</span></div>
 
-<div class="viewcode-block" id="DataPreProcessor.get_train_test_data"><a class="viewcode-back" href="../ML_Data_Handler.html#preprocess.DataPreProcessor.get_train_test_data">[docs]</a>    <span class="k">def</span> <span class="nf">get_train_test_data</span><span class="p">(</span><span class="bp">self</span><span class="p">,</span> <span class="n">as_df</span><span class="o">=</span><span class="kc">False</span><span class="p">,</span> <span class="n">test_size</span><span class="o">=</span><span class="mf">0.2</span><span class="p">,</span> <span class="o">**</span><span class="n">options</span><span class="p">):</span>
+<div class="viewcode-block" id="DataPreProcessor.get_train_test_data"><a class="viewcode-back" href="../preprocess.html#preprocess.DataPreProcessor.get_train_test_data">[docs]</a>    <span class="k">def</span> <span class="nf">get_train_test_data</span><span class="p">(</span><span class="bp">self</span><span class="p">,</span> <span class="n">as_df</span><span class="o">=</span><span class="kc">False</span><span class="p">,</span> <span class="n">test_size</span><span class="o">=</span><span class="mf">0.2</span><span class="p">,</span> <span class="o">**</span><span class="n">options</span><span class="p">):</span>
         <span class="sd">&quot;&quot;&quot;</span>
 <span class="sd">        Creates test and train data set based on the ``create_pipeline`` method.</span>
 
@@ -510,15 +527,15 @@
     <span class="c1"># TODO add method to preserve feature names</span>
 
 
-<div class="viewcode-block" id="BooleanTransformer"><a class="viewcode-back" href="../ML_Data_Handler.html#preprocess.BooleanTransformer">[docs]</a><span class="k">class</span> <span class="nc">BooleanTransformer</span><span class="p">(</span><span class="n">BaseEstimator</span><span class="p">,</span> <span class="n">TransformerMixin</span><span class="p">):</span>
+<div class="viewcode-block" id="BooleanTransformer"><a class="viewcode-back" href="../preprocess.html#preprocess.BooleanTransformer">[docs]</a><span class="k">class</span> <span class="nc">BooleanTransformer</span><span class="p">(</span><span class="n">BaseEstimator</span><span class="p">,</span> <span class="n">TransformerMixin</span><span class="p">):</span>
     <span class="sd">&quot;&quot;&quot;</span>
 <span class="sd">    Transforms all boolean features to a numeric data type (1/0)</span>
 <span class="sd">    &quot;&quot;&quot;</span>
 
-<div class="viewcode-block" id="BooleanTransformer.fit"><a class="viewcode-back" href="../ML_Data_Handler.html#preprocess.BooleanTransformer.fit">[docs]</a>    <span class="k">def</span> <span class="nf">fit</span><span class="p">(</span><span class="bp">self</span><span class="p">,</span> <span class="n">X</span><span class="p">,</span> <span class="n">y</span><span class="o">=</span><span class="kc">None</span><span class="p">,</span> <span class="o">**</span><span class="n">kwargs</span><span class="p">):</span>
+<div class="viewcode-block" id="BooleanTransformer.fit"><a class="viewcode-back" href="../preprocess.html#preprocess.BooleanTransformer.fit">[docs]</a>    <span class="k">def</span> <span class="nf">fit</span><span class="p">(</span><span class="bp">self</span><span class="p">,</span> <span class="n">X</span><span class="p">,</span> <span class="n">y</span><span class="o">=</span><span class="kc">None</span><span class="p">,</span> <span class="o">**</span><span class="n">kwargs</span><span class="p">):</span>
         <span class="k">return</span> <span class="bp">self</span></div>
 
-<div class="viewcode-block" id="BooleanTransformer.transform"><a class="viewcode-back" href="../ML_Data_Handler.html#preprocess.BooleanTransformer.transform">[docs]</a>    <span class="nd">@staticmethod</span>
+<div class="viewcode-block" id="BooleanTransformer.transform"><a class="viewcode-back" href="../preprocess.html#preprocess.BooleanTransformer.transform">[docs]</a>    <span class="nd">@staticmethod</span>
     <span class="k">def</span> <span class="nf">transform</span><span class="p">(</span><span class="n">X</span><span class="p">:</span> <span class="nb">int</span><span class="p">):</span>
         <span class="sd">&quot;&quot;&quot;</span>
 <span class="sd">        Converts all boolean features by replacing ``True`` values by ``1`` and ``False`` by 0.</span>
@@ -529,20 +546,6 @@
 </pre></div>
 
           </div>
-        </div>
-      </div>
-      <div class="sphinxsidebar" role="navigation" aria-label="main navigation">
-        <div class="sphinxsidebarwrapper">
-<div id="searchbox" style="display: none" role="search">
-  <h3 id="searchlabel">Quick search</h3>
-    <div class="searchformwrapper">
-    <form class="search" action="../search.html" method="get">
-      <input type="text" name="q" aria-labelledby="searchlabel" />
-      <input type="submit" value="Go" />
-    </form>
-    </div>
-</div>
-<script>$('#searchbox').show(0);</script>
         </div>
       </div>
       <div class="clearer"></div>

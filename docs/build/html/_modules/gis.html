@@ -5,9 +5,8 @@
   <head>
     <meta charset="utf-8" />
     <title>gis &#8212; Machine Learning Data Handler 1.2 documentation</title>
-    <link rel="stylesheet" href="../_static/nature.css" type="text/css" />
+    <link rel="stylesheet" href="../_static/sphinxdoc.css" type="text/css" />
     <link rel="stylesheet" href="../_static/pygments.css" type="text/css" />
-    <link rel="stylesheet" type="text/css" href="../_static/graphviz.css" />
     <script id="documentation_options" data-url_root="../" src="../_static/documentation_options.js"></script>
     <script src="../_static/jquery.js"></script>
     <script src="../_static/underscore.js"></script>
@@ -28,7 +27,21 @@
         <li class="nav-item nav-item-0"><a href="../ML_Data_Handler.html">Machine Learning Data Handler 1.2 documentation</a> &#187;</li>
           <li class="nav-item nav-item-1"><a href="index.html" accesskey="U">Module code</a> &#187;</li> 
       </ul>
-    </div>  
+    </div>
+      <div class="sphinxsidebar" role="navigation" aria-label="main navigation">
+        <div class="sphinxsidebarwrapper">
+<div id="searchbox" style="display: none" role="search">
+  <h3 id="searchlabel">Quick search</h3>
+    <div class="searchformwrapper">
+    <form class="search" action="../search.html" method="get">
+      <input type="text" name="q" aria-labelledby="searchlabel" />
+      <input type="submit" value="Go" />
+    </form>
+    </div>
+</div>
+<script>$('#searchbox').show(0);</script>
+        </div>
+      </div>
 
     <div class="document">
       <div class="documentwrapper">
@@ -89,12 +102,12 @@
            <span class="p">]</span>
 
 
-<div class="viewcode-block" id="GisAnalyzer"><a class="viewcode-back" href="../ML_Data_Handler.html#gis.GisAnalyzer">[docs]</a><span class="k">class</span> <span class="nc">GisAnalyzer</span><span class="p">(</span><span class="n">BaseStats</span><span class="p">):</span>
+<div class="viewcode-block" id="GisAnalyzer"><a class="viewcode-back" href="../gis.html#gis.GisAnalyzer">[docs]</a><span class="k">class</span> <span class="nc">GisAnalyzer</span><span class="p">(</span><span class="n">BaseStats</span><span class="p">):</span>
     <span class="sd">&quot;&quot;&quot;</span>
 <span class="sd">    A class used to visualise geographical data based on latitude and longitude columns</span>
 <span class="sd">    &quot;&quot;&quot;</span>
 
-<div class="viewcode-block" id="GisAnalyzer.__init__"><a class="viewcode-back" href="../ML_Data_Handler.html#gis.GisAnalyzer.__init__">[docs]</a>    <span class="k">def</span> <span class="fm">__init__</span><span class="p">(</span><span class="bp">self</span><span class="p">,</span> <span class="n">data</span><span class="p">:</span> <span class="n">Union</span><span class="p">[</span><span class="nb">str</span><span class="p">,</span> <span class="n">Sequence</span><span class="p">[</span><span class="nb">str</span><span class="p">]],</span> <span class="n">lat</span><span class="p">:</span> <span class="nb">str</span> <span class="o">=</span> <span class="s2">&quot;&quot;</span><span class="p">,</span> <span class="n">lon</span><span class="p">:</span> <span class="nb">str</span> <span class="o">=</span> <span class="s2">&quot;&quot;</span><span class="p">):</span>
+<div class="viewcode-block" id="GisAnalyzer.__init__"><a class="viewcode-back" href="../gis.html#gis.GisAnalyzer.__init__">[docs]</a>    <span class="k">def</span> <span class="fm">__init__</span><span class="p">(</span><span class="bp">self</span><span class="p">,</span> <span class="n">data</span><span class="p">:</span> <span class="n">Union</span><span class="p">[</span><span class="nb">str</span><span class="p">,</span> <span class="n">Sequence</span><span class="p">[</span><span class="nb">str</span><span class="p">]],</span> <span class="n">lat</span><span class="p">:</span> <span class="nb">str</span> <span class="o">=</span> <span class="s2">&quot;&quot;</span><span class="p">,</span> <span class="n">lon</span><span class="p">:</span> <span class="nb">str</span> <span class="o">=</span> <span class="s2">&quot;&quot;</span><span class="p">):</span>
         <span class="sd">&quot;&quot;&quot;</span>
 <span class="sd">        Initializes a GIS Analyzer object. It expects a DataFrame as input. Furthermore, it has the ``lat`` and ``lon`` columns which are</span>
 <span class="sd">        used for defining the latitude and longitude. They do not have to be set upon object creation but can be reset using the corresponding</span>
@@ -146,7 +159,7 @@
 
     <span class="c1"># TODO implement class methods to get lat,lon from other types than pandas</span>
 
-<div class="viewcode-block" id="GisAnalyzer.set_lat"><a class="viewcode-back" href="../ML_Data_Handler.html#gis.GisAnalyzer.set_lat">[docs]</a>    <span class="k">def</span> <span class="nf">set_lat</span><span class="p">(</span><span class="bp">self</span><span class="p">,</span> <span class="n">lat</span><span class="p">:</span> <span class="nb">str</span><span class="p">)</span> <span class="o">-&gt;</span> <span class="n">GisAnalyzer</span><span class="p">:</span>
+<div class="viewcode-block" id="GisAnalyzer.set_lat"><a class="viewcode-back" href="../gis.html#gis.GisAnalyzer.set_lat">[docs]</a>    <span class="k">def</span> <span class="nf">set_lat</span><span class="p">(</span><span class="bp">self</span><span class="p">,</span> <span class="n">lat</span><span class="p">:</span> <span class="nb">str</span><span class="p">)</span> <span class="o">-&gt;</span> <span class="n">GisAnalyzer</span><span class="p">:</span>
         <span class="sd">&quot;&quot;&quot;</span>
 <span class="sd">        Resets the name of the latitude column</span>
 
@@ -157,7 +170,7 @@
         <span class="bp">self</span><span class="o">.</span><span class="n">lat</span> <span class="o">=</span> <span class="n">lat</span>
         <span class="k">return</span> <span class="bp">self</span></div>
 
-<div class="viewcode-block" id="GisAnalyzer.set_lon"><a class="viewcode-back" href="../ML_Data_Handler.html#gis.GisAnalyzer.set_lon">[docs]</a>    <span class="k">def</span> <span class="nf">set_lon</span><span class="p">(</span><span class="bp">self</span><span class="p">,</span> <span class="n">lon</span><span class="p">:</span> <span class="nb">str</span><span class="p">)</span> <span class="o">-&gt;</span> <span class="n">GisAnalyzer</span><span class="p">:</span>
+<div class="viewcode-block" id="GisAnalyzer.set_lon"><a class="viewcode-back" href="../gis.html#gis.GisAnalyzer.set_lon">[docs]</a>    <span class="k">def</span> <span class="nf">set_lon</span><span class="p">(</span><span class="bp">self</span><span class="p">,</span> <span class="n">lon</span><span class="p">:</span> <span class="nb">str</span><span class="p">)</span> <span class="o">-&gt;</span> <span class="n">GisAnalyzer</span><span class="p">:</span>
         <span class="sd">&quot;&quot;&quot;</span>
 <span class="sd">        Resets the name of the longitude column</span>
 
@@ -195,7 +208,7 @@
 <span class="sd">        &quot;&quot;&quot;</span>
         <span class="k">return</span> <span class="p">[</span><span class="bp">self</span><span class="o">.</span><span class="n">lat</span><span class="p">,</span> <span class="bp">self</span><span class="o">.</span><span class="n">lon</span><span class="p">]</span>
 
-<div class="viewcode-block" id="GisAnalyzer._generate_base_map"><a class="viewcode-back" href="../ML_Data_Handler.html#gis.GisAnalyzer._generate_base_map">[docs]</a>    <span class="k">def</span> <span class="nf">_generate_base_map</span><span class="p">(</span><span class="bp">self</span><span class="p">,</span> <span class="n">style</span><span class="p">:</span> <span class="nb">int</span><span class="p">,</span> <span class="n">zoom_start</span><span class="p">:</span> <span class="nb">int</span><span class="p">)</span> <span class="o">-&gt;</span> <span class="n">GisAnalyzer</span><span class="p">:</span>
+<div class="viewcode-block" id="GisAnalyzer._generate_base_map"><a class="viewcode-back" href="../gis.html#gis.GisAnalyzer._generate_base_map">[docs]</a>    <span class="k">def</span> <span class="nf">_generate_base_map</span><span class="p">(</span><span class="bp">self</span><span class="p">,</span> <span class="n">style</span><span class="p">:</span> <span class="nb">int</span><span class="p">,</span> <span class="n">zoom_start</span><span class="p">:</span> <span class="nb">int</span><span class="p">)</span> <span class="o">-&gt;</span> <span class="n">GisAnalyzer</span><span class="p">:</span>
         <span class="sd">&quot;&quot;&quot;</span>
 <span class="sd">        Private method that generates a basic BaseMap and stores it in OBJECT.map</span>
 <span class="sd">        &quot;&quot;&quot;</span>
@@ -207,7 +220,7 @@
         <span class="p">)</span>
         <span class="k">return</span> <span class="bp">self</span></div>
 
-<div class="viewcode-block" id="GisAnalyzer.generate_heat_map"><a class="viewcode-back" href="../ML_Data_Handler.html#gis.GisAnalyzer.generate_heat_map">[docs]</a>    <span class="k">def</span> <span class="nf">generate_heat_map</span><span class="p">(</span><span class="bp">self</span><span class="p">,</span> <span class="n">style</span><span class="p">:</span> <span class="nb">int</span> <span class="o">=</span> <span class="mi">6</span><span class="p">,</span> <span class="n">zoom_start</span><span class="p">:</span> <span class="nb">int</span> <span class="o">=</span> <span class="mi">12</span><span class="p">):</span>
+<div class="viewcode-block" id="GisAnalyzer.generate_heat_map"><a class="viewcode-back" href="../gis.html#gis.GisAnalyzer.generate_heat_map">[docs]</a>    <span class="k">def</span> <span class="nf">generate_heat_map</span><span class="p">(</span><span class="bp">self</span><span class="p">,</span> <span class="n">style</span><span class="p">:</span> <span class="nb">int</span> <span class="o">=</span> <span class="mi">6</span><span class="p">,</span> <span class="n">zoom_start</span><span class="p">:</span> <span class="nb">int</span> <span class="o">=</span> <span class="mi">12</span><span class="p">):</span>
         <span class="sd">&quot;&quot;&quot;</span>
 <span class="sd">        Creates a HeatMap with the coordinates found in the latitude and longitude columns.</span>
 
@@ -230,7 +243,7 @@
         <span class="p">)</span><span class="o">.</span><span class="n">add_to</span><span class="p">(</span><span class="bp">self</span><span class="o">.</span><span class="n">map</span><span class="p">)</span>
         <span class="k">return</span> <span class="bp">self</span><span class="o">.</span><span class="n">map</span></div>
 
-<div class="viewcode-block" id="GisAnalyzer.generate_heat_map_with_time"><a class="viewcode-back" href="../ML_Data_Handler.html#gis.GisAnalyzer.generate_heat_map_with_time">[docs]</a>    <span class="k">def</span> <span class="nf">generate_heat_map_with_time</span><span class="p">(</span>
+<div class="viewcode-block" id="GisAnalyzer.generate_heat_map_with_time"><a class="viewcode-back" href="../gis.html#gis.GisAnalyzer.generate_heat_map_with_time">[docs]</a>    <span class="k">def</span> <span class="nf">generate_heat_map_with_time</span><span class="p">(</span>
         <span class="bp">self</span><span class="p">,</span>
         <span class="n">style</span><span class="p">:</span> <span class="nb">int</span> <span class="o">=</span> <span class="mi">6</span><span class="p">,</span>
         <span class="n">zoom_start</span><span class="p">:</span> <span class="nb">int</span> <span class="o">=</span> <span class="mi">12</span><span class="p">,</span>
@@ -284,7 +297,7 @@
             <span class="n">use_local_extrema</span><span class="o">=</span><span class="kc">True</span><span class="p">,</span>
         <span class="p">)</span><span class="o">.</span><span class="n">add_to</span><span class="p">(</span><span class="bp">self</span><span class="o">.</span><span class="n">map</span><span class="p">)</span></div>
 
-<div class="viewcode-block" id="GisAnalyzer.generate_map_cluster"><a class="viewcode-back" href="../ML_Data_Handler.html#gis.GisAnalyzer.generate_map_cluster">[docs]</a>    <span class="k">def</span> <span class="nf">generate_map_cluster</span><span class="p">(</span>
+<div class="viewcode-block" id="GisAnalyzer.generate_map_cluster"><a class="viewcode-back" href="../gis.html#gis.GisAnalyzer.generate_map_cluster">[docs]</a>    <span class="k">def</span> <span class="nf">generate_map_cluster</span><span class="p">(</span>
         <span class="bp">self</span><span class="p">,</span> <span class="n">style</span><span class="o">=</span><span class="mi">6</span><span class="p">,</span> <span class="n">zoom_start</span><span class="o">=</span><span class="mi">12</span><span class="p">,</span> <span class="n">include_heat_map</span><span class="p">:</span> <span class="nb">bool</span> <span class="o">=</span> <span class="kc">True</span>
     <span class="p">):</span>
         <span class="sd">&quot;&quot;&quot;</span>
@@ -305,7 +318,7 @@
             <span class="n">MarkerCluster</span><span class="p">(</span><span class="n">locations</span><span class="o">=</span><span class="nb">list</span><span class="p">(</span><span class="nb">zip</span><span class="p">(</span><span class="bp">self</span><span class="o">.</span><span class="n">data</span><span class="p">[</span><span class="bp">self</span><span class="o">.</span><span class="n">lat</span><span class="p">],</span> <span class="bp">self</span><span class="o">.</span><span class="n">data</span><span class="p">[</span><span class="bp">self</span><span class="o">.</span><span class="n">lon</span><span class="p">])))</span>
         <span class="p">)</span></div>
 
-<div class="viewcode-block" id="GisAnalyzer.simple_plot"><a class="viewcode-back" href="../ML_Data_Handler.html#gis.GisAnalyzer.simple_plot">[docs]</a>    <span class="k">def</span> <span class="nf">simple_plot</span><span class="p">(</span><span class="bp">self</span><span class="p">,</span> <span class="o">**</span><span class="n">options</span><span class="p">:</span> <span class="n">Mapping</span><span class="p">[</span><span class="nb">str</span><span class="p">,</span> <span class="p">]):</span>
+<div class="viewcode-block" id="GisAnalyzer.simple_plot"><a class="viewcode-back" href="../gis.html#gis.GisAnalyzer.simple_plot">[docs]</a>    <span class="k">def</span> <span class="nf">simple_plot</span><span class="p">(</span><span class="bp">self</span><span class="p">,</span> <span class="o">**</span><span class="n">options</span><span class="p">:</span> <span class="n">Mapping</span><span class="p">[</span><span class="nb">str</span><span class="p">,</span> <span class="p">]):</span>
         <span class="sd">&quot;&quot;&quot;</span>
 <span class="sd">        Generates a simple scatter plot of the coordinates. The scatter is an abstraction of the data by not include the actual map.</span>
 <span class="sd">        It can be used to quickly have a look on a basic map.</span>
@@ -316,12 +329,12 @@
         <span class="n">sns</span><span class="o">.</span><span class="n">scatterplot</span><span class="p">(</span><span class="bp">self</span><span class="o">.</span><span class="n">data</span><span class="p">[</span><span class="bp">self</span><span class="o">.</span><span class="n">lat</span><span class="p">],</span> <span class="bp">self</span><span class="o">.</span><span class="n">data</span><span class="p">[</span><span class="bp">self</span><span class="o">.</span><span class="n">lon</span><span class="p">],</span> <span class="o">**</span><span class="n">options</span><span class="p">)</span></div></div>
 
 
-<div class="viewcode-block" id="GisAnalyzerWithClusterLabel"><a class="viewcode-back" href="../ML_Data_Handler.html#gis.GisAnalyzerWithClusterLabel">[docs]</a><span class="k">class</span> <span class="nc">GisAnalyzerWithClusterLabel</span><span class="p">(</span><span class="n">GisAnalyzer</span><span class="p">):</span>
+<div class="viewcode-block" id="GisAnalyzerWithClusterLabel"><a class="viewcode-back" href="../gis.html#gis.GisAnalyzerWithClusterLabel">[docs]</a><span class="k">class</span> <span class="nc">GisAnalyzerWithClusterLabel</span><span class="p">(</span><span class="n">GisAnalyzer</span><span class="p">):</span>
     <span class="sd">&quot;&quot;&quot;</span>
 <span class="sd">    A class derived from the GisAnalyzer used to visualise geographical data based on latitude and longitude columns and take into account cluster labels</span>
 <span class="sd">    &quot;&quot;&quot;</span>
 
-<div class="viewcode-block" id="GisAnalyzerWithClusterLabel.__init__"><a class="viewcode-back" href="../ML_Data_Handler.html#gis.GisAnalyzerWithClusterLabel.__init__">[docs]</a>    <span class="k">def</span> <span class="fm">__init__</span><span class="p">(</span>
+<div class="viewcode-block" id="GisAnalyzerWithClusterLabel.__init__"><a class="viewcode-back" href="../gis.html#gis.GisAnalyzerWithClusterLabel.__init__">[docs]</a>    <span class="k">def</span> <span class="fm">__init__</span><span class="p">(</span>
         <span class="bp">self</span><span class="p">,</span>
         <span class="n">data</span><span class="p">:</span> <span class="n">Union</span><span class="p">[</span><span class="nb">str</span><span class="p">,</span> <span class="n">DataFrame</span><span class="p">],</span>
         <span class="n">lat</span><span class="p">:</span> <span class="nb">str</span> <span class="o">=</span> <span class="s2">&quot;&quot;</span><span class="p">,</span>
@@ -351,7 +364,7 @@
             <span class="n">cluster_label</span> <span class="k">if</span> <span class="nb">isinstance</span><span class="p">(</span><span class="n">cluster_label</span><span class="p">,</span> <span class="nb">list</span><span class="p">)</span> <span class="k">else</span> <span class="p">[</span><span class="n">cluster_label</span><span class="p">]</span>
         <span class="p">)</span></div>
 
-<div class="viewcode-block" id="GisAnalyzerWithClusterLabel.simple_plot_by_cluster_labels"><a class="viewcode-back" href="../ML_Data_Handler.html#gis.GisAnalyzerWithClusterLabel.simple_plot_by_cluster_labels">[docs]</a>    <span class="k">def</span> <span class="nf">simple_plot_by_cluster_labels</span><span class="p">(</span><span class="bp">self</span><span class="p">,</span> <span class="o">**</span><span class="n">options</span><span class="p">:</span> <span class="n">Mapping</span><span class="p">[</span><span class="nb">str</span><span class="p">,</span> <span class="p">]):</span>
+<div class="viewcode-block" id="GisAnalyzerWithClusterLabel.simple_plot_by_cluster_labels"><a class="viewcode-back" href="../gis.html#gis.GisAnalyzerWithClusterLabel.simple_plot_by_cluster_labels">[docs]</a>    <span class="k">def</span> <span class="nf">simple_plot_by_cluster_labels</span><span class="p">(</span><span class="bp">self</span><span class="p">,</span> <span class="o">**</span><span class="n">options</span><span class="p">:</span> <span class="n">Mapping</span><span class="p">[</span><span class="nb">str</span><span class="p">,</span> <span class="p">]):</span>
         <span class="sd">&quot;&quot;&quot;</span>
 <span class="sd">        Plots the geographical data by all the different cluster labels.</span>
 
@@ -388,19 +401,19 @@
         <span class="bp">self</span><span class="o">.</span><span class="n">coordinates</span> <span class="o">=</span> <span class="p">[</span><span class="n">lat</span><span class="p">,</span> <span class="n">lon</span><span class="p">]</span>
 
 
-<div class="viewcode-block" id="GisBasicTransformer"><a class="viewcode-back" href="../ML_Data_Handler.html#gis.GisBasicTransformer">[docs]</a><span class="k">class</span> <span class="nc">GisBasicTransformer</span><span class="p">(</span><span class="n">_BaseClass</span><span class="p">,</span> <span class="n">BaseEstimator</span><span class="p">,</span> <span class="n">TransformerMixin</span><span class="p">):</span>
+<div class="viewcode-block" id="GisBasicTransformer"><a class="viewcode-back" href="../gis.html#gis.GisBasicTransformer">[docs]</a><span class="k">class</span> <span class="nc">GisBasicTransformer</span><span class="p">(</span><span class="n">_BaseClass</span><span class="p">,</span> <span class="n">BaseEstimator</span><span class="p">,</span> <span class="n">TransformerMixin</span><span class="p">):</span>
     <span class="sd">&quot;&quot;&quot;</span>
 <span class="sd">    Derives primitive feature transformation for GIS</span>
 <span class="sd">    The primitive transformations are:</span>
 
-<span class="sd">        - ``round``: round the GIS to a specific digit length. This can be considered as a feature as it groups together</span>
-<span class="sd">        points with similar values. It reduces information but reduces the dimension of the feature</span>
-<span class="sd">        - ``radians``: a simple transformation to get the radians of the GIS.</span>
+<span class="sd">    - ``round``: round the GIS to a specific digit length. This can be considered as a feature as it groups together points with similar values.</span>
+<span class="sd">      It reduces information but reduces the dimension of the feature</span>
 
-<span class="sd">    # TODO include x,y,z features.</span>
+<span class="sd">    - ``radians``: a simple transformation to get the radians of the GIS.</span>
+
 <span class="sd">    &quot;&quot;&quot;</span>
-
-<div class="viewcode-block" id="GisBasicTransformer.__init__"><a class="viewcode-back" href="../ML_Data_Handler.html#gis.GisBasicTransformer.__init__">[docs]</a>    <span class="k">def</span> <span class="fm">__init__</span><span class="p">(</span><span class="bp">self</span><span class="p">,</span> <span class="n">lat</span><span class="p">:</span> <span class="nb">str</span><span class="p">,</span> <span class="n">lon</span><span class="p">:</span> <span class="nb">str</span><span class="p">,</span> <span class="n">round_factor</span><span class="p">:</span> <span class="nb">int</span> <span class="o">=</span> <span class="mi">0</span><span class="p">,</span> <span class="n">radian</span><span class="p">:</span> <span class="nb">bool</span> <span class="o">=</span> <span class="kc">True</span><span class="p">):</span>
+    <span class="c1"># TODO include x,y,z features.</span>
+<div class="viewcode-block" id="GisBasicTransformer.__init__"><a class="viewcode-back" href="../gis.html#gis.GisBasicTransformer.__init__">[docs]</a>    <span class="k">def</span> <span class="fm">__init__</span><span class="p">(</span><span class="bp">self</span><span class="p">,</span> <span class="n">lat</span><span class="p">:</span> <span class="nb">str</span><span class="p">,</span> <span class="n">lon</span><span class="p">:</span> <span class="nb">str</span><span class="p">,</span> <span class="n">round_factor</span><span class="p">:</span> <span class="nb">int</span> <span class="o">=</span> <span class="mi">0</span><span class="p">,</span> <span class="n">radian</span><span class="p">:</span> <span class="nb">bool</span> <span class="o">=</span> <span class="kc">True</span><span class="p">):</span>
         <span class="sd">&quot;&quot;&quot;</span>
 <span class="sd">        Initializes a primitive feature creator object</span>
 
@@ -418,10 +431,10 @@
         <span class="bp">self</span><span class="o">.</span><span class="n">radian</span> <span class="o">=</span> <span class="n">radian</span>
         <span class="bp">self</span><span class="o">.</span><span class="n">feature_names</span> <span class="o">=</span> <span class="p">[]</span></div>
 
-<div class="viewcode-block" id="GisBasicTransformer.fit"><a class="viewcode-back" href="../ML_Data_Handler.html#gis.GisBasicTransformer.fit">[docs]</a>    <span class="k">def</span> <span class="nf">fit</span><span class="p">(</span><span class="bp">self</span><span class="p">,</span> <span class="n">X</span><span class="p">,</span> <span class="n">y</span><span class="o">=</span><span class="kc">None</span><span class="p">,</span> <span class="o">**</span><span class="n">kwargs</span><span class="p">):</span>
+<div class="viewcode-block" id="GisBasicTransformer.fit"><a class="viewcode-back" href="../gis.html#gis.GisBasicTransformer.fit">[docs]</a>    <span class="k">def</span> <span class="nf">fit</span><span class="p">(</span><span class="bp">self</span><span class="p">,</span> <span class="n">X</span><span class="p">,</span> <span class="n">y</span><span class="o">=</span><span class="kc">None</span><span class="p">,</span> <span class="o">**</span><span class="n">kwargs</span><span class="p">):</span>
         <span class="k">return</span> <span class="bp">self</span></div>
 
-<div class="viewcode-block" id="GisBasicTransformer.transform"><a class="viewcode-back" href="../ML_Data_Handler.html#gis.GisBasicTransformer.transform">[docs]</a>    <span class="k">def</span> <span class="nf">transform</span><span class="p">(</span><span class="bp">self</span><span class="p">,</span> <span class="n">X</span><span class="p">:</span> <span class="n">DataFrame</span><span class="p">)</span> <span class="o">-&gt;</span> <span class="n">DataFrame</span><span class="p">:</span>
+<div class="viewcode-block" id="GisBasicTransformer.transform"><a class="viewcode-back" href="../gis.html#gis.GisBasicTransformer.transform">[docs]</a>    <span class="k">def</span> <span class="nf">transform</span><span class="p">(</span><span class="bp">self</span><span class="p">,</span> <span class="n">X</span><span class="p">:</span> <span class="n">DataFrame</span><span class="p">)</span> <span class="o">-&gt;</span> <span class="n">DataFrame</span><span class="p">:</span>
         <span class="sd">&quot;&quot;&quot;</span>
 <span class="sd">        Transforms the DataFrame. Checks the both arguments and applies the respective function if the condition hols (round &gt;0; radian = True)</span>
 
@@ -437,12 +450,12 @@
         <span class="k">return</span> <span class="n">X</span></div></div>
 
 
-<div class="viewcode-block" id="GisDistance"><a class="viewcode-back" href="../ML_Data_Handler.html#gis.GisDistance">[docs]</a><span class="k">class</span> <span class="nc">GisDistance</span><span class="p">(</span><span class="n">_BaseClass</span><span class="p">,</span> <span class="n">BaseEstimator</span><span class="p">,</span> <span class="n">TransformerMixin</span><span class="p">):</span>
+<div class="viewcode-block" id="GisDistance"><a class="viewcode-back" href="../gis.html#gis.GisDistance">[docs]</a><span class="k">class</span> <span class="nc">GisDistance</span><span class="p">(</span><span class="n">_BaseClass</span><span class="p">,</span> <span class="n">BaseEstimator</span><span class="p">,</span> <span class="n">TransformerMixin</span><span class="p">):</span>
     <span class="sd">&quot;&quot;&quot;</span>
 <span class="sd">    Calculates the haversine distance between two geo points</span>
 <span class="sd">    &quot;&quot;&quot;</span>
 
-<div class="viewcode-block" id="GisDistance.__init__"><a class="viewcode-back" href="../ML_Data_Handler.html#gis.GisDistance.__init__">[docs]</a>    <span class="k">def</span> <span class="fm">__init__</span><span class="p">(</span>
+<div class="viewcode-block" id="GisDistance.__init__"><a class="viewcode-back" href="../gis.html#gis.GisDistance.__init__">[docs]</a>    <span class="k">def</span> <span class="fm">__init__</span><span class="p">(</span>
         <span class="bp">self</span><span class="p">,</span> <span class="n">lat_1</span><span class="p">:</span> <span class="nb">str</span><span class="p">,</span> <span class="n">lon_1</span><span class="p">:</span> <span class="nb">str</span><span class="p">,</span> <span class="n">lat_2</span><span class="p">:</span> <span class="nb">str</span><span class="p">,</span> <span class="n">lon_2</span><span class="p">:</span> <span class="nb">str</span><span class="p">,</span> <span class="n">label</span><span class="p">:</span> <span class="nb">str</span> <span class="o">=</span> <span class="s2">&quot;distance&quot;</span>
     <span class="p">):</span>
         <span class="sd">&quot;&quot;&quot;</span>
@@ -465,10 +478,10 @@
         <span class="bp">self</span><span class="o">.</span><span class="n">label</span> <span class="o">=</span> <span class="n">label</span>
         <span class="bp">self</span><span class="o">.</span><span class="n">feature_names</span> <span class="o">=</span> <span class="p">[]</span></div>
 
-<div class="viewcode-block" id="GisDistance.fit"><a class="viewcode-back" href="../ML_Data_Handler.html#gis.GisDistance.fit">[docs]</a>    <span class="k">def</span> <span class="nf">fit</span><span class="p">(</span><span class="bp">self</span><span class="p">,</span> <span class="n">X</span><span class="p">,</span> <span class="n">y</span><span class="o">=</span><span class="kc">None</span><span class="p">,</span> <span class="o">**</span><span class="n">kwargs</span><span class="p">):</span>
+<div class="viewcode-block" id="GisDistance.fit"><a class="viewcode-back" href="../gis.html#gis.GisDistance.fit">[docs]</a>    <span class="k">def</span> <span class="nf">fit</span><span class="p">(</span><span class="bp">self</span><span class="p">,</span> <span class="n">X</span><span class="p">,</span> <span class="n">y</span><span class="o">=</span><span class="kc">None</span><span class="p">,</span> <span class="o">**</span><span class="n">kwargs</span><span class="p">):</span>
         <span class="k">return</span> <span class="bp">self</span></div>
 
-<div class="viewcode-block" id="GisDistance.haversine_distance"><a class="viewcode-back" href="../ML_Data_Handler.html#gis.GisDistance.haversine_distance">[docs]</a>    <span class="k">def</span> <span class="nf">haversine_distance</span><span class="p">(</span><span class="bp">self</span><span class="p">,</span> <span class="n">row</span><span class="p">):</span>
+<div class="viewcode-block" id="GisDistance.haversine_distance"><a class="viewcode-back" href="../gis.html#gis.GisDistance.haversine_distance">[docs]</a>    <span class="k">def</span> <span class="nf">haversine_distance</span><span class="p">(</span><span class="bp">self</span><span class="p">,</span> <span class="n">row</span><span class="p">):</span>
         <span class="sd">&quot;&quot;&quot;</span>
 <span class="sd">        The formulae for the haversine distance. It takes a DataFrame&#39;s row as an input arguments, derives the four GIS points and applies the Formula to it.</span>
 
@@ -488,7 +501,7 @@
         <span class="n">distance</span> <span class="o">=</span> <span class="n">radius</span> <span class="o">*</span> <span class="n">c</span>
         <span class="k">return</span> <span class="n">distance</span></div>
 
-<div class="viewcode-block" id="GisDistance.transform"><a class="viewcode-back" href="../ML_Data_Handler.html#gis.GisDistance.transform">[docs]</a>    <span class="k">def</span> <span class="nf">transform</span><span class="p">(</span><span class="bp">self</span><span class="p">,</span> <span class="n">X</span><span class="p">:</span> <span class="n">DataFrame</span><span class="p">)</span> <span class="o">-&gt;</span> <span class="n">DataFrame</span><span class="p">:</span>
+<div class="viewcode-block" id="GisDistance.transform"><a class="viewcode-back" href="../gis.html#gis.GisDistance.transform">[docs]</a>    <span class="k">def</span> <span class="nf">transform</span><span class="p">(</span><span class="bp">self</span><span class="p">,</span> <span class="n">X</span><span class="p">:</span> <span class="n">DataFrame</span><span class="p">)</span> <span class="o">-&gt;</span> <span class="n">DataFrame</span><span class="p">:</span>
         <span class="sd">&quot;&quot;&quot;</span>
 <span class="sd">        Applies the haversine_distance formula to all rows and saves the value in a newly generated column</span>
 
@@ -500,12 +513,12 @@
         <span class="k">return</span> <span class="n">X</span></div></div>
 
 
-<div class="viewcode-block" id="GisCluster"><a class="viewcode-back" href="../ML_Data_Handler.html#gis.GisCluster">[docs]</a><span class="k">class</span> <span class="nc">GisCluster</span><span class="p">(</span><span class="n">_BaseClass</span><span class="p">,</span> <span class="n">BaseEstimator</span><span class="p">,</span> <span class="n">TransformerMixin</span><span class="p">):</span>
+<div class="viewcode-block" id="GisCluster"><a class="viewcode-back" href="../gis.html#gis.GisCluster">[docs]</a><span class="k">class</span> <span class="nc">GisCluster</span><span class="p">(</span><span class="n">_BaseClass</span><span class="p">,</span> <span class="n">BaseEstimator</span><span class="p">,</span> <span class="n">TransformerMixin</span><span class="p">):</span>
     <span class="sd">&quot;&quot;&quot;</span>
 <span class="sd">    Applies Machine Learning based clustering on the GIS data.</span>
 <span class="sd">    &quot;&quot;&quot;</span>
 
-<div class="viewcode-block" id="GisCluster.__init__"><a class="viewcode-back" href="../ML_Data_Handler.html#gis.GisCluster.__init__">[docs]</a>    <span class="k">def</span> <span class="fm">__init__</span><span class="p">(</span>
+<div class="viewcode-block" id="GisCluster.__init__"><a class="viewcode-back" href="../gis.html#gis.GisCluster.__init__">[docs]</a>    <span class="k">def</span> <span class="fm">__init__</span><span class="p">(</span>
         <span class="bp">self</span><span class="p">,</span>
         <span class="n">lat</span><span class="p">:</span> <span class="nb">str</span><span class="p">,</span>
         <span class="n">lon</span><span class="p">:</span> <span class="nb">str</span><span class="p">,</span>
@@ -580,10 +593,10 @@
             <span class="n">agglomerative_params</span> <span class="o">=</span> <span class="p">{}</span>
         <span class="bp">self</span><span class="o">.</span><span class="n">agglomerative_params</span> <span class="o">=</span> <span class="n">agglomerative_params</span></div>
 
-<div class="viewcode-block" id="GisCluster.fit"><a class="viewcode-back" href="../ML_Data_Handler.html#gis.GisCluster.fit">[docs]</a>    <span class="k">def</span> <span class="nf">fit</span><span class="p">(</span><span class="bp">self</span><span class="p">,</span> <span class="n">X</span><span class="p">,</span> <span class="n">y</span><span class="o">=</span><span class="kc">None</span><span class="p">,</span> <span class="o">**</span><span class="n">kwargs</span><span class="p">):</span>
+<div class="viewcode-block" id="GisCluster.fit"><a class="viewcode-back" href="../gis.html#gis.GisCluster.fit">[docs]</a>    <span class="k">def</span> <span class="nf">fit</span><span class="p">(</span><span class="bp">self</span><span class="p">,</span> <span class="n">X</span><span class="p">,</span> <span class="n">y</span><span class="o">=</span><span class="kc">None</span><span class="p">,</span> <span class="o">**</span><span class="n">kwargs</span><span class="p">):</span>
         <span class="k">return</span> <span class="bp">self</span></div>
 
-<div class="viewcode-block" id="GisCluster.transform"><a class="viewcode-back" href="../ML_Data_Handler.html#gis.GisCluster.transform">[docs]</a>    <span class="k">def</span> <span class="nf">transform</span><span class="p">(</span><span class="bp">self</span><span class="p">,</span> <span class="n">X</span><span class="p">:</span> <span class="n">DataFrame</span><span class="p">)</span> <span class="o">-&gt;</span> <span class="n">DataFrame</span><span class="p">:</span>
+<div class="viewcode-block" id="GisCluster.transform"><a class="viewcode-back" href="../gis.html#gis.GisCluster.transform">[docs]</a>    <span class="k">def</span> <span class="nf">transform</span><span class="p">(</span><span class="bp">self</span><span class="p">,</span> <span class="n">X</span><span class="p">:</span> <span class="n">DataFrame</span><span class="p">)</span> <span class="o">-&gt;</span> <span class="n">DataFrame</span><span class="p">:</span>
         <span class="sd">&quot;&quot;&quot;</span>
 <span class="sd">        Applies the clustering based on which algorithm with respective parameters have been specified.</span>
 <span class="sd">        For each clustering algorithm set to True, the clustering is performed using the respective algorithm&#39;s hyper parameters</span>
@@ -619,20 +632,6 @@
 </pre></div>
 
           </div>
-        </div>
-      </div>
-      <div class="sphinxsidebar" role="navigation" aria-label="main navigation">
-        <div class="sphinxsidebarwrapper">
-<div id="searchbox" style="display: none" role="search">
-  <h3 id="searchlabel">Quick search</h3>
-    <div class="searchformwrapper">
-    <form class="search" action="../search.html" method="get">
-      <input type="text" name="q" aria-labelledby="searchlabel" />
-      <input type="submit" value="Go" />
-    </form>
-    </div>
-</div>
-<script>$('#searchbox').show(0);</script>
         </div>
       </div>
       <div class="clearer"></div>

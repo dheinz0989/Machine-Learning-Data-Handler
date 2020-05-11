@@ -6,9 +6,6 @@
 Welcome to Machine Learning Data Handler's documentation!
 =========================================================
 
-.. toctree::
-   :maxdepth: 2
-
 Welcome to the documentation site of the Machine Learning Data Handler. The following site includes all necessary info about the current status.
 
 Last Update
@@ -47,7 +44,7 @@ Project Directory
 The project directory is as shown in the following. The respective directories are:
   - *src/:* contains all modules for the code 
   - *docs/:* contains all files for documentation
-  - *ims/:* contains images and data vizualisation
+  - *logs/:* contains log files for previous runs
   - *test/:* contains a script for testing purposes
 
 Furthermore, different files are found directly in the repository
@@ -140,92 +137,37 @@ Usage
 Before running the Code, ensure that you have all requirements installed. You can the import them in your costum Machine Learning Projects and use them.
 A usage jupyter notebook is shown in the test directory.
 
-Source Code
-===========
+Module Overview
+===============
 
+.. autosummary::
+     :toctree: 
 
-1. ``baseattrs.py``: Contains basic classes which are inherited most other modules.
+      explorer
+      feature_builder
+      preprocess
+      baseattrs
+      dataframeselector
+      date_and_time
+      gis
+      utilities
 
-2. ``dataframeselector.py``: Contains methods to select subsetf of DataFrames based on names or type.
+Source Code Overview
+=====================
 
-3. ``date_and_time``: Provides methods to generate date and time features and methods to analyze them. 
+.. toctree::
+   :maxdepth: 2
+   :titlesonly:
+   :caption: Table of contents
 
-4. ``explorer:`` Contains the source code for the DataExplorer.
-
-5. ``feature_builder:`` Contains the source code for the  FeatureBuilder.
-
-6. ``gis:`` Provides methods to generate Geoinformation System features and methods to analyze them. 
-
-7. ``preprocess:`` Contains the source code for the Data Pre DataPreProcessor.
-
-8. ``utilities``: Contains some uti functions.
-
-9. ``textfeatures``: not yet implemented 
-
-Basic Attributes
-**********************
-.. automodule:: baseattrs
-   :members:
-   :undoc-members:
-   :private-members:
-
-
-Data Selector
-**********************
-.. automodule:: dataframeselector
-   :members:
-   :undoc-members:
-   :private-members:
-
-
-Data and Time
-**********************
-.. automodule:: date_and_time
-   :members:
-   :undoc-members:
-   :private-members:
-
-
-Geoinformation System
-**********************
-.. automodule:: gis
-   :members:
-   :undoc-members:
-   :private-members:
-
-
-Explorer
-**********************
-.. automodule:: explorer
-   :members:
-   :undoc-members:
-   :private-members:
-
-
-Feature Builder
-**********************
-.. automodule:: feature_builder
-   :members:
-   :undoc-members:
-   :private-members:
-
-
-Data Pre Processor
-**********************
-.. automodule:: preprocess
-   :members:
-   :undoc-members:
-   :private-members:
-
-
-utilities
-**********************
-.. automodule:: utilities
-   :members:
-   :undoc-members:
-   :private-members:
-   :inherited-members:
-   :show-inheritance:
+   explorer
+   feature_builder
+   preprocess
+   baseattrs
+   dataframeselector
+   date_and_time
+   gis
+   utilities
 
 Indices and tables
 ==================

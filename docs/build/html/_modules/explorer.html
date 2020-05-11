@@ -5,9 +5,8 @@
   <head>
     <meta charset="utf-8" />
     <title>explorer &#8212; Machine Learning Data Handler 1.2 documentation</title>
-    <link rel="stylesheet" href="../_static/nature.css" type="text/css" />
+    <link rel="stylesheet" href="../_static/sphinxdoc.css" type="text/css" />
     <link rel="stylesheet" href="../_static/pygments.css" type="text/css" />
-    <link rel="stylesheet" type="text/css" href="../_static/graphviz.css" />
     <script id="documentation_options" data-url_root="../" src="../_static/documentation_options.js"></script>
     <script src="../_static/jquery.js"></script>
     <script src="../_static/underscore.js"></script>
@@ -28,7 +27,21 @@
         <li class="nav-item nav-item-0"><a href="../ML_Data_Handler.html">Machine Learning Data Handler 1.2 documentation</a> &#187;</li>
           <li class="nav-item nav-item-1"><a href="index.html" accesskey="U">Module code</a> &#187;</li> 
       </ul>
-    </div>  
+    </div>
+      <div class="sphinxsidebar" role="navigation" aria-label="main navigation">
+        <div class="sphinxsidebarwrapper">
+<div id="searchbox" style="display: none" role="search">
+  <h3 id="searchlabel">Quick search</h3>
+    <div class="searchformwrapper">
+    <form class="search" action="../search.html" method="get">
+      <input type="text" name="q" aria-labelledby="searchlabel" />
+      <input type="submit" value="Go" />
+    </form>
+    </div>
+</div>
+<script>$('#searchbox').show(0);</script>
+        </div>
+      </div>
 
     <div class="document">
       <div class="documentwrapper">
@@ -74,12 +87,12 @@
 <span class="n">log</span> <span class="o">=</span> <span class="n">Logger</span><span class="o">.</span><span class="n">initialize_log</span><span class="p">()</span>
 
 
-<div class="viewcode-block" id="NumericalAnalyzer"><a class="viewcode-back" href="../ML_Data_Handler.html#explorer.NumericalAnalyzer">[docs]</a><span class="k">class</span> <span class="nc">NumericalAnalyzer</span><span class="p">(</span><span class="n">BaseStats</span><span class="p">):</span>
+<div class="viewcode-block" id="NumericalAnalyzer"><a class="viewcode-back" href="../explorer.html#explorer.NumericalAnalyzer">[docs]</a><span class="k">class</span> <span class="nc">NumericalAnalyzer</span><span class="p">(</span><span class="n">BaseStats</span><span class="p">):</span>
     <span class="sd">&quot;&quot;&quot;</span>
 <span class="sd">    Provides basic visualization for numerical features</span>
 <span class="sd">    &quot;&quot;&quot;</span>
 
-<div class="viewcode-block" id="NumericalAnalyzer.__init__"><a class="viewcode-back" href="../ML_Data_Handler.html#explorer.NumericalAnalyzer.__init__">[docs]</a>    <span class="k">def</span> <span class="fm">__init__</span><span class="p">(</span><span class="bp">self</span><span class="p">,</span> <span class="n">data</span><span class="p">:</span> <span class="n">Union</span><span class="p">[</span><span class="nb">str</span><span class="p">,</span> <span class="n">pd</span><span class="o">.</span><span class="n">DataFrame</span><span class="p">]):</span>
+<div class="viewcode-block" id="NumericalAnalyzer.__init__"><a class="viewcode-back" href="../explorer.html#explorer.NumericalAnalyzer.__init__">[docs]</a>    <span class="k">def</span> <span class="fm">__init__</span><span class="p">(</span><span class="bp">self</span><span class="p">,</span> <span class="n">data</span><span class="p">:</span> <span class="n">Union</span><span class="p">[</span><span class="nb">str</span><span class="p">,</span> <span class="n">pd</span><span class="o">.</span><span class="n">DataFrame</span><span class="p">]):</span>
         <span class="sd">&quot;&quot;&quot;</span>
 <span class="sd">        Initializes a NumericalAnalyzer object. Takes data file name or a pandas DataFrame as input</span>
 
@@ -88,7 +101,7 @@
 <span class="sd">        &quot;&quot;&quot;</span>
         <span class="nb">super</span><span class="p">()</span><span class="o">.</span><span class="fm">__init__</span><span class="p">(</span><span class="n">data</span><span class="p">)</span></div>
 
-<div class="viewcode-block" id="NumericalAnalyzer.pair_plot"><a class="viewcode-back" href="../ML_Data_Handler.html#explorer.NumericalAnalyzer.pair_plot">[docs]</a>    <span class="k">def</span> <span class="nf">pair_plot</span><span class="p">(</span><span class="bp">self</span><span class="p">,</span> <span class="o">**</span><span class="n">options</span><span class="p">:</span> <span class="n">Mapping</span><span class="p">[</span><span class="nb">str</span><span class="p">,</span> <span class="p">]):</span>
+<div class="viewcode-block" id="NumericalAnalyzer.pair_plot"><a class="viewcode-back" href="../explorer.html#explorer.NumericalAnalyzer.pair_plot">[docs]</a>    <span class="k">def</span> <span class="nf">pair_plot</span><span class="p">(</span><span class="bp">self</span><span class="p">,</span> <span class="o">**</span><span class="n">options</span><span class="p">:</span> <span class="n">Mapping</span><span class="p">[</span><span class="nb">str</span><span class="p">,</span> <span class="p">]):</span>
         <span class="sd">&quot;&quot;&quot;</span>
 <span class="sd">        Generates a pair plot of all data</span>
 
@@ -99,7 +112,7 @@
         <span class="c1"># TODO include options in function</span>
         <span class="n">sns</span><span class="o">.</span><span class="n">pairplot</span><span class="p">(</span><span class="bp">self</span><span class="o">.</span><span class="n">data</span><span class="p">,</span> <span class="o">**</span><span class="n">options</span><span class="p">)</span></div>
 
-<div class="viewcode-block" id="NumericalAnalyzer.corr"><a class="viewcode-back" href="../ML_Data_Handler.html#explorer.NumericalAnalyzer.corr">[docs]</a>    <span class="k">def</span> <span class="nf">corr</span><span class="p">(</span><span class="bp">self</span><span class="p">,</span> <span class="o">**</span><span class="n">options</span><span class="p">):</span>
+<div class="viewcode-block" id="NumericalAnalyzer.corr"><a class="viewcode-back" href="../explorer.html#explorer.NumericalAnalyzer.corr">[docs]</a>    <span class="k">def</span> <span class="nf">corr</span><span class="p">(</span><span class="bp">self</span><span class="p">,</span> <span class="o">**</span><span class="n">options</span><span class="p">):</span>
         <span class="sd">&quot;&quot;&quot;</span>
 <span class="sd">        Generates a correlation heat map of all correlation between the data&#39;s features</span>
 
@@ -110,12 +123,12 @@
         <span class="n">sns</span><span class="o">.</span><span class="n">heatmap</span><span class="p">(</span><span class="bp">self</span><span class="o">.</span><span class="n">data</span><span class="o">.</span><span class="n">corr</span><span class="p">())</span></div></div>
 
 
-<div class="viewcode-block" id="CategoricalAnalyzer"><a class="viewcode-back" href="../ML_Data_Handler.html#explorer.CategoricalAnalyzer">[docs]</a><span class="k">class</span> <span class="nc">CategoricalAnalyzer</span><span class="p">(</span><span class="n">BaseStats</span><span class="p">):</span>
+<div class="viewcode-block" id="CategoricalAnalyzer"><a class="viewcode-back" href="../explorer.html#explorer.CategoricalAnalyzer">[docs]</a><span class="k">class</span> <span class="nc">CategoricalAnalyzer</span><span class="p">(</span><span class="n">BaseStats</span><span class="p">):</span>
     <span class="sd">&quot;&quot;&quot;</span>
 <span class="sd">    Provides basic statistics and visualization for categorical features</span>
 <span class="sd">    &quot;&quot;&quot;</span>
 
-<div class="viewcode-block" id="CategoricalAnalyzer.__init__"><a class="viewcode-back" href="../ML_Data_Handler.html#explorer.CategoricalAnalyzer.__init__">[docs]</a>    <span class="k">def</span> <span class="fm">__init__</span><span class="p">(</span><span class="bp">self</span><span class="p">,</span> <span class="n">data</span><span class="p">:</span> <span class="n">Union</span><span class="p">[</span><span class="nb">str</span><span class="p">,</span> <span class="n">pd</span><span class="o">.</span><span class="n">DataFrame</span><span class="p">]):</span>
+<div class="viewcode-block" id="CategoricalAnalyzer.__init__"><a class="viewcode-back" href="../explorer.html#explorer.CategoricalAnalyzer.__init__">[docs]</a>    <span class="k">def</span> <span class="fm">__init__</span><span class="p">(</span><span class="bp">self</span><span class="p">,</span> <span class="n">data</span><span class="p">:</span> <span class="n">Union</span><span class="p">[</span><span class="nb">str</span><span class="p">,</span> <span class="n">pd</span><span class="o">.</span><span class="n">DataFrame</span><span class="p">]):</span>
         <span class="sd">&quot;&quot;&quot;</span>
 <span class="sd">        Initializes a CategoricalAnalyzer object. Takes data file name or a pandas DataFrame as input</span>
 
@@ -124,7 +137,7 @@
 <span class="sd">        &quot;&quot;&quot;</span>
         <span class="nb">super</span><span class="p">()</span><span class="o">.</span><span class="fm">__init__</span><span class="p">(</span><span class="n">data</span><span class="p">)</span></div>
 
-<div class="viewcode-block" id="CategoricalAnalyzer.frequencies"><a class="viewcode-back" href="../ML_Data_Handler.html#explorer.CategoricalAnalyzer.frequencies">[docs]</a>    <span class="k">def</span> <span class="nf">frequencies</span><span class="p">(</span><span class="bp">self</span><span class="p">)</span> <span class="o">-&gt;</span> <span class="n">Mapping</span><span class="p">[</span><span class="nb">str</span><span class="p">,</span> <span class="n">pd</span><span class="o">.</span><span class="n">DataFrame</span><span class="p">]:</span>
+<div class="viewcode-block" id="CategoricalAnalyzer.frequencies"><a class="viewcode-back" href="../explorer.html#explorer.CategoricalAnalyzer.frequencies">[docs]</a>    <span class="k">def</span> <span class="nf">frequencies</span><span class="p">(</span><span class="bp">self</span><span class="p">)</span> <span class="o">-&gt;</span> <span class="n">Mapping</span><span class="p">[</span><span class="nb">str</span><span class="p">,</span> <span class="n">pd</span><span class="o">.</span><span class="n">DataFrame</span><span class="p">]:</span>
         <span class="sd">&quot;&quot;&quot;</span>
 <span class="sd">        For each column, calculates the different frequencies and saved them in a file</span>
 
@@ -137,7 +150,7 @@
             <span class="n">log</span><span class="o">.</span><span class="n">info</span><span class="p">(</span><span class="sa">f</span><span class="s2">&quot;</span><span class="si">{</span><span class="n">column</span><span class="si">}</span><span class="s2">:</span><span class="si">{</span><span class="n">out</span><span class="p">[</span><span class="n">column</span><span class="p">]</span><span class="si">}</span><span class="s2">&quot;</span><span class="p">)</span>
         <span class="k">return</span> <span class="n">out</span></div>
 
-<div class="viewcode-block" id="CategoricalAnalyzer.cat_bar_plot"><a class="viewcode-back" href="../ML_Data_Handler.html#explorer.CategoricalAnalyzer.cat_bar_plot">[docs]</a>    <span class="k">def</span> <span class="nf">cat_bar_plot</span><span class="p">(</span><span class="bp">self</span><span class="p">,</span> <span class="o">**</span><span class="n">options</span><span class="p">)</span> <span class="o">-&gt;</span> <span class="kc">None</span><span class="p">:</span>
+<div class="viewcode-block" id="CategoricalAnalyzer.cat_bar_plot"><a class="viewcode-back" href="../explorer.html#explorer.CategoricalAnalyzer.cat_bar_plot">[docs]</a>    <span class="k">def</span> <span class="nf">cat_bar_plot</span><span class="p">(</span><span class="bp">self</span><span class="p">,</span> <span class="o">**</span><span class="n">options</span><span class="p">)</span> <span class="o">-&gt;</span> <span class="kc">None</span><span class="p">:</span>
         <span class="sd">&quot;&quot;&quot;</span>
 <span class="sd">        Generates a bar plot for all frequency values</span>
 
@@ -147,25 +160,25 @@
         <span class="n">sns</span><span class="o">.</span><span class="n">barplot</span><span class="p">(</span><span class="bp">self</span><span class="o">.</span><span class="n">data</span><span class="p">,</span> <span class="o">**</span><span class="n">options</span><span class="p">)</span></div></div>
 
 
-<div class="viewcode-block" id="MixedDataAnalyser"><a class="viewcode-back" href="../ML_Data_Handler.html#explorer.MixedDataAnalyser">[docs]</a><span class="k">class</span> <span class="nc">MixedDataAnalyser</span><span class="p">(</span><span class="n">NumericalAnalyzer</span><span class="p">,</span> <span class="n">CategoricalAnalyzer</span><span class="p">):</span>
+<div class="viewcode-block" id="MixedDataAnalyser"><a class="viewcode-back" href="../explorer.html#explorer.MixedDataAnalyser">[docs]</a><span class="k">class</span> <span class="nc">MixedDataAnalyser</span><span class="p">(</span><span class="n">NumericalAnalyzer</span><span class="p">,</span> <span class="n">CategoricalAnalyzer</span><span class="p">):</span>
     <span class="sd">&quot;&quot;&quot;</span>
 <span class="sd">    Initializes an object to handle numerical and categorical features. At the current state, the code only consists of a prototype</span>
 
 <span class="sd">    &quot;&quot;&quot;</span>
 
-<div class="viewcode-block" id="MixedDataAnalyser.__init__"><a class="viewcode-back" href="../ML_Data_Handler.html#explorer.MixedDataAnalyser.__init__">[docs]</a>    <span class="k">def</span> <span class="fm">__init__</span><span class="p">(</span><span class="bp">self</span><span class="p">,</span> <span class="n">data</span><span class="p">,</span> <span class="n">nums</span><span class="p">,</span> <span class="n">group</span><span class="p">):</span>
+<div class="viewcode-block" id="MixedDataAnalyser.__init__"><a class="viewcode-back" href="../explorer.html#explorer.MixedDataAnalyser.__init__">[docs]</a>    <span class="k">def</span> <span class="fm">__init__</span><span class="p">(</span><span class="bp">self</span><span class="p">,</span> <span class="n">data</span><span class="p">,</span> <span class="n">nums</span><span class="p">,</span> <span class="n">group</span><span class="p">):</span>
         <span class="nb">super</span><span class="p">()</span><span class="o">.</span><span class="fm">__init__</span><span class="p">(</span><span class="n">data</span><span class="p">)</span>
         <span class="bp">self</span><span class="o">.</span><span class="n">nums</span> <span class="o">=</span> <span class="n">nums</span>
         <span class="bp">self</span><span class="o">.</span><span class="n">group</span> <span class="o">=</span> <span class="n">group</span></div></div>
 
 
-<div class="viewcode-block" id="DataExplorer"><a class="viewcode-back" href="../ML_Data_Handler.html#explorer.DataExplorer">[docs]</a><span class="k">class</span> <span class="nc">DataExplorer</span><span class="p">(</span><span class="n">BasicDataAttributes</span><span class="p">):</span>
+<div class="viewcode-block" id="DataExplorer"><a class="viewcode-back" href="../explorer.html#explorer.DataExplorer">[docs]</a><span class="k">class</span> <span class="nc">DataExplorer</span><span class="p">(</span><span class="n">BasicDataAttributes</span><span class="p">):</span>
     <span class="sd">&quot;&quot;&quot;</span>
 <span class="sd">    Initializes a Data Explorer object. This object can be used to quickly generate insights of different features.</span>
 
 <span class="sd">    &quot;&quot;&quot;</span>
 
-<div class="viewcode-block" id="DataExplorer.__init__"><a class="viewcode-back" href="../ML_Data_Handler.html#explorer.DataExplorer.__init__">[docs]</a>    <span class="k">def</span> <span class="fm">__init__</span><span class="p">(</span>
+<div class="viewcode-block" id="DataExplorer.__init__"><a class="viewcode-back" href="../explorer.html#explorer.DataExplorer.__init__">[docs]</a>    <span class="k">def</span> <span class="fm">__init__</span><span class="p">(</span>
         <span class="bp">self</span><span class="p">,</span> <span class="n">data_source</span><span class="p">:</span> <span class="n">Union</span><span class="p">[</span><span class="nb">str</span><span class="p">,</span> <span class="n">pd</span><span class="o">.</span><span class="n">DataFrame</span><span class="p">],</span> <span class="n">target</span><span class="p">:</span> <span class="nb">str</span> <span class="o">=</span> <span class="s2">&quot;&quot;</span><span class="p">,</span>
     <span class="p">):</span>
         <span class="sd">&quot;&quot;&quot;</span>
@@ -190,6 +203,7 @@
             <span class="bp">self</span><span class="o">.</span><span class="n">dtype_cat</span><span class="p">,</span>
             <span class="bp">self</span><span class="o">.</span><span class="n">dtype_num</span><span class="p">,</span>
         <span class="p">]</span></div>
+    <span class="c1"># TODO change implementation from properties to classes</span>
 
     <span class="nd">@property</span>
     <span class="k">def</span> <span class="nf">Numerical_Data</span><span class="p">(</span><span class="bp">self</span><span class="p">)</span> <span class="o">-&gt;</span> <span class="n">NumericalAnalyzer</span><span class="p">:</span>
@@ -206,7 +220,7 @@
             <span class="k">return</span> <span class="n">NumericalAnalyzer</span><span class="p">(</span><span class="n">val</span><span class="p">)</span>
 
     <span class="nd">@property</span>
-    <span class="k">def</span> <span class="nf">Data_Mixed_Types</span><span class="p">(</span><span class="bp">self</span><span class="p">)</span> <span class="o">-&gt;</span> <span class="n">Data_Mixed_Types</span><span class="p">:</span>
+    <span class="k">def</span> <span class="nf">Data_Mixed_Types</span><span class="p">(</span><span class="bp">self</span><span class="p">)</span> <span class="o">-&gt;</span> <span class="n">DataExplorer</span><span class="p">:</span>
         <span class="sd">&quot;&quot;&quot;</span>
 <span class="sd">        A property which returns a data set of different types. This can be used to analyze relationships between different features of different types.</span>
 
@@ -363,7 +377,7 @@
             <span class="k">return</span> <span class="n">CategoricalAnalyzer</span><span class="p">(</span><span class="n">val</span><span class="p">)</span>
 
     <span class="nd">@property</span>
-    <span class="k">def</span> <span class="nf">Date_By_Data</span><span class="p">(</span><span class="bp">self</span><span class="p">)</span> <span class="o">-&gt;</span> <span class="n">Date_By_Data</span><span class="p">:</span>
+    <span class="k">def</span> <span class="nf">Date_By_Data</span><span class="p">(</span><span class="bp">self</span><span class="p">):</span>
         <span class="sd">&quot;&quot;&quot;</span>
 <span class="sd">        A property which returns a Data By Date object. This can be used to analyze columns by time.</span>
 
@@ -417,7 +431,7 @@
             <span class="p">)</span>
 
     <span class="nd">@property</span>
-    <span class="k">def</span> <span class="nf">Gis_DataWithLabel</span><span class="p">(</span><span class="bp">self</span><span class="p">)</span> <span class="o">-&gt;</span> <span class="n">Gis_DataWithLabel</span><span class="p">:</span>
+    <span class="k">def</span> <span class="nf">Gis_DataWithLabel</span><span class="p">(</span><span class="bp">self</span><span class="p">):</span>
         <span class="sd">&quot;&quot;&quot;</span>
 <span class="sd">        A property which returns all gis features with a corresponding label. This is intended to check for clustering algorithms results</span>
 
@@ -527,7 +541,7 @@
 <span class="sd">        &quot;&quot;&quot;</span>
         <span class="k">return</span> <span class="nb">len</span><span class="p">(</span><span class="bp">self</span><span class="o">.</span><span class="n">date_features</span><span class="p">)</span>
 
-<div class="viewcode-block" id="DataExplorer.plot_grid"><a class="viewcode-back" href="../ML_Data_Handler.html#explorer.DataExplorer.plot_grid">[docs]</a>    <span class="nd">@staticmethod</span>
+<div class="viewcode-block" id="DataExplorer.plot_grid"><a class="viewcode-back" href="../explorer.html#explorer.DataExplorer.plot_grid">[docs]</a>    <span class="nd">@staticmethod</span>
     <span class="k">def</span> <span class="nf">plot_grid</span><span class="p">(</span><span class="n">number</span><span class="p">:</span> <span class="nb">int</span><span class="p">)</span> <span class="o">-&gt;</span> <span class="n">namedtuple</span><span class="p">:</span>
         <span class="sd">&quot;&quot;&quot;</span>
 <span class="sd">        A function used to determine the number of grids when doing multiple graphics.</span>
@@ -543,20 +557,6 @@
 </pre></div>
 
           </div>
-        </div>
-      </div>
-      <div class="sphinxsidebar" role="navigation" aria-label="main navigation">
-        <div class="sphinxsidebarwrapper">
-<div id="searchbox" style="display: none" role="search">
-  <h3 id="searchlabel">Quick search</h3>
-    <div class="searchformwrapper">
-    <form class="search" action="../search.html" method="get">
-      <input type="text" name="q" aria-labelledby="searchlabel" />
-      <input type="submit" value="Go" />
-    </form>
-    </div>
-</div>
-<script>$('#searchbox').show(0);</script>
         </div>
       </div>
       <div class="clearer"></div>

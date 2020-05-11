@@ -13,12 +13,8 @@
 import os
 import sys
 from pathlib import Path
-#sys.path.insert(0, os.path.abspath('..'))
-sys.path.insert(0, r'C:\Daten\Trainings\ML_Data_Prep_backup\src')
 src_path = Path(__file__).resolve().parents[2].joinpath("src")
-#subfolder = [x for x in src_path.iterdir() if x.is_dir()]
-#for folder in subfolder:
-#    sys.path.insert(0, str(folder))
+
 sys.path.insert(0,str(src_path))
 
 # -- Project information -----------------------------------------------------
@@ -30,6 +26,15 @@ author = 'Dominik Heinz'
 # The full version, including alpha/beta/rc tags
 release = '1.2'
 
+autodoc_default_options = {
+    'members': True,
+    'private-members' : True,
+    'show-inheritance': True,
+    'member-order': 'bysource',
+    'special-members': '__init__',
+    'undoc-members': True,
+    'exclude-members': '__weakref__'
+}
 
 # -- General configuration ---------------------------------------------------
 
@@ -37,13 +42,10 @@ release = '1.2'
 # extensions coming with Sphinx (named 'sphinx.ext.*') or your custom
 # ones.
 extensions = [
-    'sphinx.ext.autodoc',
-    'sphinx.ext.ifconfig',
+    'sphinx.ext.doctest',
     'sphinx.ext.viewcode',
+    'sphinx.ext.autodoc',
     'sphinx.ext.autosummary',
-    'sphinx.ext.inheritance_diagram',
-    'sphinx.ext.graphviz',
-    'sphinx_autodoc_typehints'
 ]
 
 master_doc ='ML_Data_Handler'
@@ -56,13 +58,13 @@ today_fmt = '%d of %B %Y at %H:%M'
 # This pattern also affects html_static_path and html_extra_path.
 exclude_patterns = []
 
-autodoc_default_flags = ['members', 'undoc-members', 'private-members', 'inherited-members', 'show-inheritance', 'autofunction']
+
 
 # -- Options for HTML output -------------------------------------------------
 # The theme to use for HTML and HTML Help pages.  See the documentation for
 # a list of builtin themes.
 #
-html_theme = 'nature'
+html_theme = 'sphinxdoc'
 
 # Add any paths that contain custom static files (such as style sheets) here,
 # relative to this directory. They are copied after the builtin static files,
@@ -71,10 +73,3 @@ html_theme = 'nature'
 html_static_path = ['_static']
 #html_static_path = []
 
-def skip(app, what, name, obj, would_skip, options):
-    if name == "__init__":
-        return False
-    return would_skip
-
-def setup(app):
-    app.connect("autodoc-skip-member", skip)

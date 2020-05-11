@@ -5,9 +5,8 @@
   <head>
     <meta charset="utf-8" />
     <title>baseattrs &#8212; Machine Learning Data Handler 1.2 documentation</title>
-    <link rel="stylesheet" href="../_static/nature.css" type="text/css" />
+    <link rel="stylesheet" href="../_static/sphinxdoc.css" type="text/css" />
     <link rel="stylesheet" href="../_static/pygments.css" type="text/css" />
-    <link rel="stylesheet" type="text/css" href="../_static/graphviz.css" />
     <script id="documentation_options" data-url_root="../" src="../_static/documentation_options.js"></script>
     <script src="../_static/jquery.js"></script>
     <script src="../_static/underscore.js"></script>
@@ -28,7 +27,21 @@
         <li class="nav-item nav-item-0"><a href="../ML_Data_Handler.html">Machine Learning Data Handler 1.2 documentation</a> &#187;</li>
           <li class="nav-item nav-item-1"><a href="index.html" accesskey="U">Module code</a> &#187;</li> 
       </ul>
-    </div>  
+    </div>
+      <div class="sphinxsidebar" role="navigation" aria-label="main navigation">
+        <div class="sphinxsidebarwrapper">
+<div id="searchbox" style="display: none" role="search">
+  <h3 id="searchlabel">Quick search</h3>
+    <div class="searchformwrapper">
+    <form class="search" action="../search.html" method="get">
+      <input type="text" name="q" aria-labelledby="searchlabel" />
+      <input type="submit" value="Go" />
+    </form>
+    </div>
+</div>
+<script>$('#searchbox').show(0);</script>
+        </div>
+      </div>
 
     <div class="document">
       <div class="documentwrapper">
@@ -77,7 +90,7 @@
 <span class="n">__all__</span> <span class="o">=</span> <span class="p">[</span><span class="s2">&quot;BasicDataAttributes&quot;</span><span class="p">,</span> <span class="s2">&quot;BaseStats&quot;</span><span class="p">]</span>
 
 
-<div class="viewcode-block" id="BasicDataAttributes"><a class="viewcode-back" href="../ML_Data_Handler.html#baseattrs.BasicDataAttributes">[docs]</a><span class="k">class</span> <span class="nc">BasicDataAttributes</span><span class="p">:</span>
+<div class="viewcode-block" id="BasicDataAttributes"><a class="viewcode-back" href="../baseattrs.html#baseattrs.BasicDataAttributes">[docs]</a><span class="k">class</span> <span class="nc">BasicDataAttributes</span><span class="p">:</span>
     <span class="sd">&quot;&quot;&quot;</span>
 <span class="sd">    This class contains several attributes, methods and properties used within different classes.</span>
 <span class="sd">    &quot;&quot;&quot;</span>
@@ -89,7 +102,7 @@
     <span class="n">dtype_date</span> <span class="o">=</span> <span class="n">np</span><span class="o">.</span><span class="n">datetime64</span>
     <span class="n">dtype_cat</span> <span class="o">=</span> <span class="s2">&quot;category&quot;</span>
 
-<div class="viewcode-block" id="BasicDataAttributes.__init__"><a class="viewcode-back" href="../ML_Data_Handler.html#baseattrs.BasicDataAttributes.__init__">[docs]</a>    <span class="k">def</span> <span class="fm">__init__</span><span class="p">(</span>
+<div class="viewcode-block" id="BasicDataAttributes.__init__"><a class="viewcode-back" href="../baseattrs.html#baseattrs.BasicDataAttributes.__init__">[docs]</a>    <span class="k">def</span> <span class="fm">__init__</span><span class="p">(</span>
         <span class="bp">self</span><span class="p">,</span>
         <span class="n">data_source</span><span class="p">:</span> <span class="n">Union</span><span class="p">[</span><span class="nb">str</span><span class="p">,</span> <span class="n">pd</span><span class="o">.</span><span class="n">DataFrame</span><span class="p">],</span>
         <span class="n">target_name</span><span class="p">:</span> <span class="nb">str</span> <span class="o">=</span> <span class="s2">&quot;&quot;</span><span class="p">,</span>
@@ -109,7 +122,7 @@
         <span class="bp">self</span><span class="o">.</span><span class="n">input</span> <span class="o">=</span> <span class="kc">None</span>
         <span class="bp">self</span><span class="o">.</span><span class="n">target</span> <span class="o">=</span> <span class="kc">None</span></div>
 
-<div class="viewcode-block" id="BasicDataAttributes.ingest"><a class="viewcode-back" href="../ML_Data_Handler.html#baseattrs.BasicDataAttributes.ingest">[docs]</a>    <span class="k">def</span> <span class="nf">ingest</span><span class="p">(</span><span class="bp">self</span><span class="p">,</span> <span class="o">**</span><span class="n">options</span><span class="p">:</span> <span class="n">Mapping</span><span class="p">[</span><span class="nb">str</span><span class="p">,</span> <span class="p">])</span> <span class="o">-&gt;</span> <span class="n">BasicDataAttributes</span><span class="p">:</span>
+<div class="viewcode-block" id="BasicDataAttributes.ingest"><a class="viewcode-back" href="../baseattrs.html#baseattrs.BasicDataAttributes.ingest">[docs]</a>    <span class="k">def</span> <span class="nf">ingest</span><span class="p">(</span><span class="bp">self</span><span class="p">,</span> <span class="o">**</span><span class="n">options</span><span class="p">:</span> <span class="n">Mapping</span><span class="p">[</span><span class="nb">str</span><span class="p">,</span> <span class="p">])</span> <span class="o">-&gt;</span> <span class="n">BasicDataAttributes</span><span class="p">:</span>
         <span class="sd">&quot;&quot;&quot;</span>
 <span class="sd">        Ingests the data source provided in the attribute and derives a pandas DataFrame out of it. The following data source are possible:</span>
 
@@ -259,7 +272,7 @@
 <span class="sd">        &quot;&quot;&quot;</span>
         <span class="k">return</span> <span class="bp">self</span><span class="o">.</span><span class="n">input</span><span class="o">.</span><span class="n">dtypes</span>
 
-<div class="viewcode-block" id="BasicDataAttributes.reset_feature_type"><a class="viewcode-back" href="../ML_Data_Handler.html#baseattrs.BasicDataAttributes.reset_feature_type">[docs]</a>    <span class="k">def</span> <span class="nf">reset_feature_type</span><span class="p">(</span>
+<div class="viewcode-block" id="BasicDataAttributes.reset_feature_type"><a class="viewcode-back" href="../baseattrs.html#baseattrs.BasicDataAttributes.reset_feature_type">[docs]</a>    <span class="k">def</span> <span class="nf">reset_feature_type</span><span class="p">(</span>
         <span class="bp">self</span><span class="p">,</span> <span class="n">feature</span><span class="p">:</span> <span class="nb">str</span><span class="p">,</span> <span class="n">dtype</span><span class="p">:</span> <span class="n">Union</span><span class="p">[</span><span class="nb">str</span><span class="p">,</span> <span class="n">np</span><span class="o">.</span><span class="n">number</span><span class="p">,</span> <span class="nb">int</span><span class="p">,</span> <span class="nb">float</span><span class="p">]</span>
     <span class="p">):</span>
         <span class="sd">&quot;&quot;&quot;</span>
@@ -280,7 +293,7 @@
             <span class="nb">print</span><span class="p">(</span><span class="n">e</span><span class="p">)</span></div>
         <span class="c1"># TODO: implement logic for date time.</span>
 
-<div class="viewcode-block" id="BasicDataAttributes.convert_nested_dictionary_class"><a class="viewcode-back" href="../ML_Data_Handler.html#baseattrs.BasicDataAttributes.convert_nested_dictionary_class">[docs]</a>    <span class="nd">@staticmethod</span>
+<div class="viewcode-block" id="BasicDataAttributes.convert_nested_dictionary_class"><a class="viewcode-back" href="../baseattrs.html#baseattrs.BasicDataAttributes.convert_nested_dictionary_class">[docs]</a>    <span class="nd">@staticmethod</span>
     <span class="k">def</span> <span class="nf">convert_nested_dictionary_class</span><span class="p">(</span><span class="n">d</span><span class="p">:</span> <span class="n">Dict</span><span class="p">)</span> <span class="o">-&gt;</span> <span class="n">Dict</span><span class="p">:</span>
         <span class="sd">&quot;&quot;&quot;</span>
 <span class="sd">        Takes a dictionary and converts a string values to the corresponding Python classes</span>
@@ -300,8 +313,8 @@
         <span class="k">return</span> <span class="n">d</span></div></div>
 
 
-<div class="viewcode-block" id="BaseStats"><a class="viewcode-back" href="../ML_Data_Handler.html#baseattrs.BaseStats">[docs]</a><span class="k">class</span> <span class="nc">BaseStats</span><span class="p">:</span>
-<div class="viewcode-block" id="BaseStats.__init__"><a class="viewcode-back" href="../ML_Data_Handler.html#baseattrs.BaseStats.__init__">[docs]</a>    <span class="k">def</span> <span class="fm">__init__</span><span class="p">(</span><span class="bp">self</span><span class="p">,</span> <span class="n">data</span><span class="p">:</span> <span class="n">Union</span><span class="p">[</span><span class="nb">str</span><span class="p">,</span> <span class="n">pd</span><span class="o">.</span><span class="n">DataFrame</span><span class="p">]):</span>
+<div class="viewcode-block" id="BaseStats"><a class="viewcode-back" href="../baseattrs.html#baseattrs.BaseStats">[docs]</a><span class="k">class</span> <span class="nc">BaseStats</span><span class="p">:</span>
+<div class="viewcode-block" id="BaseStats.__init__"><a class="viewcode-back" href="../baseattrs.html#baseattrs.BaseStats.__init__">[docs]</a>    <span class="k">def</span> <span class="fm">__init__</span><span class="p">(</span><span class="bp">self</span><span class="p">,</span> <span class="n">data</span><span class="p">:</span> <span class="n">Union</span><span class="p">[</span><span class="nb">str</span><span class="p">,</span> <span class="n">pd</span><span class="o">.</span><span class="n">DataFrame</span><span class="p">]):</span>
         <span class="sd">&quot;&quot;&quot;</span>
 <span class="sd">        Initialization of the basic class. It accepts a pandas DataFrame as input.</span>
 
@@ -311,7 +324,7 @@
         <span class="bp">self</span><span class="o">.</span><span class="n">data</span> <span class="o">=</span> <span class="n">data</span>
         <span class="bp">self</span><span class="o">.</span><span class="n">n_observation</span> <span class="o">=</span> <span class="nb">len</span><span class="p">(</span><span class="n">data</span><span class="p">)</span></div>
 
-<div class="viewcode-block" id="BaseStats.get_missing_values"><a class="viewcode-back" href="../ML_Data_Handler.html#baseattrs.BaseStats.get_missing_values">[docs]</a>    <span class="k">def</span> <span class="nf">get_missing_values</span><span class="p">(</span><span class="bp">self</span><span class="p">,</span> <span class="n">column</span><span class="p">:</span> <span class="nb">str</span><span class="p">)</span> <span class="o">-&gt;</span> <span class="n">namedtuple</span><span class="p">:</span>
+<div class="viewcode-block" id="BaseStats.get_missing_values"><a class="viewcode-back" href="../baseattrs.html#baseattrs.BaseStats.get_missing_values">[docs]</a>    <span class="k">def</span> <span class="nf">get_missing_values</span><span class="p">(</span><span class="bp">self</span><span class="p">,</span> <span class="n">column</span><span class="p">:</span> <span class="nb">str</span><span class="p">)</span> <span class="o">-&gt;</span> <span class="n">namedtuple</span><span class="p">:</span>
         <span class="sd">&quot;&quot;&quot;</span>
 <span class="sd">        Returns the amount of missing values for a given column. Returns a namedtuple including the absolute and relative value of missing values.</span>
 
@@ -326,7 +339,7 @@
         <span class="n">log</span><span class="o">.</span><span class="n">info</span><span class="p">(</span><span class="sa">f</span><span class="s1">&#39;Calculating missing values for &quot;</span><span class="si">{</span><span class="n">column</span><span class="si">}</span><span class="s1">&quot;: about </span><span class="si">{</span><span class="n">perc</span> <span class="o">*</span> <span class="mi">100</span><span class="si">}</span><span class="s1"> %&#39;</span><span class="p">)</span>
         <span class="k">return</span> <span class="n">missing</span><span class="p">(</span><span class="n">absolute</span><span class="p">,</span> <span class="n">perc</span><span class="p">)</span></div>
 
-<div class="viewcode-block" id="BaseStats.get_stats"><a class="viewcode-back" href="../ML_Data_Handler.html#baseattrs.BaseStats.get_stats">[docs]</a>    <span class="k">def</span> <span class="nf">get_stats</span><span class="p">(</span><span class="bp">self</span><span class="p">)</span> <span class="o">-&gt;</span> <span class="n">pd</span><span class="o">.</span><span class="n">DataFrame</span><span class="p">:</span>
+<div class="viewcode-block" id="BaseStats.get_stats"><a class="viewcode-back" href="../baseattrs.html#baseattrs.BaseStats.get_stats">[docs]</a>    <span class="k">def</span> <span class="nf">get_stats</span><span class="p">(</span><span class="bp">self</span><span class="p">)</span> <span class="o">-&gt;</span> <span class="n">pd</span><span class="o">.</span><span class="n">DataFrame</span><span class="p">:</span>
         <span class="sd">&quot;&quot;&quot;</span>
 <span class="sd">        Returns the summary statistics of the pd.DataFrame</span>
 
@@ -336,7 +349,7 @@
         <span class="n">log</span><span class="o">.</span><span class="n">info</span><span class="p">(</span><span class="sa">f</span><span class="s2">&quot;Summary statistics: </span><span class="se">\n</span><span class="si">{</span><span class="n">summary</span><span class="si">}</span><span class="s2">&quot;</span><span class="p">)</span>
         <span class="k">return</span> <span class="n">summary</span></div>
 
-<div class="viewcode-block" id="BaseStats.get_unique_values"><a class="viewcode-back" href="../ML_Data_Handler.html#baseattrs.BaseStats.get_unique_values">[docs]</a>    <span class="k">def</span> <span class="nf">get_unique_values</span><span class="p">(</span><span class="bp">self</span><span class="p">,</span> <span class="n">column</span><span class="p">:</span> <span class="nb">str</span><span class="p">)</span> <span class="o">-&gt;</span> <span class="n">namedtuple</span><span class="p">:</span>
+<div class="viewcode-block" id="BaseStats.get_unique_values"><a class="viewcode-back" href="../baseattrs.html#baseattrs.BaseStats.get_unique_values">[docs]</a>    <span class="k">def</span> <span class="nf">get_unique_values</span><span class="p">(</span><span class="bp">self</span><span class="p">,</span> <span class="n">column</span><span class="p">:</span> <span class="nb">str</span><span class="p">)</span> <span class="o">-&gt;</span> <span class="n">namedtuple</span><span class="p">:</span>
         <span class="sd">&quot;&quot;&quot;</span>
 <span class="sd">        Returns the amount of unique values for a given column. Returns a namedtuple including the absolute and relative value of missing values.</span>
 
@@ -350,7 +363,7 @@
         <span class="n">log</span><span class="o">.</span><span class="n">info</span><span class="p">(</span><span class="sa">f</span><span class="s1">&#39;Calculating unique values for &quot;</span><span class="si">{</span><span class="n">column</span><span class="si">}</span><span class="s1">&quot;: about </span><span class="si">{</span><span class="n">perc</span> <span class="o">*</span> <span class="mi">100</span><span class="si">}</span><span class="s1"> %&#39;</span><span class="p">)</span>
         <span class="k">return</span> <span class="n">unique</span><span class="p">(</span><span class="n">absolute</span><span class="p">,</span> <span class="n">perc</span><span class="p">)</span></div>
 
-<div class="viewcode-block" id="BaseStats._abs_rel_namedtuple_creator"><a class="viewcode-back" href="../ML_Data_Handler.html#baseattrs.BaseStats._abs_rel_namedtuple_creator">[docs]</a>    <span class="nd">@staticmethod</span>
+<div class="viewcode-block" id="BaseStats._abs_rel_namedtuple_creator"><a class="viewcode-back" href="../baseattrs.html#baseattrs.BaseStats._abs_rel_namedtuple_creator">[docs]</a>    <span class="nd">@staticmethod</span>
     <span class="k">def</span> <span class="nf">_abs_rel_namedtuple_creator</span><span class="p">(</span><span class="n">value</span><span class="p">:</span> <span class="nb">str</span><span class="p">)</span> <span class="o">-&gt;</span> <span class="n">namedtuple</span><span class="p">:</span>
         <span class="sd">&quot;&quot;&quot;</span>
 <span class="sd">        Returns a namedtuple with an absolute and percent attribute</span>
@@ -361,7 +374,7 @@
 <span class="sd">        &quot;&quot;&quot;</span>
         <span class="k">return</span> <span class="n">namedtuple</span><span class="p">(</span><span class="n">value</span><span class="p">,</span> <span class="p">[</span><span class="s2">&quot;absolute&quot;</span><span class="p">,</span> <span class="s2">&quot;percent&quot;</span><span class="p">])</span></div>
 
-<div class="viewcode-block" id="BaseStats.get_size_in_memory"><a class="viewcode-back" href="../ML_Data_Handler.html#baseattrs.BaseStats.get_size_in_memory">[docs]</a>    <span class="k">def</span> <span class="nf">get_size_in_memory</span><span class="p">(</span><span class="bp">self</span><span class="p">,</span> <span class="n">column</span><span class="p">:</span> <span class="nb">str</span><span class="p">)</span> <span class="o">-&gt;</span> <span class="nb">str</span><span class="p">:</span>
+<div class="viewcode-block" id="BaseStats.get_size_in_memory"><a class="viewcode-back" href="../baseattrs.html#baseattrs.BaseStats.get_size_in_memory">[docs]</a>    <span class="k">def</span> <span class="nf">get_size_in_memory</span><span class="p">(</span><span class="bp">self</span><span class="p">,</span> <span class="n">column</span><span class="p">:</span> <span class="nb">str</span><span class="p">)</span> <span class="o">-&gt;</span> <span class="nb">str</span><span class="p">:</span>
         <span class="sd">&quot;&quot;&quot;</span>
 <span class="sd">        Returns the amount of memory consumed by the given column</span>
 
@@ -379,20 +392,6 @@
 </pre></div>
 
           </div>
-        </div>
-      </div>
-      <div class="sphinxsidebar" role="navigation" aria-label="main navigation">
-        <div class="sphinxsidebarwrapper">
-<div id="searchbox" style="display: none" role="search">
-  <h3 id="searchlabel">Quick search</h3>
-    <div class="searchformwrapper">
-    <form class="search" action="../search.html" method="get">
-      <input type="text" name="q" aria-labelledby="searchlabel" />
-      <input type="submit" value="Go" />
-    </form>
-    </div>
-</div>
-<script>$('#searchbox').show(0);</script>
         </div>
       </div>
       <div class="clearer"></div>
